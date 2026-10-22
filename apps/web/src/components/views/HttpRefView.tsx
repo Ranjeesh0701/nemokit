@@ -1,15 +1,6 @@
 import { useState, useMemo, useEffect, useCallback } from 'react';
-import {
-  httpRefTool,
-  type HttpRefOutput,
-} from '@nemokit/core';
-import {
-  Search,
-  Copy,
-  Check,
-  Share2,
-  Globe,
-} from 'lucide-react';
+import { httpRefTool, type HttpRefOutput } from '@nemokit/core';
+import { Search, Copy, Check, Share2, Globe } from 'lucide-react';
 import { serializeStateToUrl, parseSharedState } from '../../utils/shareState.js';
 
 export function HttpRefView() {

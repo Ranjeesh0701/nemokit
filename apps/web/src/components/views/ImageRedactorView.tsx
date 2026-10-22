@@ -1,17 +1,6 @@
 import { useState, useRef, useEffect, useCallback, type MouseEvent } from 'react';
-import {
-  pixelateArea,
-  type RedactionMode,
-  type RedactionRegion,
-} from '@nemokit/core';
-import {
-  Download,
-  Undo2,
-  Trash2,
-  Image as ImageIcon,
-  Check,
-  EyeOff,
-} from 'lucide-react';
+import { pixelateArea, type RedactionMode, type RedactionRegion } from '@nemokit/core';
+import { Download, Undo2, Trash2, Image as ImageIcon, Check, EyeOff } from 'lucide-react';
 
 const SAMPLE_SCREENSHOT_SVG = `data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="600" height="380" viewBox="0 0 600 380"><rect width="600" height="380" fill="%23ffffff"/><rect x="40" y="40" width="520" height="300" rx="12" fill="%23f9fafb" stroke="%23e5e7eb"/><text x="70" y="90" font-family="sans-serif" font-size="18" font-weight="bold" fill="%23111827">Production Server Credentials</text><text x="70" y="140" font-family="monospace" font-size="14" fill="%23374151">API_SECRET_KEY = sk_live_94821a48e7192a01</text><text x="70" y="180" font-family="monospace" font-size="14" fill="%23374151">DATABASE_URL   = postgres://admin:superSecretPassword@db:5432</text><text x="70" y="220" font-family="monospace" font-size="14" fill="%23374151">JWT_SECRET     = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9</text><rect x="70" y="260" width="120" height="36" rx="8" fill="%2310b981"/><text x="95" y="283" font-family="sans-serif" font-size="13" font-weight="600" fill="%23ffffff">Verified</text></svg>`;
 
@@ -25,7 +14,12 @@ export function ImageRedactorView() {
   // Drawing state
   const [isDrawing, setIsDrawing] = useState<boolean>(false);
   const [startPos, setStartPos] = useState<{ x: number; y: number } | null>(null);
-  const [currentBox, setCurrentBox] = useState<{ x: number; y: number; w: number; h: number } | null>(null);
+  const [currentBox, setCurrentBox] = useState<{
+    x: number;
+    y: number;
+    w: number;
+    h: number;
+  } | null>(null);
 
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const originalImageRef = useRef<HTMLImageElement | null>(null);
@@ -191,7 +185,8 @@ export function ImageRedactorView() {
               </span>
             </div>
             <p className="text-xs text-stone-500">
-              Draw redaction boxes over sensitive keys, tokens, emails, or faces before sharing screenshots.
+              Draw redaction boxes over sensitive keys, tokens, emails, or faces before sharing
+              screenshots.
             </p>
           </div>
         </div>
@@ -327,7 +322,7 @@ export function ImageRedactorView() {
         </div>
 
         {/* Right Column: Canvas Display */}
-        <div className="lg:col-span-8 flex flex-col rounded-2xl border border-stone-200/80 bg-white shadow-xs overflow-hidden flex-1 min-h-[300px]">
+        <div className="lg:col-span-8 flex flex-col rounded-2xl border border-stone-200/80 bg-white shadow-xs overflow-hidden flex-1 min-h-75">
           <div className="px-4 py-3 border-b border-stone-200/80 bg-stone-50/70 flex items-center justify-between">
             <span className="text-xs font-semibold text-stone-800 uppercase tracking-wider">
               Canvas Editor
@@ -337,7 +332,7 @@ export function ImageRedactorView() {
             </span>
           </div>
 
-          <div className="p-6 flex-1 flex items-center justify-center min-h-[260px] bg-stone-100/50 overflow-auto">
+          <div className="p-6 flex-1 flex items-center justify-center min-h-65 bg-stone-100/50 overflow-auto">
             <canvas
               ref={canvasRef}
               onMouseDown={handleMouseDown}

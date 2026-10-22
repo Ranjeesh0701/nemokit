@@ -127,7 +127,9 @@ const ImageToSvgView = lazy(() =>
   import('./components/views/ImageToSvgView.js').then(m => ({ default: m.ImageToSvgView }))
 );
 const FaviconGeneratorView = lazy(() =>
-  import('./components/views/FaviconGeneratorView.js').then(m => ({ default: m.FaviconGeneratorView }))
+  import('./components/views/FaviconGeneratorView.js').then(m => ({
+    default: m.FaviconGeneratorView,
+  }))
 );
 
 function ViewSkeleton() {

@@ -1,11 +1,6 @@
 import { useState, useRef, useEffect, useCallback } from 'react';
 import type { ImageOutputFormat } from '@nemokit/core';
-import {
-  Download,
-  Image as ImageIcon,
-  Check,
-  Scale,
-} from 'lucide-react';
+import { Download, Image as ImageIcon, Check, Scale } from 'lucide-react';
 
 const SAMPLE_IMAGE_SVG = `data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="800" height="500" viewBox="0 0 800 500"><defs><linearGradient id="g" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="%236366f1"/><stop offset="50%" stop-color="%23ec4899"/><stop offset="100%" stop-color="%23f59e0b"/></linearGradient></defs><rect width="800" height="500" fill="url(%23g)"/><circle cx="400" cy="250" r="140" fill="%23ffffff" opacity="0.2"/><text x="400" y="260" font-family="system-ui, sans-serif" font-size="32" font-weight="800" fill="%23ffffff" text-anchor="middle">Nemokit Image Studio</text></svg>`;
 
@@ -133,7 +128,8 @@ export function ImageConverterView() {
               </span>
             </div>
             <p className="text-xs text-stone-500">
-              Convert between WebP, JPEG, and PNG, downscale resolutions, and optimize file payloads.
+              Convert between WebP, JPEG, and PNG, downscale resolutions, and optimize file
+              payloads.
             </p>
           </div>
         </div>
@@ -291,17 +287,18 @@ export function ImageConverterView() {
         </div>
 
         {/* Right Column: Preview Canvas */}
-        <div className="lg:col-span-8 flex flex-col rounded-2xl border border-stone-200/80 bg-white shadow-xs overflow-hidden flex-1 min-h-[300px]">
+        <div className="lg:col-span-8 flex flex-col rounded-2xl border border-stone-200/80 bg-white shadow-xs overflow-hidden flex-1 min-h-75">
           <div className="px-4 py-3 border-b border-stone-200/80 bg-stone-50/70 flex items-center justify-between text-xs">
             <span className="font-semibold text-stone-800 uppercase tracking-wider">
               Preview Canvas
             </span>
             <span className="font-mono text-stone-500">
-              {originalDimensions.w}×{originalDimensions.h} → {targetDimensions.w}×{targetDimensions.h} px
+              {originalDimensions.w}×{originalDimensions.h} → {targetDimensions.w}×
+              {targetDimensions.h} px
             </span>
           </div>
 
-          <div className="p-6 flex-1 flex items-center justify-center min-h-[260px] bg-stone-100/50 overflow-auto">
+          <div className="p-6 flex-1 flex items-center justify-center min-h-65 bg-stone-100/50 overflow-auto">
             <canvas
               ref={canvasRef}
               className="max-w-full max-h-[calc(100vh-20rem)] object-contain rounded-lg shadow-sm border border-stone-200"

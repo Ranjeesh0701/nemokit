@@ -181,7 +181,8 @@ ${paths.join('\n')}
 export const imageToSvgTool: Tool<ImageToSvgInput, ImageToSvgOutput> = {
   id: 'image-to-svg',
   name: 'Image to SVG Vectorizer',
-  description: 'Convert raster bitmaps (PNG, JPEG, WebP) into scalable vector SVG markup with monochrome and posterization modes.',
+  description:
+    'Convert raster bitmaps (PNG, JPEG, WebP) into scalable vector SVG markup with monochrome and posterization modes.',
   category: 'images',
 
   execute(

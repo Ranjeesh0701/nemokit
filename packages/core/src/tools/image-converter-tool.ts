@@ -25,7 +25,8 @@ export interface ImageConverterOutput {
 export const imageConverterTool: Tool<ImageConverterInput, ImageConverterOutput> = {
   id: 'image-converter',
   name: 'Image Compressor & Converter',
-  description: 'Convert between PNG, JPEG, and WebP, resize dimensions, and optimize image payload size client-side.',
+  description:
+    'Convert between PNG, JPEG, and WebP, resize dimensions, and optimize image payload size client-side.',
   category: 'images',
 
   execute(

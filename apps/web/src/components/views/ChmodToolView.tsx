@@ -159,7 +159,9 @@ export function ChmodToolView() {
           {/* Filename Input */}
           <div className="flex items-center gap-3 rounded-xl border border-stone-200/80 bg-white p-3 shadow-2xs">
             <FileText className="h-4 w-4 text-stone-400 shrink-0" />
-            <span className="text-xs font-medium text-stone-500 shrink-0">Target File / Directory:</span>
+            <span className="text-xs font-medium text-stone-500 shrink-0">
+              Target File / Directory:
+            </span>
             <input
               type="text"
               value={filename}
@@ -175,9 +177,7 @@ export function ChmodToolView() {
               <span className="text-xs font-semibold text-stone-800 uppercase tracking-wider">
                 Permission Checkbox Matrix
               </span>
-              <span className="text-[11px] text-stone-500 font-mono">
-                {output?.binary}
-              </span>
+              <span className="text-[11px] text-stone-500 font-mono">{output?.binary}</span>
             </div>
 
             <div className="p-5 overflow-x-auto">

@@ -76,9 +76,7 @@ export function DropzoneWrapper({
           <UploadCloud className="h-10 w-10 text-stone-200 animate-bounce" />
           <p className="mt-2 text-sm font-semibold">{label}</p>
           {allowedExtensions && (
-            <p className="text-xs text-stone-300 mt-1">
-              Supports: {allowedExtensions.join(', ')}
-            </p>
+            <p className="text-xs text-stone-300 mt-1">Supports: {allowedExtensions.join(', ')}</p>
           )}
         </div>
       )}

@@ -24,7 +24,14 @@ export interface BgRemoverOutput {
 /**
  * Calculates Euclidean color distance normalized between 0 and 100.
  */
-export function colorDistance(r1: number, g1: number, b1: number, r2: number, g2: number, b2: number): number {
+export function colorDistance(
+  r1: number,
+  g1: number,
+  b1: number,
+  r2: number,
+  g2: number,
+  b2: number
+): number {
   const dr = r1 - r2;
   const dg = g1 - g2;
   const db = b1 - b2;
@@ -43,7 +50,7 @@ export function sampleCornerColor(
   const samplePoints = [
     0, // Top-left
     (width - 1) * 4, // Top-right
-    ((height - 1) * width) * 4, // Bottom-left
+    (height - 1) * width * 4, // Bottom-left
     ((height - 1) * width + (width - 1)) * 4, // Bottom-right
   ];
 
@@ -108,7 +115,8 @@ export function processBackgroundRemoval(
 export const bgRemoverTool: Tool<BgRemoverInput, BgRemoverOutput> = {
   id: 'bg-remover',
   name: 'Image Background Remover',
-  description: 'Instant client-side background removal and transparent keying for logos, icons, and product photos.',
+  description:
+    'Instant client-side background removal and transparent keying for logos, icons, and product photos.',
   category: 'images',
 
   execute(

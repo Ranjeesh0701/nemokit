@@ -79,7 +79,8 @@ export function pixelateArea(
 export const imageRedactorTool: Tool<ImageRedactorInput, ImageRedactorOutput> = {
   id: 'image-redactor',
   name: 'Image Privacy Redactor',
-  description: 'Blur, pixelate, or black out sensitive credentials, API keys, and personal info on screenshots directly in your browser.',
+  description:
+    'Blur, pixelate, or black out sensitive credentials, API keys, and personal info on screenshots directly in your browser.',
   category: 'images',
 
   execute(

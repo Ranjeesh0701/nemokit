@@ -57,49 +57,57 @@ export const CHMOD_PRESETS: ReadonlyArray<ChmodPreset> = [
     octal: '644',
     symbolic: '-rw-r--r--',
     name: '644 — Standard File',
-    description: 'Owner can read and write; group and others can only read. Ideal for web assets, documents, and source files.',
+    description:
+      'Owner can read and write; group and others can only read. Ideal for web assets, documents, and source files.',
   },
   {
     octal: '755',
     symbolic: '-rwxr-xr-x',
     name: '755 — Standard Executable & Directory',
-    description: 'Owner can read, write, and execute; group and others can read and execute. Standard for binaries, shell scripts, and directories.',
+    description:
+      'Owner can read, write, and execute; group and others can read and execute. Standard for binaries, shell scripts, and directories.',
   },
   {
     octal: '600',
     symbolic: '-rw-------',
     name: '600 — Private SSH Key & Secret File',
-    description: 'Owner can read and write; nobody else has any access. Required for SSH keys (~/.ssh/id_rsa) and credential files.',
+    description:
+      'Owner can read and write; nobody else has any access. Required for SSH keys (~/.ssh/id_rsa) and credential files.',
   },
   {
     octal: '700',
     symbolic: '-rwx------',
     name: '700 — Private Directory & Script',
-    description: 'Full access for the owner only. Group and public have zero permissions. Recommended for ~/.ssh directory and private admin scripts.',
+    description:
+      'Full access for the owner only. Group and public have zero permissions. Recommended for ~/.ssh directory and private admin scripts.',
   },
   {
     octal: '400',
     symbolic: '-r--------',
     name: '400 — Read-Only Secret',
-    description: 'Owner can only read; no modifications allowed, and completely hidden from group and public.',
+    description:
+      'Owner can only read; no modifications allowed, and completely hidden from group and public.',
   },
   {
     octal: '664',
     symbolic: '-rw-rw-r--',
     name: '664 — Collaborative Team File',
-    description: 'Owner and group members can read and write; external users can only read. Useful in shared team working directories.',
+    description:
+      'Owner and group members can read and write; external users can only read. Useful in shared team working directories.',
   },
   {
     octal: '775',
     symbolic: '-rwxrwxr-x',
     name: '775 — Shared Executable & Directory',
-    description: 'Owner and group members have full read/write/execute rights; others can read and execute.',
+    description:
+      'Owner and group members have full read/write/execute rights; others can read and execute.',
   },
   {
     octal: '777',
     symbolic: '-rwxrwxrwx',
     name: '777 — Full Public Access (Unsafe)',
-    description: 'Everyone can read, write, and execute. Caution: unrestricted write permission makes files vulnerable to modification or deletion.',
+    description:
+      'Everyone can read, write, and execute. Caution: unrestricted write permission makes files vulnerable to modification or deletion.',
   },
 ];
 
@@ -137,7 +145,8 @@ function triadToDescription(t: PermissionTriad): string {
 export const chmodTool: Tool<ChmodToolInput, ChmodToolOutput> = {
   id: 'chmod-calculator',
   name: 'Chmod Permissions Calculator',
-  description: 'Calculate Unix file permissions between Octal (755), Symbolic (-rwxr-xr-x), and interactive checkboxes with command generation.',
+  description:
+    'Calculate Unix file permissions between Octal (755), Symbolic (-rwxr-xr-x), and interactive checkboxes with command generation.',
   category: 'converters',
 
   execute(
@@ -155,7 +164,9 @@ export const chmodTool: Tool<ChmodToolInput, ChmodToolOutput> = {
         const clean = input.octal.trim().replace(/^0+/, '') || '0';
         const padded = clean.padStart(3, '0').slice(-4);
         if (!/^[0-7]{3,4}$/.test(padded)) {
-          const res = onFailure('Invalid octal representation. Must contain 3 or 4 digits from 0 to 7 (e.g. 755 or 0644).');
+          const res = onFailure(
+            'Invalid octal representation. Must contain 3 or 4 digits from 0 to 7 (e.g. 755 or 0644).'
+          );
           handlers?.onFailure?.(res.error);
           return res;
         }
@@ -178,7 +189,9 @@ export const chmodTool: Tool<ChmodToolInput, ChmodToolOutput> = {
         const sym = input.symbolic.trim();
         const core = sym.length === 10 ? sym.slice(1) : sym;
         if (core.length !== 9) {
-          const res = onFailure('Invalid symbolic string. Expected 9 or 10 characters (e.g. -rwxr-xr-x or rwxr-xr-x).');
+          const res = onFailure(
+            'Invalid symbolic string. Expected 9 or 10 characters (e.g. -rwxr-xr-x or rwxr-xr-x).'
+          );
           handlers?.onFailure?.(res.error);
           return res;
         }
@@ -258,7 +271,10 @@ export const chmodTool: Tool<ChmodToolInput, ChmodToolOutput> = {
           user: `Owner (User): ${triadToDescription(u)}`,
           group: `Group: ${triadToDescription(g)}`,
           others: `Others (Public): ${triadToDescription(o)}`,
-          special: sVal > 0 ? `Special flags enabled: ${[s.setuid && 'SetUID', s.setgid && 'SetGID', s.sticky && 'Sticky Bit'].filter(Boolean).join(', ')}` : undefined,
+          special:
+            sVal > 0
+              ? `Special flags enabled: ${[s.setuid && 'SetUID', s.setgid && 'SetGID', s.sticky && 'Sticky Bit'].filter(Boolean).join(', ')}`
+              : undefined,
         },
         presets: CHMOD_PRESETS,
       };

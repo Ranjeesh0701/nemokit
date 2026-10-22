@@ -19,15 +19,17 @@ export interface HtmlPreviewOutput {
 }
 
 function minifyMarkup(raw: string): string {
-  return raw
-    // Remove HTML/SVG comments
-    .replace(/<!--[\s\S]*?-->/g, '')
-    // Remove whitespace between tags
-    .replace(/>\s+</g, '><')
-    // Collapse multiple whitespace inside tags/attributes
-    .replace(/\s{2,}/g, ' ')
-    // Trim edges
-    .trim();
+  return (
+    raw
+      // Remove HTML/SVG comments
+      .replace(/<!--[\s\S]*?-->/g, '')
+      // Remove whitespace between tags
+      .replace(/>\s+</g, '><')
+      // Collapse multiple whitespace inside tags/attributes
+      .replace(/\s{2,}/g, ' ')
+      // Trim edges
+      .trim()
+  );
 }
 
 function beautifyMarkup(raw: string, indentSize = 2): string {
@@ -59,7 +61,9 @@ function beautifyMarkup(raw: string, indentSize = 2): string {
     // Self-closing tag or void tags: <img />, <br>, <hr>, <meta>, <link>, etc.
     const isSelfClosing =
       token.endsWith('/>') ||
-      /^<(?:area|base|br|col|embed|hr|img|input|link|meta|param|source|track|wbr)(?:\s+[^>]*?)?>$/i.test(token);
+      /^<(?:area|base|br|col|embed|hr|img|input|link|meta|param|source|track|wbr)(?:\s+[^>]*?)?>$/i.test(
+        token
+      );
 
     if (isSelfClosing) {
       tokens.push(indent.repeat(depth) + token);
@@ -83,7 +87,8 @@ function beautifyMarkup(raw: string, indentSize = 2): string {
 export const htmlPreviewTool: Tool<HtmlPreviewInput, HtmlPreviewOutput> = {
   id: 'html-preview',
   name: 'HTML & SVG Previewer',
-  description: 'Live sandboxed preview, minification, and clean formatting for HTML templates and SVG vector graphics.',
+  description:
+    'Live sandboxed preview, minification, and clean formatting for HTML templates and SVG vector graphics.',
   category: 'formatters',
 
   execute(

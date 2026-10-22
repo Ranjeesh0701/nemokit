@@ -521,8 +521,8 @@ if (result.success) {
                 </span>
               </div>
               <p className="text-stone-500 text-xs leading-relaxed">
-                Privacy-first developer utilities running 100% locally in your browser memory.
-                No servers, no tracking, and zero latency.
+                Privacy-first developer utilities running 100% locally in your browser memory. No
+                servers, no tracking, and zero latency.
               </p>
               <div className="flex items-center gap-2 pt-1 text-[11px] text-stone-500">
                 <span className="inline-flex items-center gap-1">

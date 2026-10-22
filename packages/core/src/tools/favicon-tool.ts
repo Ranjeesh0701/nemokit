@@ -117,7 +117,8 @@ export function generateManifestSnippet(appName: string, themeColor = '#ffffff')
 export const faviconTool: Tool<FaviconInput, FaviconOutput> = {
   id: 'favicon-generator',
   name: 'Favicon & App Icon Studio',
-  description: 'Generate multi-resolution favicon.ico, Apple touch icons, Android PWA assets, and webmanifest tags client-side.',
+  description:
+    'Generate multi-resolution favicon.ico, Apple touch icons, Android PWA assets, and webmanifest tags client-side.',
   category: 'images',
 
   execute(

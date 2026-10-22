@@ -216,14 +216,7 @@ export function AppSidebar({
     }
   };
 
-  const categories: ToolCategory[] = [
-    'formatters',
-    'converters',
-    'images',
-    'pdf',
-    'crypto',
-    'web',
-  ];
+  const categories: ToolCategory[] = ['formatters', 'converters', 'images', 'pdf', 'crypto', 'web'];
 
   return (
     <>

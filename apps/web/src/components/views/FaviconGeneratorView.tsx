@@ -6,15 +6,7 @@ import {
   generateManifestSnippet,
   type FaviconDimension,
 } from '@nemokit/core';
-import {
-  Download,
-  Copy,
-  Check,
-  Code2,
-  Globe,
-  Smartphone,
-  Image as ImageIcon,
-} from 'lucide-react';
+import { Download, Copy, Check, Code2, Globe, Smartphone, Image as ImageIcon } from 'lucide-react';
 import { downloadAsFile } from '../../utils/fileDownload.js';
 
 const SAMPLE_ICON_SVG = `data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="256" height="256" viewBox="0 0 256 256"><rect width="256" height="256" rx="56" fill="%231c1917"/><polygon points="128,48 208,188 48,188" fill="%23f59e0b"/><circle cx="128" cy="142" r="28" fill="%23ffffff"/></svg>`;
@@ -157,7 +149,8 @@ export function FaviconGeneratorView() {
               </span>
             </div>
             <p className="text-xs text-stone-500">
-              Generate binary multi-size favicon.ico, Apple touch icons, Android PWA assets, and webmanifest tags.
+              Generate binary multi-size favicon.ico, Apple touch icons, Android PWA assets, and
+              webmanifest tags.
             </p>
           </div>
         </div>
@@ -233,7 +226,9 @@ export function FaviconGeneratorView() {
                     onChange={e => setThemeColor(e.target.value)}
                     className="h-6 w-6 rounded border-0 bg-transparent cursor-pointer"
                   />
-                  <span className="text-[10px] font-mono text-stone-600 truncate">{themeColor}</span>
+                  <span className="text-[10px] font-mono text-stone-600 truncate">
+                    {themeColor}
+                  </span>
                 </div>
               </div>
             </div>
@@ -355,7 +350,11 @@ export function FaviconGeneratorView() {
 
                     {/* Active tab */}
                     <div className="bg-white rounded-t-lg px-3 py-1.5 flex items-center gap-2 border-t border-x border-stone-300 text-xs font-medium text-stone-800 shadow-2xs max-w-xs">
-                      <img src={imageSrc} alt="Favicon" className="h-4 w-4 rounded-xs shrink-0 object-contain" />
+                      <img
+                        src={imageSrc}
+                        alt="Favicon"
+                        className="h-4 w-4 rounded-xs shrink-0 object-contain"
+                      />
                       <span className="truncate">{appName}</span>
                     </div>
                   </div>
@@ -380,7 +379,11 @@ export function FaviconGeneratorView() {
               <div className="p-8 bg-stone-900 flex items-center justify-center">
                 <div className="flex flex-col items-center gap-2">
                   <div className="h-16 w-16 rounded-2xl bg-white shadow-lg overflow-hidden border border-stone-700 p-2 flex items-center justify-center">
-                    <img src={imageSrc} alt="Apple Touch Icon" className="h-full w-full object-contain" />
+                    <img
+                      src={imageSrc}
+                      alt="Apple Touch Icon"
+                      className="h-full w-full object-contain"
+                    />
                   </div>
                   <span className="text-xs font-medium text-white tracking-tight">{appName}</span>
                 </div>

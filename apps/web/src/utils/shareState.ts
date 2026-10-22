@@ -20,7 +20,9 @@ export function serializeStateToUrl(toolId: string, state: Record<string, unknow
   }
 }
 
-export function parseSharedState<T extends Record<string, unknown>>(expectedToolId?: string): T | null {
+export function parseSharedState<T extends Record<string, unknown>>(
+  expectedToolId?: string
+): T | null {
   try {
     const hash = window.location.hash;
     const queryIndex = hash.indexOf('?');
@@ -38,8 +40,9 @@ export function parseSharedState<T extends Record<string, unknown>>(expectedTool
     if (stateParam) {
       const decodedJson = decodeURIComponent(
         Array.prototype.map
-          .call(atob(decodeURIComponent(stateParam)), (c: string) =>
-            '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2)
+          .call(
+            atob(decodeURIComponent(stateParam)),
+            (c: string) => '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2)
           )
           .join('')
       );

@@ -94,7 +94,8 @@ export const HTTP_STATUS_CODES: ReadonlyArray<HttpStatusCodeItem> = [
     phrase: 'No Content',
     category: '2xx',
     categoryName: 'Success',
-    description: 'Request fulfilled successfully, but server does not need to return an entity body.',
+    description:
+      'Request fulfilled successfully, but server does not need to return an entity body.',
     rfc: 'RFC 9110 §15.3.5',
     commonUseCases: 'DELETE resource success or POST actions needing no UI payload updates.',
   },
@@ -103,7 +104,8 @@ export const HTTP_STATUS_CODES: ReadonlyArray<HttpStatusCodeItem> = [
     phrase: 'Partial Content',
     category: '2xx',
     categoryName: 'Success',
-    description: 'Server successfully delivering part of resource requested by client Range header.',
+    description:
+      'Server successfully delivering part of resource requested by client Range header.',
     rfc: 'RFC 9110 §15.3.7',
     commonUseCases: 'Resumable file downloads and video/audio HTML5 media streaming.',
   },
@@ -114,7 +116,8 @@ export const HTTP_STATUS_CODES: ReadonlyArray<HttpStatusCodeItem> = [
     phrase: 'Moved Permanently',
     category: '3xx',
     categoryName: 'Redirection',
-    description: 'Target resource has been assigned a new permanent URI. Clients should update bookmarks.',
+    description:
+      'Target resource has been assigned a new permanent URI. Clients should update bookmarks.',
     rfc: 'RFC 9110 §15.4.2',
     commonUseCases: 'HTTP to HTTPS migration, canonical domain redirects, URL restructuring.',
   },
@@ -132,7 +135,8 @@ export const HTTP_STATUS_CODES: ReadonlyArray<HttpStatusCodeItem> = [
     phrase: 'Not Modified',
     category: '3xx',
     categoryName: 'Redirection',
-    description: 'Resource has not been modified since version specified in If-None-Match or If-Modified-Since.',
+    description:
+      'Resource has not been modified since version specified in If-None-Match or If-Modified-Since.',
     rfc: 'RFC 9110 §15.4.5',
     commonUseCases: 'HTTP browser caching; server tells client to use locally cached response.',
   },
@@ -141,7 +145,8 @@ export const HTTP_STATUS_CODES: ReadonlyArray<HttpStatusCodeItem> = [
     phrase: 'Temporary Redirect',
     category: '3xx',
     categoryName: 'Redirection',
-    description: 'Target resource resides temporarily under different URI; MUST NOT change HTTP method.',
+    description:
+      'Target resource resides temporarily under different URI; MUST NOT change HTTP method.',
     rfc: 'RFC 9110 §15.4.8',
     commonUseCases: 'POST redirect where original POST body must be re-sent to new URI.',
   },
@@ -161,9 +166,11 @@ export const HTTP_STATUS_CODES: ReadonlyArray<HttpStatusCodeItem> = [
     phrase: 'Bad Request',
     category: '4xx',
     categoryName: 'Client Error',
-    description: 'Server cannot process request due to client error (e.g. malformed syntax, invalid framing).',
+    description:
+      'Server cannot process request due to client error (e.g. malformed syntax, invalid framing).',
     rfc: 'RFC 9110 §15.5.1',
-    commonUseCases: 'Invalid JSON request payload, missing mandatory query params, schema validation failure.',
+    commonUseCases:
+      'Invalid JSON request payload, missing mandatory query params, schema validation failure.',
   },
   {
     code: 401,
@@ -188,7 +195,8 @@ export const HTTP_STATUS_CODES: ReadonlyArray<HttpStatusCodeItem> = [
     phrase: 'Not Found',
     category: '4xx',
     categoryName: 'Client Error',
-    description: 'Origin server did not find current representation for target resource or hides existence.',
+    description:
+      'Origin server did not find current representation for target resource or hides existence.',
     rfc: 'RFC 9110 §15.5.5',
     commonUseCases: 'Unknown URL path, deleted resource ID, or missing REST document.',
   },
@@ -197,7 +205,8 @@ export const HTTP_STATUS_CODES: ReadonlyArray<HttpStatusCodeItem> = [
     phrase: 'Method Not Allowed',
     category: '4xx',
     categoryName: 'Client Error',
-    description: 'Method received in request-line is known by server but not supported by target resource.',
+    description:
+      'Method received in request-line is known by server but not supported by target resource.',
     rfc: 'RFC 9110 §15.5.6',
     commonUseCases: 'Sending POST or DELETE to a static read-only GET endpoint.',
   },
@@ -224,16 +233,19 @@ export const HTTP_STATUS_CODES: ReadonlyArray<HttpStatusCodeItem> = [
     phrase: 'Gone',
     category: '4xx',
     categoryName: 'Client Error',
-    description: 'Target resource is no longer available at server and condition is expected to be permanent.',
+    description:
+      'Target resource is no longer available at server and condition is expected to be permanent.',
     rfc: 'RFC 9110 §15.5.11',
-    commonUseCases: 'Deprecated APIs permanently shut down, purged records, search engine de-indexing.',
+    commonUseCases:
+      'Deprecated APIs permanently shut down, purged records, search engine de-indexing.',
   },
   {
     code: 413,
     phrase: 'Payload Too Large',
     category: '4xx',
     categoryName: 'Client Error',
-    description: 'Server refuses to process request because payload exceeds limits configured on server.',
+    description:
+      'Server refuses to process request because payload exceeds limits configured on server.',
     rfc: 'RFC 9110 §15.5.14',
     commonUseCases: 'User uploads a 100MB file exceeding nginx client_max_body_size.',
   },
@@ -251,7 +263,8 @@ export const HTTP_STATUS_CODES: ReadonlyArray<HttpStatusCodeItem> = [
     phrase: 'Unprocessable Entity',
     category: '4xx',
     categoryName: 'Client Error',
-    description: 'Syntax of request is valid, but server is unable to process contained instructions.',
+    description:
+      'Syntax of request is valid, but server is unable to process contained instructions.',
     rfc: 'RFC 9110 §15.5.21',
     commonUseCases: 'Semantic validation error (e.g. password too short, age must be > 18).',
   },
@@ -289,7 +302,8 @@ export const HTTP_STATUS_CODES: ReadonlyArray<HttpStatusCodeItem> = [
     phrase: 'Bad Gateway',
     category: '5xx',
     categoryName: 'Server Error',
-    description: 'Server received invalid response from upstream server while acting as gateway/proxy.',
+    description:
+      'Server received invalid response from upstream server while acting as gateway/proxy.',
     rfc: 'RFC 9110 §15.6.3',
     commonUseCases: 'Nginx / Cloudflare cannot talk to crashed backend NodeJS or Go application.',
   },
@@ -298,7 +312,8 @@ export const HTTP_STATUS_CODES: ReadonlyArray<HttpStatusCodeItem> = [
     phrase: 'Service Unavailable',
     category: '5xx',
     categoryName: 'Server Error',
-    description: 'Server currently unable to handle request due to temporary overload or maintenance.',
+    description:
+      'Server currently unable to handle request due to temporary overload or maintenance.',
     rfc: 'RFC 9110 §15.6.4',
     commonUseCases: 'Scheduled maintenance windows, DDoS mitigation, container pool exhaustion.',
   },
@@ -307,7 +322,8 @@ export const HTTP_STATUS_CODES: ReadonlyArray<HttpStatusCodeItem> = [
     phrase: 'Gateway Timeout',
     category: '5xx',
     categoryName: 'Server Error',
-    description: 'Server acting as gateway/proxy did not receive timely response from upstream server.',
+    description:
+      'Server acting as gateway/proxy did not receive timely response from upstream server.',
     rfc: 'RFC 9110 §15.6.5',
     commonUseCases: 'Upstream microservice took longer than proxy timeout (e.g. 30s or 60s).',
   },
@@ -334,8 +350,10 @@ export const HTTP_HEADERS: ReadonlyArray<HttpHeaderItem> = [
     name: 'Content-Security-Policy',
     type: 'response',
     group: 'security',
-    description: 'Controls resources the user agent is allowed to load for a given page to mitigate XSS.',
-    example: "Content-Security-Policy: default-src 'self'; script-src 'self' https://trusted.cdn.com",
+    description:
+      'Controls resources the user agent is allowed to load for a given page to mitigate XSS.',
+    example:
+      "Content-Security-Policy: default-src 'self'; script-src 'self' https://trusted.cdn.com",
     rfc: 'W3C CSP Level 3',
   },
   {
@@ -366,7 +384,8 @@ export const HTTP_HEADERS: ReadonlyArray<HttpHeaderItem> = [
     name: 'Access-Control-Allow-Methods',
     type: 'response',
     group: 'cors',
-    description: 'Specifies methods allowed when accessing resource in response to preflight request.',
+    description:
+      'Specifies methods allowed when accessing resource in response to preflight request.',
     example: 'Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS',
     rfc: 'W3C CORS',
   },
@@ -374,7 +393,8 @@ export const HTTP_HEADERS: ReadonlyArray<HttpHeaderItem> = [
     name: 'X-Content-Type-Options',
     type: 'response',
     group: 'security',
-    description: 'Prevents MIME type sniffing by instructing browsers to strictly adhere to Content-Type.',
+    description:
+      'Prevents MIME type sniffing by instructing browsers to strictly adhere to Content-Type.',
     example: 'X-Content-Type-Options: nosniff',
     rfc: 'Fetch Spec §8.1',
   },
@@ -391,7 +411,8 @@ export const HTTP_HEADERS: ReadonlyArray<HttpHeaderItem> = [
 export const httpRefTool: Tool<HttpRefInput, HttpRefOutput> = {
   id: 'http-reference',
   name: 'HTTP Status & Headers Reference',
-  description: 'Searchable cheat-sheet and specification reference for HTTP 1xx-5xx status codes and standard request/response headers.',
+  description:
+    'Searchable cheat-sheet and specification reference for HTTP 1xx-5xx status codes and standard request/response headers.',
   category: 'web',
 
   execute(

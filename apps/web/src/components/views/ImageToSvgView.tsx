@@ -1,17 +1,6 @@
 import { useState, useRef, useEffect, useCallback } from 'react';
-import {
-  bitmapToSvg,
-  type VectorizeMode,
-} from '@nemokit/core';
-import {
-  Sparkles,
-  Download,
-  Copy,
-  Check,
-  Code2,
-  Eye,
-  Image as ImageIcon,
-} from 'lucide-react';
+import { bitmapToSvg, type VectorizeMode } from '@nemokit/core';
+import { Sparkles, Download, Copy, Check, Code2, Eye, Image as ImageIcon } from 'lucide-react';
 import { downloadAsFile } from '../../utils/fileDownload.js';
 
 const SAMPLE_IMAGE_SVG = `data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="200" height="200" viewBox="0 0 200 200"><rect width="200" height="200" fill="%23ffffff"/><polygon points="100,20 180,180 20,180" fill="%231c1917"/><circle cx="100" cy="120" r="30" fill="%23ffffff"/><circle cx="100" cy="120" r="15" fill="%23f59e0b"/></svg>`;
@@ -38,7 +27,10 @@ export function ImageToSvgView() {
     const img = originalImageRef.current;
     if (!img) return;
 
-    const scale = Math.min(1, downsample / Math.max(img.naturalWidth || 200, img.naturalHeight || 200));
+    const scale = Math.min(
+      1,
+      downsample / Math.max(img.naturalWidth || 200, img.naturalHeight || 200)
+    );
     const w = Math.max(1, Math.round((img.naturalWidth || 200) * scale));
     const h = Math.max(1, Math.round((img.naturalHeight || 200) * scale));
 
@@ -168,7 +160,9 @@ export function ImageToSvgView() {
             <label className="flex flex-col items-center justify-center border-2 border-dashed border-stone-200 hover:border-stone-400 rounded-xl p-4 cursor-pointer bg-stone-50/50 hover:bg-stone-100/50 transition-all text-center">
               <ImageIcon className="h-6 w-6 text-stone-400 mb-1.5" />
               <span className="text-xs font-medium text-stone-700">Drop PNG, JPG, or WebP</span>
-              <span className="text-[10px] text-stone-400 mt-0.5">High-contrast images trace best</span>
+              <span className="text-[10px] text-stone-400 mt-0.5">
+                High-contrast images trace best
+              </span>
               <input
                 type="file"
                 accept="image/*"
@@ -249,7 +243,9 @@ export function ImageToSvgView() {
               <div className="flex flex-col gap-1.5 pt-2 border-t border-stone-100">
                 <div className="flex items-center justify-between text-xs">
                   <span className="text-stone-600 font-medium">Color Layers:</span>
-                  <span className="font-mono font-semibold text-stone-800">{colorCount} colors</span>
+                  <span className="font-mono font-semibold text-stone-800">
+                    {colorCount} colors
+                  </span>
                 </div>
                 <input
                   type="range"
@@ -291,7 +287,7 @@ export function ImageToSvgView() {
         </div>
 
         {/* Right Column: Live Vector Preview & Code Viewer */}
-        <div className="lg:col-span-8 flex flex-col rounded-2xl border border-stone-200/80 bg-white shadow-xs overflow-hidden flex-1 min-h-[300px]">
+        <div className="lg:col-span-8 flex flex-col rounded-2xl border border-stone-200/80 bg-white shadow-xs overflow-hidden flex-1 min-h-75">
           {/* Header tabs */}
           <div className="px-4 py-2 border-b border-stone-200/80 bg-stone-50/70 flex items-center justify-between">
             <div className="flex items-center gap-1">
@@ -326,7 +322,7 @@ export function ImageToSvgView() {
           {/* View Tab Content */}
           <div className="flex-1 overflow-hidden relative">
             {activeTab === 'preview' ? (
-              <div className="w-full h-full p-8 flex items-center justify-center bg-[radial-gradient(#e5e7eb_1px,transparent_1px)] [background-size:16px_16px] bg-[#faf9f6]">
+              <div className="w-full h-full p-8 flex items-center justify-center bg-[radial-gradient(#e5e7eb_1px,transparent_1px)] bg-size-[16px_16px] bg-[#faf9f6]">
                 <div
                   className="max-w-full max-h-full flex items-center justify-center shadow-xs bg-white rounded-xl p-4 border border-stone-200/60"
                   dangerouslySetInnerHTML={{ __html: svgOutput }}

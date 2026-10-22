@@ -6,10 +6,7 @@ export function downloadAsFile(
   content: string | Blob | Uint8Array,
   mimeType = 'text/plain;charset=utf-8'
 ): void {
-  const blob =
-    content instanceof Blob
-      ? content
-      : new Blob([content as any], { type: mimeType });
+  const blob = content instanceof Blob ? content : new Blob([content as any], { type: mimeType });
 
   const url = URL.createObjectURL(blob);
   const anchor = document.createElement('a');

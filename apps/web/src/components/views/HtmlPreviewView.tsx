@@ -1,18 +1,6 @@
 import { useState, useMemo, useEffect, useCallback } from 'react';
-import {
-  htmlPreviewTool,
-  type HtmlPreviewOutput,
-} from '@nemokit/core';
-import {
-  Eye,
-  Code2,
-  Minimize2,
-  Copy,
-  Check,
-  Download,
-  Share2,
-  Sparkles,
-} from 'lucide-react';
+import { htmlPreviewTool, type HtmlPreviewOutput } from '@nemokit/core';
+import { Eye, Code2, Minimize2, Copy, Check, Download, Share2, Sparkles } from 'lucide-react';
 import { DropzoneWrapper } from '../common/DropzoneWrapper.js';
 import { downloadAsFile } from '../../utils/fileDownload.js';
 import { serializeStateToUrl, parseSharedState } from '../../utils/shareState.js';
@@ -79,8 +67,8 @@ export function HtmlPreviewView() {
       activeTab === 'minified'
         ? output.minified
         : activeTab === 'beautified'
-        ? output.beautified
-        : code;
+          ? output.beautified
+          : code;
     const filename = isSvg ? 'vector.svg' : 'index.html';
     const mime = isSvg ? 'image/svg+xml' : 'text/html';
     downloadAsFile(filename, textToSave, mime);
@@ -181,7 +169,7 @@ export function HtmlPreviewView() {
 
           <DropzoneWrapper
             allowedExtensions={['.html', '.htm', '.svg', '.txt', '.xml']}
-            onFileLoaded={(content) => setCode(content)}
+            onFileLoaded={content => setCode(content)}
             label="Drop .html or .svg file here"
           >
             <textarea
@@ -254,8 +242,8 @@ export function HtmlPreviewView() {
                   activeTab === 'minified'
                     ? output.minified
                     : activeTab === 'beautified'
-                    ? output.beautified
-                    : code;
+                      ? output.beautified
+                      : code;
                 copyToClipboard(txt, 'output');
               }}
               className="inline-flex items-center gap-1 rounded-md px-2 py-1 text-xs font-medium text-stone-600 hover:bg-stone-200/60 transition-colors"
@@ -305,9 +293,7 @@ export function HtmlPreviewView() {
           {/* Footer with Minification Stats */}
           {output && (
             <div className="px-4 py-2 border-t border-stone-200/60 bg-stone-50/50 flex items-center justify-between text-[11px] text-stone-600">
-              <span className="font-mono">
-                Minified: {output.stats.minifiedBytes} bytes
-              </span>
+              <span className="font-mono">Minified: {output.stats.minifiedBytes} bytes</span>
               <span className="inline-flex items-center gap-1 font-semibold text-emerald-700">
                 <span>Saved: {output.stats.reductionPercent}%</span>
               </span>

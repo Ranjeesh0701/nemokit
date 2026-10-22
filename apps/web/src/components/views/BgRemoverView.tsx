@@ -1,17 +1,6 @@
 import { useState, useRef, useEffect, useCallback, type MouseEvent } from 'react';
-import {
-  sampleCornerColor,
-  processBackgroundRemoval,
-  type RgbColor,
-} from '@nemokit/core';
-import {
-  Pipette,
-  Download,
-  Image as ImageIcon,
-  RotateCcw,
-  Check,
-  Layers,
-} from 'lucide-react';
+import { sampleCornerColor, processBackgroundRemoval, type RgbColor } from '@nemokit/core';
+import { Pipette, Download, Image as ImageIcon, RotateCcw, Check, Layers } from 'lucide-react';
 
 // Clean SVG badge converted to data URL for instantaneous sample preview
 const SAMPLE_IMAGE_SVG = `data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="400" height="400" viewBox="0 0 400 400"><rect width="400" height="400" fill="%23ffffff"/><circle cx="200" cy="200" r="120" fill="%231c1917"/><polygon points="200,120 260,240 140,240" fill="%23f59e0b"/><circle cx="200" cy="200" r="30" fill="%23ffffff"/></svg>`;
@@ -342,7 +331,7 @@ export function BgRemoverView() {
         </div>
 
         {/* Right Column: Interactive Canvas Viewport */}
-        <div className="lg:col-span-8 flex flex-col rounded-2xl border border-stone-200/80 bg-white shadow-xs overflow-hidden flex-1 min-h-[300px]">
+        <div className="lg:col-span-8 flex flex-col rounded-2xl border border-stone-200/80 bg-white shadow-xs overflow-hidden flex-1 min-h-75">
           <div className="px-4 py-3 border-b border-stone-200/80 bg-stone-50/70 flex items-center justify-between">
             <span className="text-xs font-semibold text-stone-800 uppercase tracking-wider flex items-center gap-1.5">
               <Layers className="h-3.5 w-3.5 text-stone-500" />
@@ -357,12 +346,12 @@ export function BgRemoverView() {
 
           {/* Checkerboard Transparent Pattern Canvas Container */}
           <div
-            className={`p-6 flex-1 flex items-center justify-center min-h-[260px] overflow-auto ${
+            className={`p-6 flex-1 flex items-center justify-center min-h-115 overflow-auto ${
               backdropMode === 'white'
                 ? 'bg-white'
                 : backdropMode === 'dark'
-                ? 'bg-stone-900'
-                : 'bg-[radial-gradient(#e5e7eb_1px,transparent_1px)] [background-size:16px_16px] bg-[#fbfbf9]'
+                  ? 'bg-stone-900'
+                  : 'bg-[radial-gradient(#e5e7eb_1px,transparent_1px)] bg-size-[16px_16px] bg-[#fbfbf9]'
             }`}
           >
             <canvas

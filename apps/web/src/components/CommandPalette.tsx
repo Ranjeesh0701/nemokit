@@ -305,7 +305,9 @@ export function CommandPalette({
                         )}
                         <span
                           className={`rounded px-1.5 py-0.5 text-[10px] font-medium capitalize ${
-                            isSelected ? 'bg-stone-800 text-stone-300' : 'bg-stone-100 text-stone-600'
+                            isSelected
+                              ? 'bg-stone-800 text-stone-300'
+                              : 'bg-stone-100 text-stone-600'
                           }`}
                         >
                           {tool.category}

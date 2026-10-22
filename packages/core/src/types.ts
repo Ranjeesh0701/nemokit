@@ -26,9 +26,7 @@ export interface ToolExecutionFailure {
 /**
  * Discriminated union of all possible tool execution outcomes.
  */
-export type ToolExecutionResult<TOutput> =
-  | ToolExecutionSuccess<TOutput>
-  | ToolExecutionFailure;
+export type ToolExecutionResult<TOutput> = ToolExecutionSuccess<TOutput> | ToolExecutionFailure;
 
 /**
  * Utility type allowing synchronous or asynchronous execution returns.

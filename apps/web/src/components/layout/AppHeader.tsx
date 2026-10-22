@@ -1,5 +1,5 @@
 import type { ToolMetadata } from '@nemokit/core';
-import { Menu, Search, Home, Star } from 'lucide-react';
+import { Menu, Search, Home, Star, Download } from 'lucide-react';
 
 interface AppHeaderProps {
   readonly activeView: string;
@@ -9,6 +9,8 @@ interface AppHeaderProps {
   readonly onOpenCommandPalette: () => void;
   readonly isFavorite?: boolean;
   readonly onToggleFavorite?: (toolId: string) => void;
+  readonly canInstall?: boolean;
+  readonly onInstallApp?: () => void;
 }
 
 export function AppHeader({
@@ -19,6 +21,8 @@ export function AppHeader({
   onOpenCommandPalette,
   isFavorite,
   onToggleFavorite,
+  canInstall,
+  onInstallApp,
 }: AppHeaderProps) {
   return (
     <header className="sticky top-0 z-30 flex h-14 w-full items-center justify-between border-b border-stone-200/80 bg-white/90 px-4 sm:px-6 backdrop-blur-md select-none shrink-0">
@@ -76,8 +80,20 @@ export function AppHeader({
         )}
       </div>
 
-      {/* Center/Right: Command Palette Launcher Button */}
-      <div className="flex items-center gap-3">
+      {/* Center/Right: Install Button & Command Palette Launcher */}
+      <div className="flex items-center gap-2.5">
+        {canInstall && onInstallApp && (
+          <button
+            type="button"
+            onClick={onInstallApp}
+            className="hidden sm:inline-flex items-center gap-1.5 rounded-xl border border-stone-200/90 bg-white px-2.5 py-1.5 text-xs font-medium text-stone-700 shadow-2xs hover:bg-stone-50 transition-colors"
+            title="Install Nemokit as a native desktop application"
+          >
+            <Download className="h-3.5 w-3.5 text-stone-500" />
+            <span>Install App</span>
+          </button>
+        )}
+
         <button
           type="button"
           onClick={onOpenCommandPalette}

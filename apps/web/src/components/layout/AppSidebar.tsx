@@ -32,6 +32,7 @@ import {
   FileCheck,
   FileEdit,
   RefreshCw,
+  RotateCcw,
 } from 'lucide-react';
 
 interface AppSidebarProps {
@@ -43,6 +44,7 @@ interface AppSidebarProps {
   readonly isMobileOpen: boolean;
   readonly onCloseMobile: () => void;
   readonly favorites?: ReadonlyArray<string>;
+  readonly onClearAllData?: () => void;
 }
 
 type SidebarCategory = 'favorites' | ToolCategory;
@@ -69,6 +71,7 @@ export function AppSidebar({
   isMobileOpen,
   onCloseMobile,
   favorites = [],
+  onClearAllData,
 }: AppSidebarProps) {
   const favoriteTools = tools.filter(t => favorites.includes(t.id));
 
@@ -617,6 +620,26 @@ export function AppSidebar({
               </div>
             )}
           </div>
+
+          {!isCollapsed && onClearAllData && (
+            <button
+              type="button"
+              onClick={() => {
+                if (
+                  window.confirm(
+                    'Reset local workspace? This will clear pinned favorites and all locally stored session data.'
+                  )
+                ) {
+                  onClearAllData();
+                }
+              }}
+              className="mt-1.5 flex w-full items-center justify-center gap-1.5 rounded-lg py-1 text-[10px] font-medium text-stone-400 hover:text-stone-700 hover:bg-stone-200/50 transition-colors"
+              title="Clear all stored favorites and local session history"
+            >
+              <RotateCcw className="h-3 w-3" />
+              <span>Reset Local Workspace</span>
+            </button>
+          )}
         </div>
       </aside>
     </>

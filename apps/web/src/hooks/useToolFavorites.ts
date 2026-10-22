@@ -59,10 +59,22 @@ export function useToolFavorites(activeToolId?: string) {
     [favorites]
   );
 
+  const clearAllData = useCallback(() => {
+    try {
+      localStorage.removeItem(FAVORITES_KEY);
+      localStorage.removeItem(RECENTS_KEY);
+      setFavorites(DEFAULT_FAVORITES);
+      setRecents([]);
+    } catch {
+      // ignore
+    }
+  }, []);
+
   return {
     favorites,
     recents,
     toggleFavorite,
     isFavorite,
+    clearAllData,
   };
 }

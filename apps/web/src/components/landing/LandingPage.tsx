@@ -29,14 +29,17 @@ import {
   RefreshCw,
   FileCheck,
   FileEdit,
+  Download,
 } from 'lucide-react';
 
 interface LandingPageProps {
   readonly tools: ReadonlyArray<ToolMetadata>;
   readonly onLaunchApp: (toolId?: string) => void;
+  readonly canInstall?: boolean;
+  readonly onInstallApp?: () => void;
 }
 
-export function LandingPage({ tools, onLaunchApp }: LandingPageProps) {
+export function LandingPage({ tools, onLaunchApp, canInstall, onInstallApp }: LandingPageProps) {
   const getToolIcon = (id: string) => {
     switch (id) {
       case 'json-formatter':
@@ -120,6 +123,17 @@ export function LandingPage({ tools, onLaunchApp }: LandingPageProps) {
           </div>
 
           <div className="flex items-center gap-3">
+            {canInstall && onInstallApp && (
+              <button
+                type="button"
+                onClick={onInstallApp}
+                className="hidden sm:inline-flex items-center gap-2 rounded-xl border border-stone-200 bg-white px-3.5 py-2.5 text-xs font-semibold text-stone-700 shadow-xs hover:bg-stone-50 transition-colors"
+              >
+                <Download className="h-3.5 w-3.5 text-stone-500" />
+                <span>Install App</span>
+              </button>
+            )}
+
             <button
               type="button"
               onClick={() => onLaunchApp()}

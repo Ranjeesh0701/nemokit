@@ -30,6 +30,8 @@ import { AppHeader } from './components/layout/AppHeader.js';
 import { CommandPalette } from './components/CommandPalette.js';
 import { HomeLandingView } from './components/views/HomeLandingView.js';
 import { useToolFavorites } from './hooks/useToolFavorites.js';
+import { usePwaInstall } from './hooks/usePwaInstall.js';
+import { Check } from 'lucide-react';
 
 // Lazy-loaded tool views for optimal bundle splitting and near-instant initial render
 const JsonFormatterView = lazy(() =>
@@ -172,9 +174,18 @@ export default function App() {
   const [isMobileSidebarOpen, setIsMobileSidebarOpen] = useState<boolean>(false);
   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState<boolean>(false);
   const [isCommandPaletteOpen, setIsCommandPaletteOpen] = useState<boolean>(false);
+  const [toastMessage, setToastMessage] = useState<string | null>(null);
 
   const activeToolId = route.mode === 'app' ? route.activeToolId : undefined;
-  const { favorites, toggleFavorite, isFavorite } = useToolFavorites(activeToolId);
+  const { favorites, toggleFavorite, isFavorite, clearAllData } = useToolFavorites(activeToolId);
+  const { canInstall, installApp } = usePwaInstall();
+
+  const showToast = (msg: string) => {
+    setToastMessage(msg);
+    setTimeout(() => {
+      setToastMessage(prev => (prev === msg ? null : prev));
+    }, 2800);
+  };
 
   // Sync hash changes (browser back/forward navigation)
   useEffect(() => {
@@ -185,17 +196,35 @@ export default function App() {
     return () => window.removeEventListener('hashchange', handleHashChange);
   }, []);
 
-  // Global shortcut: ⌘K or Ctrl+K to open Command Palette
+  // Global hotkeys: ⌘K, ⌘↵, Esc
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
+      // ⌘K or Ctrl+K: Command Palette
       if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
         e.preventDefault();
         setIsCommandPaletteOpen(prev => !prev);
+        return;
+      }
+
+      // ⌘↵ or Ctrl+↵: Trigger active tool run
+      if ((e.metaKey || e.ctrlKey) && e.key === 'Enter') {
+        e.preventDefault();
+        window.dispatchEvent(new CustomEvent('nemokit:trigger-run'));
+        showToast('Triggered tool execution (⌘↵)');
+        return;
+      }
+
+      // Esc: Return to Dashboard if inside a tool
+      if (e.key === 'Escape') {
+        if (!isCommandPaletteOpen && activeToolId && activeToolId !== 'dashboard') {
+          window.location.hash = '#/app/dashboard';
+        }
       }
     };
+
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, []);
+  }, [isCommandPaletteOpen, activeToolId]);
 
   const handleLaunchApp = (toolId?: string) => {
     const targetTool = toolId ?? 'json-formatter';
@@ -212,7 +241,14 @@ export default function App() {
 
   // If on Landing Page mode, render the dedicated public marketing landing page
   if (route.mode === 'landing') {
-    return <LandingPage tools={tools} onLaunchApp={handleLaunchApp} />;
+    return (
+      <LandingPage
+        tools={tools}
+        onLaunchApp={handleLaunchApp}
+        canInstall={canInstall}
+        onInstallApp={installApp}
+      />
+    );
   }
 
   // Inside the Web App Workspace
@@ -220,6 +256,14 @@ export default function App() {
 
   return (
     <div className="flex h-screen w-full overflow-hidden bg-[#faf9f6] text-stone-800 antialiased selection:bg-stone-200">
+      {/* Floating Toast Notification */}
+      {toastMessage && (
+        <div className="fixed bottom-6 right-6 z-50 flex items-center gap-2 rounded-xl bg-stone-900 px-4 py-2.5 text-xs font-medium text-white shadow-xl border border-stone-800 animate-in fade-in slide-in-from-bottom-2 duration-150">
+          <Check className="h-3.5 w-3.5 text-emerald-400" />
+          <span>{toastMessage}</span>
+        </div>
+      )}
+
       {/* Global ⌘K Command Palette */}
       <CommandPalette
         isOpen={isCommandPaletteOpen}
@@ -239,6 +283,10 @@ export default function App() {
         isMobileOpen={isMobileSidebarOpen}
         onCloseMobile={() => setIsMobileSidebarOpen(false)}
         favorites={favorites}
+        onClearAllData={() => {
+          clearAllData();
+          showToast('Workspace data and favorites reset to default.');
+        }}
       />
 
       {/* Main App Workspace Canvas */}
@@ -251,6 +299,8 @@ export default function App() {
           onOpenCommandPalette={() => setIsCommandPaletteOpen(true)}
           isFavorite={activeTool ? isFavorite(activeTool.id) : false}
           onToggleFavorite={toggleFavorite}
+          canInstall={canInstall}
+          onInstallApp={installApp}
         />
 
         {/* Scrollable View Area with Suspense Lazy Boundaries */}

@@ -36,13 +36,19 @@ export type ToolExecutionResult<TOutput> =
 export type MaybePromise<T> = T | Promise<T>;
 
 /**
- * Minimum contract for any Nemokit tool.
- * Individual tools define their own input and output types.
+ * Basic metadata describing a tool for identification and discovery.
  */
-export interface Tool<TInput = unknown, TOutput = unknown> {
+export interface ToolMetadata {
   readonly id: string;
   readonly name: string;
   readonly description: string;
+}
+
+/**
+ * Minimum contract for any Nemokit tool.
+ * Individual tools define their own input and output types.
+ */
+export interface Tool<TInput = unknown, TOutput = unknown> extends ToolMetadata {
   execute(input: TInput): MaybePromise<ToolExecutionResult<TOutput>>;
 }
 

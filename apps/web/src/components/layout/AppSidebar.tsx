@@ -45,6 +45,8 @@ interface AppSidebarProps {
   readonly favorites?: ReadonlyArray<string>;
 }
 
+type SidebarCategory = 'favorites' | ToolCategory;
+
 interface CategoryConfig {
   readonly label: string;
   readonly icon: React.ComponentType<{ className?: string }>;
@@ -71,15 +73,16 @@ export function AppSidebar({
   const favoriteTools = tools.filter(t => favorites.includes(t.id));
 
   // Accordion state: by default, all categories are expanded
-  const [openCategories, setOpenCategories] = useState<Set<ToolCategory>>(
-    () => new Set<ToolCategory>(['formatters', 'converters', 'pdf', 'crypto', 'web'])
+  const [openCategories, setOpenCategories] = useState<Set<SidebarCategory>>(
+    () =>
+      new Set<SidebarCategory>(['favorites', 'formatters', 'converters', 'pdf', 'crypto', 'web'])
   );
 
   // Popover state for compact mode when hovering over a category icon
-  const [popoverCategory, setPopoverCategory] = useState<ToolCategory | null>(null);
+  const [popoverCategory, setPopoverCategory] = useState<SidebarCategory | null>(null);
   const popoverTimeoutRef = useRef<number | null>(null);
 
-  const handleMouseEnter = (category: ToolCategory) => {
+  const handleMouseEnter = (category: SidebarCategory) => {
     if (popoverTimeoutRef.current !== null) {
       window.clearTimeout(popoverTimeoutRef.current);
       popoverTimeoutRef.current = null;
@@ -119,7 +122,7 @@ export function AppSidebar({
     }
   }, [activeTool]);
 
-  const toggleCategory = (category: ToolCategory) => {
+  const toggleCategory = (category: SidebarCategory) => {
     setOpenCategories(prev => {
       const next = new Set(prev);
       if (next.has(category)) {
@@ -272,73 +275,36 @@ export function AppSidebar({
             </button>
           </div>
 
-          {/* Pinned / Favorites Section (Normal Mode) */}
-          {!isCollapsed && favoriteTools.length > 0 && (
-            <div className="space-y-0.5 pt-1 pb-2 border-b border-stone-200/60">
-              <div className="flex items-center justify-between px-2.5 pt-1 pb-1 text-[10px] font-semibold uppercase tracking-wider text-amber-700">
-                <span className="flex items-center gap-1.5">
-                  <Star className="h-3 w-3 fill-amber-400 text-amber-500" />
-                  Favorites
-                </span>
-                <span className="text-[9px] font-mono text-stone-400">{favoriteTools.length}</span>
-              </div>
-              {favoriteTools.map(tool => {
-                const isActive = activeView === tool.id;
-                return (
-                  <button
-                    key={tool.id}
-                    type="button"
-                    onClick={() => {
-                      onSelectView(tool.id);
-                      onCloseMobile();
-                    }}
-                    className={`flex w-full items-center justify-between px-2.5 py-1.5 rounded-lg text-xs font-medium transition-colors ${
-                      isActive
-                        ? 'bg-stone-900 text-white shadow-xs font-semibold'
-                        : 'text-stone-700 hover:bg-stone-200/50 hover:text-stone-900'
-                    }`}
-                  >
-                    <div className="flex items-center gap-2 truncate">
-                      <span className={`shrink-0 ${isActive ? 'text-white' : 'text-stone-400'}`}>
-                        {getToolIcon(tool.id)}
-                      </span>
-                      <span className="truncate">{tool.name}</span>
-                    </div>
-                    {isActive && <ChevronRight className="h-3 w-3 text-stone-400 shrink-0" />}
-                  </button>
-                );
-              })}
-            </div>
-          )}
-
           {/* Compact Mode: Icon-Only for Categories with Popover Flyout */}
           {isCollapsed ? (
             <div className="space-y-2 pt-1 border-t border-stone-200/70">
-              {/* Compact Mode Favorites Button */}
+              {/* Favorites Category in Compact Mode */}
               {favoriteTools.length > 0 && (
                 <div
-                  className="relative flex justify-center pb-2 border-b border-stone-200/60"
-                  onMouseEnter={() => handleMouseEnter('favorites' as unknown as ToolCategory)}
+                  key="favorites"
+                  className="relative flex justify-center"
+                  onMouseEnter={() => handleMouseEnter('favorites')}
                   onMouseLeave={handleMouseLeave}
                 >
                   <button
                     type="button"
-                    title={`Favorites (${favoriteTools.length} pinned)`}
+                    title={`Favorites (${favoriteTools.length} tools)`}
                     onClick={() => {
                       if (favoriteTools[0]) {
                         onSelectView(favoriteTools[0].id);
                         setPopoverCategory(null);
                       }
                     }}
-                    className="flex h-10 w-10 items-center justify-center rounded-xl text-amber-500 hover:bg-amber-50 transition-colors"
+                    className="flex h-10 w-10 items-center justify-center rounded-xl text-amber-500 hover:bg-amber-50 transition-all"
                   >
                     <Star className="h-4 w-4 fill-amber-400" />
                   </button>
 
-                  {popoverCategory === ('favorites' as unknown as ToolCategory) && (
+                  {/* Popover Flyout */}
+                  {popoverCategory === 'favorites' && (
                     <div
                       className="absolute left-full top-0 z-50 -ml-1 pl-3"
-                      onMouseEnter={() => handleMouseEnter('favorites' as unknown as ToolCategory)}
+                      onMouseEnter={() => handleMouseEnter('favorites')}
                       onMouseLeave={handleMouseLeave}
                     >
                       <div className="w-56 rounded-xl border border-stone-200/90 bg-white p-1.5 shadow-xl animate-in fade-in zoom-in-95 duration-100">
@@ -352,22 +318,38 @@ export function AppSidebar({
                           </span>
                         </div>
                         <div className="space-y-0.5">
-                          {favoriteTools.map(tool => (
-                            <button
-                              key={tool.id}
-                              type="button"
-                              onClick={() => {
-                                onSelectView(tool.id);
-                                setPopoverCategory(null);
-                              }}
-                              className="flex w-full items-center justify-between px-2.5 py-1.5 rounded-lg text-xs font-medium text-stone-700 hover:bg-stone-100 transition-colors"
-                            >
-                              <div className="flex items-center gap-2 truncate">
-                                <span className="text-stone-400">{getToolIcon(tool.id)}</span>
-                                <span className="truncate">{tool.name}</span>
-                              </div>
-                            </button>
-                          ))}
+                          {favoriteTools.map(tool => {
+                            const isActive = activeView === tool.id;
+                            return (
+                              <button
+                                key={tool.id}
+                                type="button"
+                                onClick={() => {
+                                  onSelectView(tool.id);
+                                  setPopoverCategory(null);
+                                }}
+                                className={`flex w-full items-center justify-between px-2.5 py-1.5 rounded-lg text-xs font-medium transition-colors ${
+                                  isActive
+                                    ? 'bg-stone-900 text-white shadow-2xs font-semibold'
+                                    : 'text-stone-600 hover:bg-stone-100 hover:text-stone-900'
+                                }`}
+                              >
+                                <div className="flex items-center gap-2 truncate">
+                                  <span
+                                    className={`shrink-0 ${
+                                      isActive ? 'text-white' : 'text-stone-400'
+                                    }`}
+                                  >
+                                    {getToolIcon(tool.id)}
+                                  </span>
+                                  <span className="truncate">{tool.name}</span>
+                                </div>
+                                {isActive && (
+                                  <ChevronRight className="h-3 w-3 text-stone-400 shrink-0" />
+                                )}
+                              </button>
+                            );
+                          })}
                         </div>
                       </div>
                     </div>
@@ -471,6 +453,68 @@ export function AppSidebar({
           ) : (
             /* Normal Mode: Category Accordions */
             <div className="space-y-1 pt-1 border-t border-stone-200/50">
+              {/* Favorites Accordion Category */}
+              {favoriteTools.length > 0 && (
+                <div key="favorites" className="rounded-xl overflow-hidden">
+                  <button
+                    type="button"
+                    onClick={() => toggleCategory('favorites')}
+                    className="flex w-full items-center justify-between px-2.5 py-1.5 rounded-lg text-xs font-semibold text-stone-700 hover:bg-stone-200/30 hover:text-stone-900 transition-colors"
+                  >
+                    <div className="flex items-center gap-2 truncate">
+                      <Star className="h-3.5 w-3.5 shrink-0 text-amber-500 fill-amber-400" />
+                      <span className="truncate">Favorites</span>
+                    </div>
+
+                    <div className="flex items-center gap-1.5 shrink-0">
+                      <span className="text-[10px] font-mono text-stone-400 bg-stone-100 px-1.5 py-0.5 rounded">
+                        {favoriteTools.length}
+                      </span>
+                      <ChevronDown
+                        className={`h-3.5 w-3.5 text-stone-400 transition-transform duration-200 ${
+                          openCategories.has('favorites') ? 'rotate-0' : '-rotate-90'
+                        }`}
+                      />
+                    </div>
+                  </button>
+
+                  {openCategories.has('favorites') && (
+                    <div className="mt-0.5 mb-1 pl-3 space-y-0.5 border-l border-stone-200/70 ml-3.5">
+                      {favoriteTools.map(tool => {
+                        const isActive = activeView === tool.id;
+                        return (
+                          <button
+                            key={tool.id}
+                            type="button"
+                            onClick={() => {
+                              onSelectView(tool.id);
+                              onCloseMobile();
+                            }}
+                            className={`flex w-full items-center justify-between px-2 py-1.5 rounded-lg text-xs font-medium transition-colors ${
+                              isActive
+                                ? 'bg-stone-900 text-white shadow-xs font-semibold'
+                                : 'text-stone-600 hover:bg-stone-200/50 hover:text-stone-900'
+                            }`}
+                          >
+                            <div className="flex items-center gap-2 truncate">
+                              <span
+                                className={`shrink-0 ${isActive ? 'text-white' : 'text-stone-400'}`}
+                              >
+                                {getToolIcon(tool.id)}
+                              </span>
+                              <span className="truncate">{tool.name}</span>
+                            </div>
+                            {isActive && (
+                              <ChevronRight className="h-3 w-3 text-stone-400 shrink-0" />
+                            )}
+                          </button>
+                        );
+                      })}
+                    </div>
+                  )}
+                </div>
+              )}
+
               {categories.map(category => {
                 const categoryTools = tools.filter(t => t.category === category);
                 if (categoryTools.length === 0) return null;

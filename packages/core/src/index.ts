@@ -4,3 +4,5 @@ export * from './tools/json-formatter.js';
 export * from './tools/base64-tool.js';
 export * from './tools/url-tool.js';
 export * from './tools/hash-tool.js';
+export * from './tools/uuid-tool.js';
+export * from './tools/jwt-tool.js';

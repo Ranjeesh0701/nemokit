@@ -134,7 +134,7 @@ export function DiffToolView() {
             value={original}
             onChange={e => setOriginal(e.target.value)}
             placeholder="Paste original text or code..."
-            className="w-full min-h-[160px] lg:min-h-[200px] rounded-xl border border-stone-200 bg-white p-3.5 font-mono text-xs text-stone-800 shadow-xs placeholder:text-stone-400 focus:border-stone-900 focus:outline-none focus:ring-1 focus:ring-stone-900 resize-y"
+            className="w-full min-h-[140px] h-36 sm:h-44 rounded-xl border border-stone-200 bg-white p-3.5 font-mono text-xs text-stone-800 shadow-xs placeholder:text-stone-400 focus:border-stone-900 focus:outline-none focus:ring-1 focus:ring-stone-900 resize-y"
             spellCheck={false}
           />
         </div>
@@ -152,7 +152,7 @@ export function DiffToolView() {
             value={modified}
             onChange={e => setModified(e.target.value)}
             placeholder="Paste modified text or code..."
-            className="w-full min-h-[160px] lg:min-h-[200px] rounded-xl border border-stone-200 bg-white p-3.5 font-mono text-xs text-stone-800 shadow-xs placeholder:text-stone-400 focus:border-stone-900 focus:outline-none focus:ring-1 focus:ring-stone-900 resize-y"
+            className="w-full min-h-[140px] h-36 sm:h-44 rounded-xl border border-stone-200 bg-white p-3.5 font-mono text-xs text-stone-800 shadow-xs placeholder:text-stone-400 focus:border-stone-900 focus:outline-none focus:ring-1 focus:ring-stone-900 resize-y"
             spellCheck={false}
           />
         </div>
@@ -216,7 +216,7 @@ export function DiffToolView() {
             </span>
           </div>
 
-          <div className="w-full overflow-x-auto rounded-xl border border-stone-200 bg-white shadow-xs font-mono text-xs flex-1 min-h-[350px] lg:min-h-[calc(100vh-32rem)] max-h-[calc(100vh-16rem)] overflow-y-auto">
+          <div className="w-full overflow-x-auto rounded-xl border border-stone-200 bg-white shadow-xs font-mono text-xs flex-1 min-h-[220px] overflow-y-auto">
             {diffResult.lines.length === 0 ? (
               <div className="p-8 text-center text-stone-400">
                 Both texts are completely empty. Paste text above to calculate diff.

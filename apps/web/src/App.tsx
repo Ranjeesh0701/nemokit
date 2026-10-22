@@ -114,7 +114,7 @@ export default function App() {
   const activeTool = tools.find(t => t.id === activeToolId);
 
   return (
-    <div className="flex h-screen w-screen overflow-hidden bg-[#faf9f6] text-stone-800 antialiased selection:bg-stone-200">
+    <div className="flex h-screen w-full overflow-hidden bg-[#faf9f6] text-stone-800 antialiased selection:bg-stone-200">
       {/* App Sidebar with Compact Mode */}
       <AppSidebar
         tools={tools}
@@ -138,7 +138,7 @@ export default function App() {
         />
 
         {/* Scrollable Workspace View Container */}
-        <main className="flex-1 overflow-y-auto px-4 py-6 sm:px-8 lg:px-10">
+        <main className="flex-1 overflow-y-auto overflow-x-hidden px-4 py-6 sm:px-8 lg:px-10">
           <div className="w-full">
             {activeToolId === 'dashboard' ? (
               <div className="max-w-6xl mx-auto">

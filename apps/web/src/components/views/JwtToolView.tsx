@@ -159,9 +159,9 @@ export function JwtToolView() {
             )}
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 w-full min-w-0">
             {/* Header */}
-            <div className="flex flex-col rounded-2xl border border-stone-200/80 bg-white p-4 shadow-xs">
+            <div className="flex flex-col rounded-2xl border border-stone-200/80 bg-white p-4 shadow-xs min-w-0">
               <div className="flex items-center justify-between pb-3 border-b border-stone-100">
                 <span className="text-xs font-semibold uppercase tracking-wider text-stone-500">
                   Header (Algorithm & Type)
@@ -186,7 +186,7 @@ export function JwtToolView() {
             </div>
 
             {/* Payload */}
-            <div className="flex flex-col rounded-2xl border border-stone-200/80 bg-white p-4 shadow-xs">
+            <div className="flex flex-col rounded-2xl border border-stone-200/80 bg-white p-4 shadow-xs min-w-0">
               <div className="flex items-center justify-between pb-3 border-b border-stone-100">
                 <span className="text-xs font-semibold uppercase tracking-wider text-stone-500">
                   Payload (Claims)

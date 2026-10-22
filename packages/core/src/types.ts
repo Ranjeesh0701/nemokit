@@ -37,7 +37,7 @@ export type MaybePromise<T> = T | Promise<T>;
 /**
  * Standard functional categories for organizing tools.
  */
-export type ToolCategory = 'formatters' | 'converters' | 'crypto' | 'web';
+export type ToolCategory = 'formatters' | 'converters' | 'crypto' | 'web' | 'pdf';
 
 /**
  * Basic metadata describing a tool for identification and discovery.

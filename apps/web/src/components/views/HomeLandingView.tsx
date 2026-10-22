@@ -43,6 +43,10 @@ const CATEGORY_TITLES: Record<ToolCategory, { title: string; subtitle: string }>
     title: 'Web & Network Utilities',
     subtitle: 'Parse URLs, inspect query strings, and handle URI encodings.',
   },
+  pdf: {
+    title: 'PDF & Document Studio',
+    subtitle: 'Split, extract, and convert PDF pages and documents client-side.',
+  },
 };
 
 export function HomeLandingView({ tools, onSelectTool, searchQuery }: HomeLandingViewProps) {
@@ -153,7 +157,7 @@ export function HomeLandingView({ tools, onSelectTool, searchQuery }: HomeLandin
 
       {/* Categorized Tools Directory */}
       <div className="flex flex-col gap-10">
-        {(['formatters', 'converters', 'crypto', 'web'] as const).map(category => {
+        {(['formatters', 'converters', 'pdf', 'crypto', 'web'] as const).map(category => {
           const categoryTools = groupedTools.get(category) ?? [];
           if (categoryTools.length === 0) return null;
           const meta = CATEGORY_TITLES[category];

@@ -127,7 +127,7 @@ export const documentConverterTool: Tool<DocumentConverterInput, DocumentConvert
   name: 'Document & PDF Converter',
   description:
     'Converts text, markdown, and formatted content to printable PDF documents and Microsoft Word (.doc) files.',
-  category: 'converters',
+  category: 'pdf',
 
   execute(
     input: DocumentConverterInput,

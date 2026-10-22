@@ -157,9 +157,9 @@ export function JsonFormatterView() {
       )}
 
       {/* Editor & Output Split Grid */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 items-start">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 items-start w-full min-w-0">
         {/* Input Column */}
-        <div className="flex flex-col rounded-2xl border border-stone-200/80 bg-white p-4 shadow-xs">
+        <div className="flex flex-col rounded-2xl border border-stone-200/80 bg-white p-4 shadow-xs min-w-0">
           <div className="flex items-center justify-between pb-3 border-b border-stone-100">
             <span className="text-xs font-semibold uppercase tracking-wider text-stone-500">
               Raw Input
@@ -235,7 +235,7 @@ export function JsonFormatterView() {
         </div>
 
         {/* Output Column */}
-        <div className="flex flex-col rounded-2xl border border-stone-200/80 bg-white p-4 shadow-xs">
+        <div className="flex flex-col rounded-2xl border border-stone-200/80 bg-white p-4 shadow-xs min-w-0">
           <div className="flex items-center justify-between pb-3 border-b border-stone-100">
             <span className="text-xs font-semibold uppercase tracking-wider text-stone-500">
               Formatted Output

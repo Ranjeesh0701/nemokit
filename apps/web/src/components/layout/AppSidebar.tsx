@@ -31,10 +31,11 @@ interface AppSidebarProps {
 }
 
 const CATEGORY_LABELS: Record<ToolCategory, string> = {
-  formatters: 'Formatters',
-  converters: 'Converters',
-  crypto: 'Cryptography',
-  web: 'Web & URLs',
+  formatters: 'Formatters & Code',
+  converters: 'Converters & Parsing',
+  pdf: 'PDF & Document Tools',
+  crypto: 'Security & Hashes',
+  web: 'Web & Network',
 };
 
 export function AppSidebar({
@@ -75,7 +76,7 @@ export function AppSidebar({
     }
   };
 
-  const categories: ToolCategory[] = ['formatters', 'converters', 'crypto', 'web'];
+  const categories: ToolCategory[] = ['formatters', 'converters', 'pdf', 'crypto', 'web'];
 
   return (
     <>

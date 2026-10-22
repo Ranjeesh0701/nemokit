@@ -57,7 +57,7 @@ export const pdfSplitTool: Tool<PdfSplitInput, PdfSplitOutput> = {
   name: 'PDF Splitter & Page Extractor',
   description:
     'Extracts pages and splits PDF documents into custom ranges or individual files 100% in your browser.',
-  category: 'converters',
+  category: 'pdf',
 
   async execute(
     input: PdfSplitInput,

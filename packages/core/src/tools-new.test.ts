@@ -3,6 +3,7 @@ import {
   svgOptimizerTool,
   jsonSchemaTool,
   logoBuilderTool,
+  patternGeneratorTool,
   colorTool,
   evaluateWcagContrast,
   generateGradientCss,
@@ -215,5 +216,41 @@ describe('colorTool expansions', () => {
     expect(res.data.harmonies?.complementary).toMatch(/^#[0-9a-f]{6}$/i);
     expect(res.data.harmonies?.analogous).toHaveLength(2);
     expect(res.data.harmonies?.triadic).toHaveLength(2);
+  });
+});
+
+describe('patternGeneratorTool', () => {
+  it('generates repeating SVG patterns and CSS rules', () => {
+    const res = patternGeneratorTool.execute({
+      patternType: 'grid',
+      foreground: '#0284c7',
+      background: '#0f172a',
+      spacing: 32,
+      strokeWidth: 1,
+      opacity: 0.5,
+    });
+
+    expect(res.success).toBe(true);
+    if (!res.success) return;
+    expect(res.data.svg).toContain('<svg');
+    expect(res.data.svg).toContain('line');
+    expect(res.data.cssRule).toContain('background-image: url("data:image/svg+xml');
+    expect(res.data.cssRule).toContain('background-repeat: repeat');
+  });
+
+  it('supports transparent background and dots pattern', () => {
+    const res = patternGeneratorTool.execute({
+      patternType: 'dots',
+      foreground: '#a855f7',
+      background: 'transparent',
+      spacing: 20,
+      strokeWidth: 2,
+      opacity: 0.8,
+    });
+
+    expect(res.success).toBe(true);
+    if (!res.success) return;
+    expect(res.data.svg).toContain('<circle');
+    expect(res.data.svg).not.toContain('<rect');
   });
 });

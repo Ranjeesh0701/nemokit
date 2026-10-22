@@ -40,6 +40,7 @@ import {
   Sparkles,
   Shapes,
   FileCheck2,
+  Grid,
 } from 'lucide-react';
 
 interface AppSidebarProps {
@@ -219,6 +220,8 @@ export function AppSidebar({
         return <FileCheck2 className="h-4 w-4" />;
       case 'logo-builder':
         return <Shapes className="h-4 w-4" />;
+      case 'pattern-generator':
+        return <Grid className="h-4 w-4" />;
       default:
         return <Layers className="h-4 w-4" />;
     }

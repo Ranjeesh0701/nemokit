@@ -33,6 +33,7 @@ import {
   svgOptimizerTool,
   jsonSchemaTool,
   logoBuilderTool,
+  patternGeneratorTool,
 } from '@nemokit/core';
 import type { ToolMetadata } from '@nemokit/core';
 import { LandingPage } from './components/landing/LandingPage.js';
@@ -149,6 +150,11 @@ const LogoBuilderView = lazy(() =>
     default: m.LogoBuilderView,
   }))
 );
+const PatternGeneratorView = lazy(() =>
+  import('./components/views/PatternGeneratorView.js').then(m => ({
+    default: m.PatternGeneratorView,
+  }))
+);
 
 function ViewSkeleton() {
   return (
@@ -205,6 +211,7 @@ export default function App() {
     reg.register(svgOptimizerTool);
     reg.register(jsonSchemaTool);
     reg.register(logoBuilderTool);
+    reg.register(patternGeneratorTool);
     return reg;
   }, []);
 
@@ -413,6 +420,7 @@ export default function App() {
               {activeToolId === 'svg-optimizer' && <SvgOptimizerView />}
               {activeToolId === 'json-schema' && <JsonSchemaView />}
               {activeToolId === 'logo-builder' && <LogoBuilderView />}
+              {activeToolId === 'pattern-generator' && <PatternGeneratorView />}
             </Suspense>
           </div>
         </main>

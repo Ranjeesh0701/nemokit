@@ -1,5 +1,5 @@
-import type { Tool, ToolExecutionResult } from '../types.js';
-import { failureResult, successResult } from '../types.js';
+import type { ResultHandlers, Tool, ToolExecutionResult } from '../types.js';
+import { onFailure, onSuccess } from '../types.js';
 
 export interface JwtToolInput {
   readonly token: string;
@@ -34,19 +34,26 @@ export const jwtTool: Tool<JwtToolInput, JwtToolOutput> = {
     'Decodes JSON Web Tokens into header, payload, and signature with expiration analysis completely in the browser.',
   category: 'converters',
 
-  execute(input: JwtToolInput): ToolExecutionResult<JwtToolOutput> {
+  execute(
+    input: JwtToolInput,
+    handlers?: Partial<ResultHandlers<JwtToolOutput, void>>
+  ): ToolExecutionResult<JwtToolOutput> {
     const startTime = performance.now();
 
     if (!input || typeof input.token !== 'string' || input.token.trim() === '') {
-      return failureResult('Please provide a JWT token.', 'EMPTY_INPUT');
+      const res = onFailure('Please provide a JWT token.', 'EMPTY_INPUT');
+      handlers?.onFailure?.(res.error);
+      return res;
     }
 
     const parts = input.token.trim().split('.');
     if (parts.length < 2) {
-      return failureResult(
+      const res = onFailure(
         'Invalid JWT format: A valid token must have at least header and payload segments separated by dots.',
         'INVALID_JWT'
       );
+      handlers?.onFailure?.(res.error);
+      return res;
     }
 
     const headerPart = parts[0];
@@ -54,7 +61,9 @@ export const jwtTool: Tool<JwtToolInput, JwtToolOutput> = {
     const signature = parts[2] ?? '';
 
     if (!headerPart || !payloadPart) {
-      return failureResult('Malformed JWT: missing header or payload segment.', 'MALFORMED_JWT');
+      const res = onFailure('Malformed JWT: missing header or payload segment.', 'MALFORMED_JWT');
+      handlers?.onFailure?.(res.error);
+      return res;
     }
 
     try {
@@ -78,7 +87,8 @@ export const jwtTool: Tool<JwtToolInput, JwtToolOutput> = {
         issuedAt = new Date(payload['iat'] * 1000).toISOString();
       }
 
-      return successResult(
+      const durationMs = performance.now() - startTime;
+      const res = onSuccess(
         {
           header,
           payload,
@@ -87,11 +97,15 @@ export const jwtTool: Tool<JwtToolInput, JwtToolOutput> = {
           expiresAt,
           issuedAt,
         },
-        performance.now() - startTime
+        durationMs
       );
+      handlers?.onSuccess?.(res.data, durationMs);
+      return res;
     } catch (err: unknown) {
       const message = err instanceof Error ? err.message : 'Failed to parse JWT.';
-      return failureResult(`JWT decoding failed: ${message}`, 'JWT_DECODE_ERROR');
+      const res = onFailure(`JWT decoding failed: ${message}`, 'JWT_DECODE_ERROR');
+      handlers?.onFailure?.(res.error);
+      return res;
     }
   },
 };

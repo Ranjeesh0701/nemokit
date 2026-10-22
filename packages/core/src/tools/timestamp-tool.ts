@@ -1,5 +1,5 @@
-import type { Tool, ToolExecutionResult } from '../types.js';
-import { failureResult, successResult } from '../types.js';
+import type { ResultHandlers, Tool, ToolExecutionResult } from '../types.js';
+import { onFailure, onSuccess } from '../types.js';
 
 export interface TimestampToolInput {
   readonly value: string | number;
@@ -37,35 +37,39 @@ export const timestampTool: Tool<TimestampToolInput, TimestampToolOutput> = {
     'Converts between Unix epoch timestamps (seconds/ms) and human-readable UTC/local date strings with relative time.',
   category: 'converters',
 
-  execute(input: TimestampToolInput): ToolExecutionResult<TimestampToolOutput> {
+  execute(
+    input: TimestampToolInput,
+    handlers?: Partial<ResultHandlers<TimestampToolOutput, void>>
+  ): ToolExecutionResult<TimestampToolOutput> {
     const startTime = performance.now();
 
     if (!input || input.value === undefined || String(input.value).trim() === '') {
-      return failureResult('Please provide a timestamp or date string.', 'EMPTY_INPUT');
+      const res = onFailure('Please provide a timestamp or date string.', 'EMPTY_INPUT');
+      handlers?.onFailure?.(res.error);
+      return res;
     }
 
     const raw = String(input.value).trim();
     let date: Date;
 
-    // Check if input is numeric (unix seconds or milliseconds)
     if (/^-?\d+(\.\d+)?$/.test(raw)) {
       const num = Number(raw);
-      // If 10 digits or less, assume seconds
       if (Math.abs(num) < 1e11) {
         date = new Date(num * 1000);
       } else {
         date = new Date(num);
       }
     } else {
-      // Parse as date string
       date = new Date(raw);
     }
 
     if (isNaN(date.getTime())) {
-      return failureResult(
+      const res = onFailure(
         `Unable to parse "${raw}" as a timestamp or valid ISO date.`,
         'INVALID_TIMESTAMP'
       );
+      handlers?.onFailure?.(res.error);
+      return res;
     }
 
     const ms = date.getTime();
@@ -73,8 +77,9 @@ export const timestampTool: Tool<TimestampToolInput, TimestampToolOutput> = {
     const isoUtc = date.toISOString();
     const localFormatted = date.toLocaleString();
     const relative = getRelativeTime(ms);
+    const durationMs = performance.now() - startTime;
 
-    return successResult(
+    const res = onSuccess(
       {
         unixSeconds: seconds,
         unixMilliseconds: ms,
@@ -82,7 +87,9 @@ export const timestampTool: Tool<TimestampToolInput, TimestampToolOutput> = {
         localFormatted,
         relative,
       },
-      performance.now() - startTime
+      durationMs
     );
+    handlers?.onSuccess?.(res.data, durationMs);
+    return res;
   },
 };

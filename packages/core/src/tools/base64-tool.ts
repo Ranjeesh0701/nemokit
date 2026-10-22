@@ -1,5 +1,5 @@
-import type { Tool, ToolExecutionResult } from '../types.js';
-import { failureResult, successResult } from '../types.js';
+import type { ResultHandlers, Tool, ToolExecutionResult } from '../types.js';
+import { onFailure, onSuccess } from '../types.js';
 
 export interface Base64Input {
   readonly text: string;
@@ -40,22 +40,30 @@ export const base64Tool: Tool<Base64Input, Base64Output> = {
   description: 'Encodes text to Base64 and decodes Base64 to text with UTF-8 and URL-safe support.',
   category: 'converters',
 
-  execute(input: Base64Input): ToolExecutionResult<Base64Output> {
+  execute(
+    input: Base64Input,
+    handlers?: Partial<ResultHandlers<Base64Output, void>>
+  ): ToolExecutionResult<Base64Output> {
     const startTime = performance.now();
 
     if (!input || typeof input.text !== 'string') {
-      return failureResult('Input text is required.', 'INVALID_INPUT');
+      const res = onFailure('Input text is required.', 'INVALID_INPUT');
+      handlers?.onFailure?.(res.error);
+      return res;
     }
 
     if (input.text.trim() === '') {
-      return successResult(
+      const durationMs = performance.now() - startTime;
+      const res = onSuccess<Base64Output>(
         {
           result: '',
           byteLength: 0,
           mode: input.mode,
         },
-        performance.now() - startTime
+        durationMs
       );
+      handlers?.onSuccess?.(res.data, durationMs);
+      return res;
     }
 
     try {
@@ -65,14 +73,17 @@ export const base64Tool: Tool<Base64Input, Base64Output> = {
           b64 = b64.replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
         }
         const byteLength = new TextEncoder().encode(b64).length;
-        return successResult(
+        const durationMs = performance.now() - startTime;
+        const res = onSuccess<Base64Output>(
           {
             result: b64,
             byteLength,
             mode: 'encode',
           },
-          performance.now() - startTime
+          durationMs
         );
+        handlers?.onSuccess?.(res.data, durationMs);
+        return res;
       } else {
         // Decode
         let normalized = input.text.trim();
@@ -84,23 +95,28 @@ export const base64Tool: Tool<Base64Input, Base64Output> = {
         }
         const decoded = base64ToUtf8(normalized);
         const byteLength = new TextEncoder().encode(decoded).length;
-        return successResult(
+        const durationMs = performance.now() - startTime;
+        const res = onSuccess<Base64Output>(
           {
             result: decoded,
             byteLength,
             mode: 'decode',
           },
-          performance.now() - startTime
+          durationMs
         );
+        handlers?.onSuccess?.(res.data, durationMs);
+        return res;
       }
     } catch (err: unknown) {
       const message = err instanceof Error ? err.message : 'Invalid Base64 sequence.';
-      return failureResult(
+      const res = onFailure(
         input.mode === 'decode'
           ? `Decoding failed: ${message}. Ensure the string is valid Base64.`
           : `Encoding failed: ${message}`,
         'BASE64_ERROR'
       );
+      handlers?.onFailure?.(res.error);
+      return res;
     }
   },
 };

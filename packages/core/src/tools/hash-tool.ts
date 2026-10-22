@@ -1,5 +1,5 @@
-import type { Tool, ToolExecutionResult } from '../types.js';
-import { failureResult, successResult } from '../types.js';
+import type { ResultHandlers, Tool, ToolExecutionResult } from '../types.js';
+import { onFailure, onSuccess } from '../types.js';
 
 export type HashAlgorithm = 'SHA-1' | 'SHA-256' | 'SHA-384' | 'SHA-512';
 
@@ -34,28 +34,37 @@ export const hashTool: Tool<HashToolInput, HashToolOutput> = {
     'Computes SHA-1, SHA-256, SHA-384, and SHA-512 hashes using the browser-native Web Crypto API.',
   category: 'crypto',
 
-  async execute(input: HashToolInput): Promise<ToolExecutionResult<HashToolOutput>> {
+  async execute(
+    input: HashToolInput,
+    handlers?: Partial<ResultHandlers<HashToolOutput, void>>
+  ): Promise<ToolExecutionResult<HashToolOutput>> {
     const startTime = performance.now();
 
     if (!input || typeof input.text !== 'string') {
-      return failureResult('Input text is required to compute a hash.', 'INVALID_INPUT');
+      const res = onFailure('Input text is required to compute a hash.', 'INVALID_INPUT');
+      handlers?.onFailure?.(res.error);
+      return res;
     }
 
     const algorithm: HashAlgorithm = input.algorithm ?? 'SHA-256';
     const supported: HashAlgorithm[] = ['SHA-1', 'SHA-256', 'SHA-384', 'SHA-512'];
 
     if (!supported.includes(algorithm)) {
-      return failureResult(`Unsupported hash algorithm: ${algorithm}`, 'UNSUPPORTED_ALGORITHM');
+      const res = onFailure(`Unsupported hash algorithm: ${algorithm}`, 'UNSUPPORTED_ALGORITHM');
+      handlers?.onFailure?.(res.error);
+      return res;
     }
 
     try {
       const cryptoApi = typeof globalThis.crypto !== 'undefined' ? globalThis.crypto : undefined;
 
       if (!cryptoApi || !cryptoApi.subtle) {
-        return failureResult(
+        const res = onFailure(
           'Web Crypto API (crypto.subtle) is not available in this environment.',
           'CRYPTO_UNAVAILABLE'
         );
+        handlers?.onFailure?.(res.error);
+        return res;
       }
 
       const encoded = new TextEncoder().encode(input.text);
@@ -63,19 +72,24 @@ export const hashTool: Tool<HashToolInput, HashToolOutput> = {
       const hex = bufferToHex(hashBuffer);
       const byteLength = hashBuffer.byteLength;
       const bitLength = byteLength * 8;
+      const durationMs = performance.now() - startTime;
 
-      return successResult(
+      const res = onSuccess(
         {
           hex,
           algorithm,
           bitLength,
           byteLength,
         },
-        performance.now() - startTime
+        durationMs
       );
+      handlers?.onSuccess?.(res.data, durationMs);
+      return res;
     } catch (err: unknown) {
       const message = err instanceof Error ? err.message : 'Hash calculation failed.';
-      return failureResult(`Hash generation error: ${message}`, 'HASH_ERROR');
+      const res = onFailure(`Hash generation error: ${message}`, 'HASH_ERROR');
+      handlers?.onFailure?.(res.error);
+      return res;
     }
   },
 };

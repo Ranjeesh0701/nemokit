@@ -1,5 +1,5 @@
-import type { Tool, ToolExecutionResult } from '../types.js';
-import { failureResult, successResult } from '../types.js';
+import type { ResultHandlers, Tool, ToolExecutionResult } from '../types.js';
+import { onFailure, onSuccess } from '../types.js';
 
 export interface UrlQueryParam {
   readonly key: string;
@@ -29,11 +29,16 @@ export const urlTool: Tool<UrlToolInput, UrlToolOutput> = {
     'Deconstructs URLs into protocol, host, pathname, and query parameters, with URI encoding support.',
   category: 'web',
 
-  execute(input: UrlToolInput): ToolExecutionResult<UrlToolOutput> {
+  execute(
+    input: UrlToolInput,
+    handlers?: Partial<ResultHandlers<UrlToolOutput, void>>
+  ): ToolExecutionResult<UrlToolOutput> {
     const startTime = performance.now();
 
     if (!input || typeof input.url !== 'string' || input.url.trim() === '') {
-      return failureResult('URL or URI text cannot be empty.', 'EMPTY_INPUT');
+      const res = onFailure('URL or URI text cannot be empty.', 'EMPTY_INPUT');
+      handlers?.onFailure?.(res.error);
+      return res;
     }
 
     const raw = input.url.trim();
@@ -42,7 +47,8 @@ export const urlTool: Tool<UrlToolInput, UrlToolOutput> = {
     if (action === 'encode-component') {
       try {
         const encoded = encodeURIComponent(raw);
-        return successResult(
+        const durationMs = performance.now() - startTime;
+        const res = onSuccess(
           {
             protocol: '',
             hostname: '',
@@ -53,20 +59,25 @@ export const urlTool: Tool<UrlToolInput, UrlToolOutput> = {
             queryParams: [],
             formatted: encoded,
           },
-          performance.now() - startTime
+          durationMs
         );
+        handlers?.onSuccess?.(res.data, durationMs);
+        return res;
       } catch (err: unknown) {
-        return failureResult(
+        const res = onFailure(
           err instanceof Error ? err.message : 'URI encoding failed.',
           'ENCODE_ERROR'
         );
+        handlers?.onFailure?.(res.error);
+        return res;
       }
     }
 
     if (action === 'decode-component') {
       try {
         const decoded = decodeURIComponent(raw);
-        return successResult(
+        const durationMs = performance.now() - startTime;
+        const res = onSuccess(
           {
             protocol: '',
             hostname: '',
@@ -77,19 +88,22 @@ export const urlTool: Tool<UrlToolInput, UrlToolOutput> = {
             queryParams: [],
             formatted: decoded,
           },
-          performance.now() - startTime
+          durationMs
         );
+        handlers?.onSuccess?.(res.data, durationMs);
+        return res;
       } catch (err: unknown) {
-        return failureResult(
+        const res = onFailure(
           err instanceof Error ? err.message : 'URI decoding failed.',
           'DECODE_ERROR'
         );
+        handlers?.onFailure?.(res.error);
+        return res;
       }
     }
 
     // Standard Parse
     try {
-      // If no protocol was provided (e.g. "github.com/org/repo"), try prepending https://
       const candidateUrl =
         raw.startsWith('http://') || raw.startsWith('https://') || raw.startsWith('file://')
           ? raw
@@ -101,7 +115,8 @@ export const urlTool: Tool<UrlToolInput, UrlToolOutput> = {
         queryParams.push({ key, value });
       });
 
-      return successResult(
+      const durationMs = performance.now() - startTime;
+      const res = onSuccess(
         {
           protocol: parsed.protocol,
           hostname: parsed.hostname,
@@ -112,11 +127,15 @@ export const urlTool: Tool<UrlToolInput, UrlToolOutput> = {
           queryParams,
           formatted: parsed.toString(),
         },
-        performance.now() - startTime
+        durationMs
       );
+      handlers?.onSuccess?.(res.data, durationMs);
+      return res;
     } catch (err: unknown) {
       const message = err instanceof Error ? err.message : 'Malformed URL.';
-      return failureResult(`Invalid URL: ${message}`, 'INVALID_URL');
+      const res = onFailure(`Invalid URL: ${message}`, 'INVALID_URL');
+      handlers?.onFailure?.(res.error);
+      return res;
     }
   },
 };

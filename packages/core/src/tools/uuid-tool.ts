@@ -1,5 +1,5 @@
-import type { Tool, ToolExecutionResult } from '../types.js';
-import { failureResult, successResult } from '../types.js';
+import type { ResultHandlers, Tool, ToolExecutionResult } from '../types.js';
+import { onFailure, onSuccess } from '../types.js';
 
 export interface UuidToolInput {
   readonly count?: number;
@@ -16,7 +16,6 @@ function generateV4(): string {
   if (typeof crypto !== 'undefined' && typeof crypto.randomUUID === 'function') {
     return crypto.randomUUID();
   }
-  // Fallback RFC4122 v4 UUID
   return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, c => {
     const r = (Math.random() * 16) | 0;
     const v = c === 'x' ? r : (r & 0x3) | 0x8;
@@ -31,7 +30,10 @@ export const uuidTool: Tool<UuidToolInput, UuidToolOutput> = {
     'Generates RFC 4122 compliant version 4 UUIDs in bulk with customizable casing and formatting.',
   category: 'crypto',
 
-  execute(input: UuidToolInput): ToolExecutionResult<UuidToolOutput> {
+  execute(
+    input: UuidToolInput,
+    handlers?: Partial<ResultHandlers<UuidToolOutput, void>>
+  ): ToolExecutionResult<UuidToolOutput> {
     const startTime = performance.now();
     const count = Math.min(Math.max(input.count ?? 1, 1), 100);
 
@@ -48,16 +50,21 @@ export const uuidTool: Tool<UuidToolInput, UuidToolOutput> = {
         uuids.push(id);
       }
 
-      return successResult(
+      const durationMs = performance.now() - startTime;
+      const res = onSuccess(
         {
           uuids,
           count: uuids.length,
         },
-        performance.now() - startTime
+        durationMs
       );
+      handlers?.onSuccess?.(res.data, durationMs);
+      return res;
     } catch (err: unknown) {
       const message = err instanceof Error ? err.message : 'UUID generation failed.';
-      return failureResult(message, 'UUID_GENERATION_ERROR');
+      const res = onFailure(message, 'UUID_GENERATION_ERROR');
+      handlers?.onFailure?.(res.error);
+      return res;
     }
   },
 };

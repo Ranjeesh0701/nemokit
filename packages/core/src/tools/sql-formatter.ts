@@ -1,5 +1,5 @@
-import type { Tool, ToolExecutionResult } from '../types.js';
-import { failureResult, successResult } from '../types.js';
+import type { ResultHandlers, Tool, ToolExecutionResult } from '../types.js';
+import { onFailure, onSuccess } from '../types.js';
 
 export interface SqlFormatterInput {
   readonly raw: string;
@@ -67,7 +67,6 @@ const MINOR_KEYWORDS = [
 ];
 
 function formatSql(sql: string, indentSize: number, uppercase: boolean): string {
-  // Normalize whitespace
   let clean = sql.replace(/\s+/g, ' ').trim();
 
   if (uppercase) {
@@ -81,10 +80,7 @@ function formatSql(sql: string, indentSize: number, uppercase: boolean): string 
   const indentStr = ' '.repeat(indentSize);
   const majorRegex = new RegExp(`\\b(${MAJOR_KEYWORDS.join('|')})\\b`, 'g');
 
-  // Insert line breaks before major keywords
   clean = clean.replace(majorRegex, '\n$1');
-
-  // Insert line breaks before secondary keywords like AND, OR
   clean = clean.replace(/\b(AND|OR)\b/g, `\n${indentStr}$1`);
 
   const lines = clean
@@ -97,7 +93,6 @@ function formatSql(sql: string, indentSize: number, uppercase: boolean): string 
     const line = lines[i];
     if (!line) continue;
 
-    // Check if line starts with a major keyword
     const isMajor = MAJOR_KEYWORDS.some(kw => line.startsWith(kw));
 
     if (isMajor) {
@@ -116,11 +111,16 @@ export const sqlFormatterTool: Tool<SqlFormatterInput, SqlFormatterOutput> = {
   description: 'Beautifies and structures SQL queries with keyword casing and clause alignment.',
   category: 'formatters',
 
-  execute(input: SqlFormatterInput): ToolExecutionResult<SqlFormatterOutput> {
+  execute(
+    input: SqlFormatterInput,
+    handlers?: Partial<ResultHandlers<SqlFormatterOutput, void>>
+  ): ToolExecutionResult<SqlFormatterOutput> {
     const startTime = performance.now();
 
     if (!input || typeof input.raw !== 'string' || input.raw.trim() === '') {
-      return failureResult('Input SQL query cannot be empty.', 'EMPTY_INPUT');
+      const res = onFailure('Input SQL query cannot be empty.', 'EMPTY_INPUT');
+      handlers?.onFailure?.(res.error);
+      return res;
     }
 
     try {
@@ -129,18 +129,23 @@ export const sqlFormatterTool: Tool<SqlFormatterInput, SqlFormatterOutput> = {
       const formatted = formatSql(input.raw, indentSize, uppercase);
       const linesCount = formatted.split('\n').length;
       const byteSize = new TextEncoder().encode(formatted).length;
+      const durationMs = performance.now() - startTime;
 
-      return successResult(
+      const res = onSuccess(
         {
           formatted,
           linesCount,
           byteSize,
         },
-        performance.now() - startTime
+        durationMs
       );
+      handlers?.onSuccess?.(res.data, durationMs);
+      return res;
     } catch (err: unknown) {
       const message = err instanceof Error ? err.message : 'SQL formatting failed.';
-      return failureResult(message, 'SQL_FORMAT_ERROR');
+      const res = onFailure(message, 'SQL_FORMAT_ERROR');
+      handlers?.onFailure?.(res.error);
+      return res;
     }
   },
 };

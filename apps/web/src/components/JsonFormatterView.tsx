@@ -27,19 +27,22 @@ export function JsonFormatterView() {
   const [copied, setCopied] = useState(false);
 
   const formatText = async (textToFormat: string, indentSpacing: number | '\t') => {
-    const startTime = performance.now();
-    const result = await jsonFormatterTool.execute({
-      raw: textToFormat,
-      indent: indentSpacing,
-    });
-
-    if (result.success) {
-      setOutput(result.data);
-      setDuration(result.durationMs ?? performance.now() - startTime);
-      setErrorMessage(null);
-    } else {
-      setErrorMessage(result.error.message);
-    }
+    await jsonFormatterTool.execute(
+      {
+        raw: textToFormat,
+        indent: indentSpacing,
+      },
+      {
+        onSuccess: (data, durationMs) => {
+          setOutput(data);
+          setDuration(durationMs ?? null);
+          setErrorMessage(null);
+        },
+        onFailure: error => {
+          setErrorMessage(error.message);
+        },
+      }
+    );
   };
 
   useEffect(() => {

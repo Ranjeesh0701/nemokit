@@ -15,19 +15,23 @@ export function SqlFormatterView() {
   const [copied, setCopied] = useState(false);
 
   const formatSql = async (rawSql: string, indentSize: number, uppercase: boolean) => {
-    const result = await sqlFormatterTool.execute({
-      raw: rawSql,
-      indent: indentSize,
-      uppercaseKeywords: uppercase,
-    });
-
-    if (result.success) {
-      setOutput(result.data);
-      setDuration(result.durationMs ?? null);
-      setErrorMessage(null);
-    } else {
-      setErrorMessage(result.error.message);
-    }
+    await sqlFormatterTool.execute(
+      {
+        raw: rawSql,
+        indent: indentSize,
+        uppercaseKeywords: uppercase,
+      },
+      {
+        onSuccess: (data, durationMs) => {
+          setOutput(data);
+          setDuration(durationMs ?? null);
+          setErrorMessage(null);
+        },
+        onFailure: error => {
+          setErrorMessage(error.message);
+        },
+      }
+    );
   };
 
   useEffect(() => {

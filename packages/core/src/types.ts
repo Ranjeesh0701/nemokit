@@ -50,17 +50,28 @@ export interface ToolMetadata {
 }
 
 /**
+ * Handlers for consuming tool execution results pattern-style.
+ */
+export interface ResultHandlers<TOutput, R = void> {
+  readonly onSuccess: (data: TOutput, durationMs?: number) => R;
+  readonly onFailure: (error: ToolExecutionError) => R;
+}
+
+/**
  * Minimum contract for any Nemokit tool.
  * Individual tools define their own input and output types.
  */
 export interface Tool<TInput = unknown, TOutput = unknown> extends ToolMetadata {
-  execute(input: TInput): MaybePromise<ToolExecutionResult<TOutput>>;
+  execute(
+    input: TInput,
+    handlers?: Partial<ResultHandlers<TOutput, void>>
+  ): MaybePromise<ToolExecutionResult<TOutput>>;
 }
 
 /**
- * Helper to construct a typed success result with optional execution duration.
+ * Constructs a typed success result with optional execution duration.
  */
-export function successResult<TOutput>(
+export function onSuccess<TOutput>(
   data: TOutput,
   durationMs?: number
 ): ToolExecutionSuccess<TOutput> {
@@ -72,13 +83,9 @@ export function successResult<TOutput>(
 }
 
 /**
- * Helper to construct a typed failure result.
+ * Constructs a typed failure result with structured error details.
  */
-export function failureResult(
-  message: string,
-  code?: string,
-  details?: unknown
-): ToolExecutionFailure {
+export function onFailure(message: string, code?: string, details?: unknown): ToolExecutionFailure {
   return {
     success: false,
     error: {
@@ -88,3 +95,20 @@ export function failureResult(
     },
   };
 }
+
+/**
+ * Handles a ToolExecutionResult using pattern-matching handlers.
+ */
+export function handleResult<TOutput, R = void>(
+  result: ToolExecutionResult<TOutput>,
+  handlers: ResultHandlers<TOutput, R>
+): R {
+  if (result.success) {
+    return handlers.onSuccess(result.data, result.durationMs);
+  }
+  return handlers.onFailure(result.error);
+}
+
+// Backward-compatible aliases
+export const successResult = onSuccess;
+export const failureResult = onFailure;

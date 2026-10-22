@@ -140,7 +140,7 @@ export function FaviconGeneratorView() {
   const manifestCode = generateManifestSnippet(appName, themeColor);
 
   return (
-    <div className="flex flex-col gap-6 w-full">
+    <div className="flex flex-col gap-6 w-full flex-1 min-h-0">
       {/* Header Bar */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between pb-4 border-b border-stone-200/80 gap-3">
         <div className="flex items-center gap-3">
@@ -175,7 +175,7 @@ export function FaviconGeneratorView() {
       </div>
 
       {/* Main Grid */}
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-stretch flex-1 min-h-0">
         {/* Left Column: Customization Controls */}
         <div className="lg:col-span-4 flex flex-col gap-5">
           {/* File Upload Dropzone */}

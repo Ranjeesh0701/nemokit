@@ -7,6 +7,7 @@ interface DropzoneWrapperProps {
   readonly allowedExtensions?: ReadonlyArray<string>;
   readonly disabled?: boolean;
   readonly label?: string;
+  readonly className?: string;
 }
 
 export function DropzoneWrapper({
@@ -15,6 +16,7 @@ export function DropzoneWrapper({
   allowedExtensions,
   disabled = false,
   label = 'Drop file here to load content',
+  className = 'relative w-full h-full',
 }: DropzoneWrapperProps) {
   const [isDragging, setIsDragging] = useState(false);
 
@@ -65,7 +67,7 @@ export function DropzoneWrapper({
       onDragOver={handleDragOver}
       onDragLeave={handleDragLeave}
       onDrop={handleDrop}
-      className="relative w-full h-full"
+      className={className}
     >
       {children}
 

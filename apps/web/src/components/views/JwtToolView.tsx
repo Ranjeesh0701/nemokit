@@ -180,7 +180,7 @@ export function JwtToolView() {
                 </button>
               </div>
 
-              <pre className="mt-3 overflow-auto rounded-xl border border-stone-200/60 bg-[#fbfbf9] p-3.5 font-mono text-xs text-stone-900 leading-relaxed">
+              <pre className="mt-3 flex-1 min-h-[220px] lg:min-h-[calc(100vh-28rem)] overflow-auto rounded-xl border border-stone-200/60 bg-[#fbfbf9] p-3.5 font-mono text-xs text-stone-900 leading-relaxed">
                 {JSON.stringify(output.header, null, 2)}
               </pre>
             </div>
@@ -205,7 +205,7 @@ export function JwtToolView() {
                 </button>
               </div>
 
-              <pre className="mt-3 overflow-auto rounded-xl border border-stone-200/60 bg-[#fbfbf9] p-3.5 font-mono text-xs text-stone-900 leading-relaxed">
+              <pre className="mt-3 flex-1 min-h-[220px] lg:min-h-[calc(100vh-28rem)] overflow-auto rounded-xl border border-stone-200/60 bg-[#fbfbf9] p-3.5 font-mono text-xs text-stone-900 leading-relaxed">
                 {JSON.stringify(output.payload, null, 2)}
               </pre>
             </div>

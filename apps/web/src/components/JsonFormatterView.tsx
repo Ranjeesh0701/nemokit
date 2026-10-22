@@ -124,7 +124,7 @@ export function JsonFormatterView() {
   };
 
   return (
-    <div className="flex flex-col gap-6">
+    <div className="flex flex-col gap-6 flex-1 min-h-0">
       {/* Tool Header */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 border-b border-stone-200/80 pb-6">
         <div>
@@ -188,9 +188,9 @@ export function JsonFormatterView() {
       )}
 
       {/* Editor & Output Split Grid */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 items-start w-full min-w-0">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 w-full min-w-0 flex-1 min-h-0">
         {/* Input Column */}
-        <div className="flex flex-col rounded-2xl border border-stone-200/80 bg-white p-4 shadow-xs min-w-0">
+        <div className="flex flex-col rounded-2xl border border-stone-200/80 bg-white p-4 shadow-xs min-w-0 flex-1">
           <div className="flex items-center justify-between pb-3 border-b border-stone-100">
             <span className="text-xs font-semibold uppercase tracking-wider text-stone-500">
               Raw Input
@@ -199,6 +199,7 @@ export function JsonFormatterView() {
           </div>
 
           <DropzoneWrapper
+            className="relative w-full flex-1 flex flex-col min-h-0"
             allowedExtensions={['.json', '.txt', '.jsonl']}
             onFileLoaded={content => {
               setInput(content);
@@ -219,8 +220,7 @@ export function JsonFormatterView() {
                 }
               }}
               placeholder="Paste or drop your JSON here..."
-              rows={18}
-              className="mt-3 w-full resize-y rounded-xl border border-stone-200/60 bg-[#fdfdfc] p-3.5 font-mono text-xs text-stone-900 leading-relaxed placeholder:text-stone-400 focus:border-stone-900 focus:outline-none focus:ring-1 focus:ring-stone-900 transition-all"
+              className="mt-3 w-full flex-1 min-h-[350px] lg:min-h-[calc(100vh-21rem)] resize-y rounded-xl border border-stone-200/60 bg-[#fdfdfc] p-3.5 font-mono text-xs text-stone-900 leading-relaxed placeholder:text-stone-400 focus:border-stone-900 focus:outline-none focus:ring-1 focus:ring-stone-900 transition-all"
               spellCheck={false}
             />
           </DropzoneWrapper>
@@ -275,7 +275,7 @@ export function JsonFormatterView() {
         </div>
 
         {/* Output Column */}
-        <div className="flex flex-col rounded-2xl border border-stone-200/80 bg-white p-4 shadow-xs min-w-0">
+        <div className="flex flex-col rounded-2xl border border-stone-200/80 bg-white p-4 shadow-xs min-w-0 flex-1">
           <div className="flex items-center justify-between pb-3 border-b border-stone-100">
             <span className="text-xs font-semibold uppercase tracking-wider text-stone-500">
               Formatted Output
@@ -295,8 +295,8 @@ export function JsonFormatterView() {
             )}
           </div>
 
-          <div className="relative mt-3">
-            <pre className="h-[396px] overflow-auto rounded-xl border border-stone-200/60 bg-[#fbfbf9] p-3.5 font-mono text-xs text-stone-900 leading-relaxed">
+          <div className="relative mt-3 flex-1 flex flex-col min-h-0">
+            <pre className="w-full flex-1 min-h-[350px] lg:min-h-[calc(100vh-21rem)] overflow-auto rounded-xl border border-stone-200/60 bg-[#fbfbf9] p-3.5 font-mono text-xs text-stone-900 leading-relaxed">
               {output ? (
                 output.formatted
               ) : (

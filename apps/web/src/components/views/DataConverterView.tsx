@@ -54,7 +54,7 @@ export function DataConverterView() {
   };
 
   return (
-    <div className="flex flex-col gap-6 w-full">
+    <div className="flex flex-col gap-6 w-full flex-1 min-h-0">
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 border-b border-stone-200/80 pb-6">
         <div>
@@ -173,9 +173,9 @@ export function DataConverterView() {
       )}
 
       {/* Editor Grid: Input vs Output */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 flex-1 min-h-0">
         {/* Source Textarea */}
-        <div className="flex flex-col gap-2 min-w-0">
+        <div className="flex flex-col gap-2 min-w-0 flex-1 min-h-0">
           <div className="flex items-center justify-between text-xs font-medium text-stone-600 px-1">
             <span>Input ({fromFormat.toUpperCase()})</span>
             <span className="font-mono text-stone-400">{content.length} chars</span>
@@ -184,14 +184,13 @@ export function DataConverterView() {
             value={content}
             onChange={e => setContent(e.target.value)}
             placeholder={`Paste your ${fromFormat.toUpperCase()} content here...`}
-            rows={16}
-            className="w-full rounded-xl border border-stone-200 bg-white p-3.5 font-mono text-xs text-stone-800 shadow-xs placeholder:text-stone-400 focus:border-stone-900 focus:outline-none focus:ring-1 focus:ring-stone-900 resize-y"
+            className="w-full flex-1 min-h-[350px] lg:min-h-[calc(100vh-21rem)] rounded-xl border border-stone-200 bg-white p-3.5 font-mono text-xs text-stone-800 shadow-xs placeholder:text-stone-400 focus:border-stone-900 focus:outline-none focus:ring-1 focus:ring-stone-900 resize-y"
             spellCheck={false}
           />
         </div>
 
         {/* Target Textarea */}
-        <div className="flex flex-col gap-2 min-w-0">
+        <div className="flex flex-col gap-2 min-w-0 flex-1 min-h-0">
           <div className="flex items-center justify-between text-xs font-medium text-stone-600 px-1">
             <span>Converted ({toFormat.toUpperCase()})</span>
             {output && (
@@ -205,8 +204,7 @@ export function DataConverterView() {
             readOnly
             value={output ? output.converted : ''}
             placeholder="Awaiting converted output..."
-            rows={16}
-            className="w-full rounded-xl border border-stone-200 bg-stone-50/50 p-3.5 font-mono text-xs text-stone-800 shadow-xs placeholder:text-stone-400 focus:outline-none resize-y"
+            className="w-full flex-1 min-h-[350px] lg:min-h-[calc(100vh-21rem)] rounded-xl border border-stone-200 bg-stone-50/50 p-3.5 font-mono text-xs text-stone-800 shadow-xs placeholder:text-stone-400 focus:outline-none resize-y"
             spellCheck={false}
           />
         </div>

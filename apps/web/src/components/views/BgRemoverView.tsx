@@ -139,7 +139,7 @@ export function BgRemoverView() {
   };
 
   return (
-    <div className="flex flex-col gap-6 w-full">
+    <div className="flex flex-col gap-6 w-full flex-1 min-h-0">
       {/* Header Bar */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between pb-4 border-b border-stone-200/80 gap-3">
         <div className="flex items-center gap-3">
@@ -193,7 +193,7 @@ export function BgRemoverView() {
       </div>
 
       {/* Main Grid: Controls & Canvas Workspace */}
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-stretch flex-1 min-h-0">
         {/* Left Column: Controls */}
         <div className="lg:col-span-4 flex flex-col gap-5">
           {/* File Dropzone Loader */}
@@ -342,7 +342,7 @@ export function BgRemoverView() {
         </div>
 
         {/* Right Column: Interactive Canvas Viewport */}
-        <div className="lg:col-span-8 flex flex-col rounded-2xl border border-stone-200/80 bg-white shadow-xs overflow-hidden">
+        <div className="lg:col-span-8 flex flex-col rounded-2xl border border-stone-200/80 bg-white shadow-xs overflow-hidden flex-1 min-h-[480px] lg:min-h-[calc(100vh-14rem)]">
           <div className="px-4 py-3 border-b border-stone-200/80 bg-stone-50/70 flex items-center justify-between">
             <span className="text-xs font-semibold text-stone-800 uppercase tracking-wider flex items-center gap-1.5">
               <Layers className="h-3.5 w-3.5 text-stone-500" />
@@ -357,7 +357,7 @@ export function BgRemoverView() {
 
           {/* Checkerboard Transparent Pattern Canvas Container */}
           <div
-            className={`p-6 flex items-center justify-center min-h-[460px] overflow-auto ${
+            className={`p-6 flex-1 flex items-center justify-center min-h-[460px] lg:min-h-[calc(100vh-18rem)] overflow-auto ${
               backdropMode === 'white'
                 ? 'bg-white'
                 : backdropMode === 'dark'
@@ -368,7 +368,7 @@ export function BgRemoverView() {
             <canvas
               ref={canvasRef}
               onClick={handleCanvasClick}
-              className={`max-w-full max-h-[500px] object-contain rounded-lg shadow-sm ${
+              className={`max-w-full max-h-[calc(100vh-20rem)] object-contain rounded-lg shadow-sm ${
                 isEyedropperActive ? 'cursor-crosshair ring-2 ring-violet-500' : 'cursor-default'
               }`}
             />

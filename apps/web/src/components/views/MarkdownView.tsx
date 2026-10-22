@@ -63,7 +63,7 @@ export function MarkdownView() {
   };
 
   return (
-    <div className="flex flex-col gap-6 w-full">
+    <div className="flex flex-col gap-6 w-full flex-1 min-h-0">
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 border-b border-stone-200/80 pb-6">
         <div>
@@ -182,9 +182,9 @@ export function MarkdownView() {
       </div>
 
       {/* Split-Pane Grid: Markdown Editor vs Live Render */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 flex-1 min-h-0">
         {/* Editor */}
-        <div className="flex flex-col gap-2 min-w-0">
+        <div className="flex flex-col gap-2 min-w-0 flex-1 min-h-0">
           <div className="flex items-center justify-between text-xs font-medium text-stone-600 px-1">
             <span>Markdown Source</span>
             <span className="font-mono text-stone-400">{output?.lineCount} lines</span>
@@ -193,20 +193,19 @@ export function MarkdownView() {
             value={markdown}
             onChange={e => setMarkdown(e.target.value)}
             placeholder="Type your markdown content..."
-            rows={18}
-            className="w-full rounded-xl border border-stone-200 bg-white p-3.5 font-mono text-xs sm:text-sm text-stone-800 shadow-xs placeholder:text-stone-400 focus:border-stone-900 focus:outline-none focus:ring-1 focus:ring-stone-900 resize-y leading-relaxed"
+            className="w-full flex-1 min-h-[350px] lg:min-h-[calc(100vh-21rem)] rounded-xl border border-stone-200 bg-white p-3.5 font-mono text-xs sm:text-sm text-stone-800 shadow-xs placeholder:text-stone-400 focus:border-stone-900 focus:outline-none focus:ring-1 focus:ring-stone-900 resize-y leading-relaxed"
             spellCheck={false}
           />
         </div>
 
         {/* HTML Preview */}
-        <div className="flex flex-col gap-2 min-w-0">
+        <div className="flex flex-col gap-2 min-w-0 flex-1 min-h-0">
           <div className="flex items-center justify-between text-xs font-medium text-stone-600 px-1">
             <span>Live Document Render</span>
             <span className="font-mono text-stone-400">HTML Preview</span>
           </div>
           <div
-            className="w-full h-full min-h-95 rounded-xl border border-stone-200 bg-white p-6 shadow-xs overflow-y-auto prose prose-stone max-w-none text-xs sm:text-sm leading-relaxed"
+            className="w-full flex-1 min-h-[350px] lg:min-h-[calc(100vh-21rem)] rounded-xl border border-stone-200 bg-white p-6 shadow-xs overflow-y-auto prose prose-stone max-w-none text-xs sm:text-sm leading-relaxed"
             dangerouslySetInnerHTML={{ __html: output?.html ?? '' }}
           />
         </div>

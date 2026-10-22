@@ -15,6 +15,10 @@ import {
   passwordTool,
   colorTool,
   cronTool,
+  regexTool,
+  qrTool,
+  pdfMergeTool,
+  curlConverterTool,
 } from '@nemokit/core';
 import type { ToolMetadata } from '@nemokit/core';
 import { LandingPage } from './components/landing/LandingPage.js';
@@ -36,6 +40,10 @@ import { DiffToolView } from './components/views/DiffToolView.js';
 import { PasswordToolView } from './components/views/PasswordToolView.js';
 import { ColorToolView } from './components/views/ColorToolView.js';
 import { CronToolView } from './components/views/CronToolView.js';
+import { RegexToolView } from './components/views/RegexToolView.js';
+import { QrToolView } from './components/views/QrToolView.js';
+import { PdfMergeView } from './components/views/PdfMergeView.js';
+import { CurlConverterView } from './components/views/CurlConverterView.js';
 
 type RouteState = { mode: 'landing' } | { mode: 'app'; activeToolId: string };
 
@@ -46,17 +54,21 @@ export default function App() {
     reg.register(jsonFormatterTool);
     reg.register(sqlFormatterTool);
     reg.register(diffTool);
+    reg.register(regexTool);
     reg.register(textSplitTool);
     reg.register(base64Tool);
     reg.register(jwtTool);
     reg.register(timestampTool);
     reg.register(colorTool);
     reg.register(pdfSplitTool);
+    reg.register(pdfMergeTool);
     reg.register(hashTool);
     reg.register(uuidTool);
     reg.register(passwordTool);
     reg.register(urlTool);
+    reg.register(qrTool);
     reg.register(cronTool);
+    reg.register(curlConverterTool);
     return reg;
   }, []);
 
@@ -173,17 +185,21 @@ export default function App() {
             {activeToolId === 'json-formatter' && <JsonFormatterView />}
             {activeToolId === 'sql-formatter' && <SqlFormatterView />}
             {activeToolId === 'diff-tool' && <DiffToolView />}
+            {activeToolId === 'regex-tester' && <RegexToolView />}
             {activeToolId === 'text-splitter' && <TextSplitView />}
             {activeToolId === 'base64-tool' && <Base64View />}
             {activeToolId === 'jwt-tool' && <JwtToolView />}
             {activeToolId === 'timestamp-tool' && <TimestampView />}
             {activeToolId === 'color-tool' && <ColorToolView />}
             {activeToolId === 'pdf-splitter' && <PdfSplitView />}
+            {activeToolId === 'pdf-merge' && <PdfMergeView />}
             {activeToolId === 'hash-tool' && <HashToolView />}
             {activeToolId === 'uuid-tool' && <UuidToolView />}
             {activeToolId === 'password-tool' && <PasswordToolView />}
             {activeToolId === 'url-tool' && <UrlToolView />}
+            {activeToolId === 'qr-tool' && <QrToolView />}
             {activeToolId === 'cron-tool' && <CronToolView />}
+            {activeToolId === 'curl-converter' && <CurlConverterView />}
           </div>
         </main>
       </div>

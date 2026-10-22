@@ -24,6 +24,10 @@ import {
   Palette,
   CalendarClock,
   ArrowRightLeft,
+  Search,
+  QrCode,
+  FilePlus2,
+  Terminal,
 } from 'lucide-react';
 
 interface AppSidebarProps {
@@ -149,6 +153,14 @@ export function AppSidebar({
         return <Palette className="h-4 w-4" />;
       case 'cron-tool':
         return <CalendarClock className="h-4 w-4" />;
+      case 'regex-tester':
+        return <Search className="h-4 w-4" />;
+      case 'qr-tool':
+        return <QrCode className="h-4 w-4" />;
+      case 'pdf-merge':
+        return <FilePlus2 className="h-4 w-4" />;
+      case 'curl-converter':
+        return <Terminal className="h-4 w-4" />;
       default:
         return <Layers className="h-4 w-4" />;
     }

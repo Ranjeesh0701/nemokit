@@ -16,6 +16,10 @@ import {
   Lock,
   Palette,
   CalendarClock,
+  Search,
+  QrCode,
+  FilePlus2,
+  Terminal,
   ShieldCheck,
   Zap,
   Cpu,
@@ -86,6 +90,14 @@ export function HomeLandingView({ tools, onSelectTool, searchQuery }: HomeLandin
         return <Palette className="h-5 w-5 text-pink-600" />;
       case 'cron-tool':
         return <CalendarClock className="h-5 w-5 text-amber-600" />;
+      case 'regex-tester':
+        return <Search className="h-5 w-5 text-violet-600" />;
+      case 'qr-tool':
+        return <QrCode className="h-5 w-5 text-teal-600" />;
+      case 'pdf-merge':
+        return <FilePlus2 className="h-5 w-5 text-rose-600" />;
+      case 'curl-converter':
+        return <Terminal className="h-5 w-5 text-emerald-600" />;
       default:
         return <Layers className="h-5 w-5 text-stone-600" />;
     }

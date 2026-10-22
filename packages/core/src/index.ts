@@ -15,3 +15,7 @@ export * from './tools/diff-tool.js';
 export * from './tools/password-tool.js';
 export * from './tools/color-tool.js';
 export * from './tools/cron-tool.js';
+export * from './tools/regex-tool.js';
+export * from './tools/qr-tool.js';
+export * from './tools/pdf-merge-tool.js';
+export * from './tools/curl-converter-tool.js';

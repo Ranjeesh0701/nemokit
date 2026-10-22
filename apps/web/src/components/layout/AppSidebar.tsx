@@ -16,6 +16,8 @@ import {
   Database,
   Clock,
   FileText,
+  Scissors,
+  AlignLeft,
 } from 'lucide-react';
 
 interface AppSidebarProps {
@@ -64,6 +66,10 @@ export function AppSidebar({
         return <Clock className="h-4 w-4" />;
       case 'document-converter':
         return <FileText className="h-4 w-4" />;
+      case 'pdf-splitter':
+        return <Scissors className="h-4 w-4" />;
+      case 'text-splitter':
+        return <AlignLeft className="h-4 w-4" />;
       default:
         return <Layers className="h-4 w-4" />;
     }

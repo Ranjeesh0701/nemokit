@@ -10,6 +10,8 @@ import {
   Database,
   Clock,
   FileText,
+  Scissors,
+  AlignLeft,
   ShieldCheck,
   Zap,
   Cpu,
@@ -64,6 +66,10 @@ export function HomeLandingView({ tools, onSelectTool, searchQuery }: HomeLandin
         return <Clock className="h-5 w-5 text-teal-600" />;
       case 'document-converter':
         return <FileText className="h-5 w-5 text-orange-600" />;
+      case 'pdf-splitter':
+        return <Scissors className="h-5 w-5 text-red-600" />;
+      case 'text-splitter':
+        return <AlignLeft className="h-5 w-5 text-sky-600" />;
       default:
         return <Layers className="h-5 w-5 text-stone-600" />;
     }

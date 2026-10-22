@@ -9,3 +9,5 @@ export * from './tools/jwt-tool.js';
 export * from './tools/sql-formatter.js';
 export * from './tools/timestamp-tool.js';
 export * from './tools/document-converter.js';
+export * from './tools/pdf-split-tool.js';
+export * from './tools/text-splitter-tool.js';

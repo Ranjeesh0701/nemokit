@@ -10,6 +10,8 @@ import {
   sqlFormatterTool,
   timestampTool,
   documentConverterTool,
+  pdfSplitTool,
+  textSplitTool,
 } from '@nemokit/core';
 import type { ToolMetadata } from '@nemokit/core';
 import { LandingPage } from './components/landing/LandingPage.js';
@@ -25,6 +27,8 @@ import { JwtToolView } from './components/views/JwtToolView.js';
 import { SqlFormatterView } from './components/views/SqlFormatterView.js';
 import { TimestampView } from './components/views/TimestampView.js';
 import { DocumentConverterView } from './components/views/DocumentConverterView.js';
+import { PdfSplitView } from './components/views/PdfSplitView.js';
+import { TextSplitView } from './components/views/TextSplitView.js';
 
 type RouteState = { mode: 'landing' } | { mode: 'app'; activeToolId: string }; // 'dashboard' or specific tool id
 
@@ -41,6 +45,8 @@ export default function App() {
     reg.register(sqlFormatterTool);
     reg.register(timestampTool);
     reg.register(documentConverterTool);
+    reg.register(pdfSplitTool);
+    reg.register(textSplitTool);
     return reg;
   }, []);
 
@@ -153,6 +159,8 @@ export default function App() {
                 {activeToolId === 'sql-formatter' && <SqlFormatterView />}
                 {activeToolId === 'timestamp-tool' && <TimestampView />}
                 {activeToolId === 'document-converter' && <DocumentConverterView />}
+                {activeToolId === 'pdf-splitter' && <PdfSplitView />}
+                {activeToolId === 'text-splitter' && <TextSplitView />}
               </>
             )}
           </div>

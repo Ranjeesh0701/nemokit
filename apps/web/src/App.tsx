@@ -9,6 +9,7 @@ import {
   jwtTool,
   sqlFormatterTool,
   timestampTool,
+  documentConverterTool,
 } from '@nemokit/core';
 import type { ToolMetadata } from '@nemokit/core';
 import { LandingPage } from './components/landing/LandingPage.js';
@@ -23,6 +24,7 @@ import { UuidToolView } from './components/views/UuidToolView.js';
 import { JwtToolView } from './components/views/JwtToolView.js';
 import { SqlFormatterView } from './components/views/SqlFormatterView.js';
 import { TimestampView } from './components/views/TimestampView.js';
+import { DocumentConverterView } from './components/views/DocumentConverterView.js';
 
 type RouteState = { mode: 'landing' } | { mode: 'app'; activeToolId: string }; // 'dashboard' or specific tool id
 
@@ -38,6 +40,7 @@ export default function App() {
     reg.register(jwtTool);
     reg.register(sqlFormatterTool);
     reg.register(timestampTool);
+    reg.register(documentConverterTool);
     return reg;
   }, []);
 
@@ -129,23 +132,29 @@ export default function App() {
         />
 
         {/* Scrollable Workspace View Container */}
-        <main className="flex-1 overflow-y-auto px-4 py-8 sm:px-8">
-          <div className="mx-auto max-w-6xl">
-            {activeToolId === 'dashboard' && (
-              <HomeLandingView
-                tools={tools}
-                onSelectTool={handleSelectView}
-                searchQuery={searchQuery}
-              />
+        <main className="flex-1 overflow-y-auto px-4 py-6 sm:px-8 lg:px-10">
+          <div className="w-full">
+            {activeToolId === 'dashboard' ? (
+              <div className="max-w-6xl mx-auto">
+                <HomeLandingView
+                  tools={tools}
+                  onSelectTool={handleSelectView}
+                  searchQuery={searchQuery}
+                />
+              </div>
+            ) : (
+              <>
+                {activeToolId === 'json-formatter' && <JsonFormatterView />}
+                {activeToolId === 'base64-tool' && <Base64View />}
+                {activeToolId === 'url-tool' && <UrlToolView />}
+                {activeToolId === 'hash-tool' && <HashToolView />}
+                {activeToolId === 'uuid-tool' && <UuidToolView />}
+                {activeToolId === 'jwt-tool' && <JwtToolView />}
+                {activeToolId === 'sql-formatter' && <SqlFormatterView />}
+                {activeToolId === 'timestamp-tool' && <TimestampView />}
+                {activeToolId === 'document-converter' && <DocumentConverterView />}
+              </>
             )}
-            {activeToolId === 'json-formatter' && <JsonFormatterView />}
-            {activeToolId === 'base64-tool' && <Base64View />}
-            {activeToolId === 'url-tool' && <UrlToolView />}
-            {activeToolId === 'hash-tool' && <HashToolView />}
-            {activeToolId === 'uuid-tool' && <UuidToolView />}
-            {activeToolId === 'jwt-tool' && <JwtToolView />}
-            {activeToolId === 'sql-formatter' && <SqlFormatterView />}
-            {activeToolId === 'timestamp-tool' && <TimestampView />}
           </div>
         </main>
 

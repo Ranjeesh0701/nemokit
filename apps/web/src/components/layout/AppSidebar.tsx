@@ -15,6 +15,7 @@ import {
   PanelLeftOpen,
   Database,
   Clock,
+  FileText,
 } from 'lucide-react';
 
 interface AppSidebarProps {
@@ -61,6 +62,8 @@ export function AppSidebar({
         return <Database className="h-4 w-4" />;
       case 'timestamp-tool':
         return <Clock className="h-4 w-4" />;
+      case 'document-converter':
+        return <FileText className="h-4 w-4" />;
       default:
         return <Layers className="h-4 w-4" />;
     }

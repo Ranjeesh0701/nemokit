@@ -8,3 +8,4 @@ export * from './tools/uuid-tool.js';
 export * from './tools/jwt-tool.js';
 export * from './tools/sql-formatter.js';
 export * from './tools/timestamp-tool.js';
+export * from './tools/document-converter.js';

@@ -13,6 +13,7 @@ import {
   FileKey,
   Database,
   Clock,
+  FileText,
   Layers,
   Sparkles,
   Lock,
@@ -42,6 +43,8 @@ export function LandingPage({ tools, onLaunchApp }: LandingPageProps) {
         return <Database className="h-5 w-5 text-cyan-600" />;
       case 'timestamp-tool':
         return <Clock className="h-5 w-5 text-teal-600" />;
+      case 'document-converter':
+        return <FileText className="h-5 w-5 text-orange-600" />;
       default:
         return <Layers className="h-5 w-5 text-stone-600" />;
     }

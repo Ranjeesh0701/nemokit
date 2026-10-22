@@ -173,7 +173,7 @@ export function Base64View() {
             placeholder={
               mode === 'encode' ? 'Type or paste plaintext here...' : 'Paste Base64 string here...'
             }
-            className="mt-3 w-full flex-1 min-h-[300px] lg:min-h-[calc(100vh-21rem)] resize-y rounded-xl border border-stone-200/60 bg-[#fdfdfc] p-3.5 font-mono text-xs text-stone-900 leading-relaxed placeholder:text-stone-400 focus:border-stone-900 focus:outline-none focus:ring-1 focus:ring-stone-900 transition-all"
+            className="mt-3 w-full flex-1 min-h-[200px] resize-y rounded-xl border border-stone-200/60 bg-[#fdfdfc] p-3.5 font-mono text-xs text-stone-900 leading-relaxed placeholder:text-stone-400 focus:border-stone-900 focus:outline-none focus:ring-1 focus:ring-stone-900 transition-all"
             spellCheck={false}
           />
 
@@ -245,7 +245,7 @@ export function Base64View() {
           </div>
 
           <div className="relative mt-3 flex-1 flex flex-col min-h-0">
-            <pre className="w-full flex-1 min-h-[300px] lg:min-h-[calc(100vh-21rem)] overflow-auto rounded-xl border border-stone-200/60 bg-[#fbfbf9] p-3.5 font-mono text-xs text-stone-900 leading-relaxed break-all whitespace-pre-wrap">
+            <pre className="w-full flex-1 min-h-[200px] overflow-auto rounded-xl border border-stone-200/60 bg-[#fbfbf9] p-3.5 font-mono text-xs text-stone-900 leading-relaxed break-all whitespace-pre-wrap">
               {output ? (
                 output.result
               ) : (

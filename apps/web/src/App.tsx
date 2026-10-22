@@ -347,7 +347,7 @@ export default function App() {
 
         {/* Scrollable View Area with Suspense Lazy Boundaries */}
         <main className="flex-1 overflow-y-auto overflow-x-hidden p-4 sm:p-6 lg:p-8 flex flex-col">
-          <div className="w-full flex-1 flex flex-col">
+          <div className="w-full flex-1 flex flex-col min-h-0">
             <Suspense fallback={<ViewSkeleton />}>
               {activeToolId === 'dashboard' && (
                 <HomeLandingView

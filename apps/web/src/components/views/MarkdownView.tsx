@@ -193,7 +193,7 @@ export function MarkdownView() {
             value={markdown}
             onChange={e => setMarkdown(e.target.value)}
             placeholder="Type your markdown content..."
-            className="w-full flex-1 min-h-[350px] lg:min-h-[calc(100vh-21rem)] rounded-xl border border-stone-200 bg-white p-3.5 font-mono text-xs sm:text-sm text-stone-800 shadow-xs placeholder:text-stone-400 focus:border-stone-900 focus:outline-none focus:ring-1 focus:ring-stone-900 resize-y leading-relaxed"
+            className="w-full flex-1 min-h-[200px] rounded-xl border border-stone-200 bg-white p-3.5 font-mono text-xs sm:text-sm text-stone-800 shadow-xs placeholder:text-stone-400 focus:border-stone-900 focus:outline-none focus:ring-1 focus:ring-stone-900 resize-y leading-relaxed"
             spellCheck={false}
           />
         </div>
@@ -205,7 +205,7 @@ export function MarkdownView() {
             <span className="font-mono text-stone-400">HTML Preview</span>
           </div>
           <div
-            className="w-full flex-1 min-h-[350px] lg:min-h-[calc(100vh-21rem)] rounded-xl border border-stone-200 bg-white p-6 shadow-xs overflow-y-auto prose prose-stone max-w-none text-xs sm:text-sm leading-relaxed"
+            className="w-full flex-1 min-h-[200px] rounded-xl border border-stone-200 bg-white p-6 shadow-xs overflow-y-auto prose prose-stone max-w-none text-xs sm:text-sm leading-relaxed"
             dangerouslySetInnerHTML={{ __html: output?.html ?? '' }}
           />
         </div>

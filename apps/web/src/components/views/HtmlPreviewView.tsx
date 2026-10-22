@@ -156,7 +156,7 @@ export function HtmlPreviewView() {
       {/* Editor & Preview Split Workspace */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 items-stretch flex-1 min-h-0">
         {/* Left Column: Code Editor */}
-        <div className="flex flex-col rounded-2xl border border-stone-200/80 bg-white shadow-xs overflow-hidden flex-1 min-h-[480px] lg:min-h-[calc(100vh-14rem)]">
+        <div className="flex flex-col rounded-2xl border border-stone-200/80 bg-white shadow-xs overflow-hidden flex-1 min-h-[300px]">
           <div className="px-4 py-3 border-b border-stone-200/80 bg-stone-50/70 flex items-center justify-between">
             <span className="text-xs font-semibold text-stone-800 uppercase tracking-wider">
               Source Markup
@@ -201,7 +201,7 @@ export function HtmlPreviewView() {
         </div>
 
         {/* Right Column: Sandboxed Preview & Tools */}
-        <div className="flex flex-col rounded-2xl border border-stone-200/80 bg-white shadow-xs overflow-hidden flex-1 min-h-[480px] lg:min-h-[calc(100vh-14rem)]">
+        <div className="flex flex-col rounded-2xl border border-stone-200/80 bg-white shadow-xs overflow-hidden flex-1 min-h-[300px]">
           {/* Output Mode Tabs */}
           <div className="px-4 py-2 border-b border-stone-200/80 bg-stone-50/70 flex items-center justify-between">
             <div className="flex items-center gap-1">

@@ -184,7 +184,7 @@ export function DataConverterView() {
             value={content}
             onChange={e => setContent(e.target.value)}
             placeholder={`Paste your ${fromFormat.toUpperCase()} content here...`}
-            className="w-full flex-1 min-h-[350px] lg:min-h-[calc(100vh-21rem)] rounded-xl border border-stone-200 bg-white p-3.5 font-mono text-xs text-stone-800 shadow-xs placeholder:text-stone-400 focus:border-stone-900 focus:outline-none focus:ring-1 focus:ring-stone-900 resize-y"
+            className="w-full flex-1 min-h-[200px] rounded-xl border border-stone-200 bg-white p-3.5 font-mono text-xs text-stone-800 shadow-xs placeholder:text-stone-400 focus:border-stone-900 focus:outline-none focus:ring-1 focus:ring-stone-900 resize-y"
             spellCheck={false}
           />
         </div>
@@ -204,7 +204,7 @@ export function DataConverterView() {
             readOnly
             value={output ? output.converted : ''}
             placeholder="Awaiting converted output..."
-            className="w-full flex-1 min-h-[350px] lg:min-h-[calc(100vh-21rem)] rounded-xl border border-stone-200 bg-stone-50/50 p-3.5 font-mono text-xs text-stone-800 shadow-xs placeholder:text-stone-400 focus:outline-none resize-y"
+            className="w-full flex-1 min-h-[200px] rounded-xl border border-stone-200 bg-stone-50/50 p-3.5 font-mono text-xs text-stone-800 shadow-xs placeholder:text-stone-400 focus:outline-none resize-y"
             spellCheck={false}
           />
         </div>

@@ -342,7 +342,7 @@ export function BgRemoverView() {
         </div>
 
         {/* Right Column: Interactive Canvas Viewport */}
-        <div className="lg:col-span-8 flex flex-col rounded-2xl border border-stone-200/80 bg-white shadow-xs overflow-hidden flex-1 min-h-[480px] lg:min-h-[calc(100vh-14rem)]">
+        <div className="lg:col-span-8 flex flex-col rounded-2xl border border-stone-200/80 bg-white shadow-xs overflow-hidden flex-1 min-h-[300px]">
           <div className="px-4 py-3 border-b border-stone-200/80 bg-stone-50/70 flex items-center justify-between">
             <span className="text-xs font-semibold text-stone-800 uppercase tracking-wider flex items-center gap-1.5">
               <Layers className="h-3.5 w-3.5 text-stone-500" />
@@ -357,7 +357,7 @@ export function BgRemoverView() {
 
           {/* Checkerboard Transparent Pattern Canvas Container */}
           <div
-            className={`p-6 flex-1 flex items-center justify-center min-h-[460px] lg:min-h-[calc(100vh-18rem)] overflow-auto ${
+            className={`p-6 flex-1 flex items-center justify-center min-h-[260px] overflow-auto ${
               backdropMode === 'white'
                 ? 'bg-white'
                 : backdropMode === 'dark'

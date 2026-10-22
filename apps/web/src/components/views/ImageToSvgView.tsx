@@ -291,7 +291,7 @@ export function ImageToSvgView() {
         </div>
 
         {/* Right Column: Live Vector Preview & Code Viewer */}
-        <div className="lg:col-span-8 flex flex-col rounded-2xl border border-stone-200/80 bg-white shadow-xs overflow-hidden flex-1 min-h-[480px] lg:min-h-[calc(100vh-14rem)]">
+        <div className="lg:col-span-8 flex flex-col rounded-2xl border border-stone-200/80 bg-white shadow-xs overflow-hidden flex-1 min-h-[300px]">
           {/* Header tabs */}
           <div className="px-4 py-2 border-b border-stone-200/80 bg-stone-50/70 flex items-center justify-between">
             <div className="flex items-center gap-1">

@@ -327,7 +327,7 @@ export function ImageRedactorView() {
         </div>
 
         {/* Right Column: Canvas Display */}
-        <div className="lg:col-span-8 flex flex-col rounded-2xl border border-stone-200/80 bg-white shadow-xs overflow-hidden flex-1 min-h-[480px] lg:min-h-[calc(100vh-14rem)]">
+        <div className="lg:col-span-8 flex flex-col rounded-2xl border border-stone-200/80 bg-white shadow-xs overflow-hidden flex-1 min-h-[300px]">
           <div className="px-4 py-3 border-b border-stone-200/80 bg-stone-50/70 flex items-center justify-between">
             <span className="text-xs font-semibold text-stone-800 uppercase tracking-wider">
               Canvas Editor
@@ -337,7 +337,7 @@ export function ImageRedactorView() {
             </span>
           </div>
 
-          <div className="p-6 flex-1 flex items-center justify-center min-h-[460px] lg:min-h-[calc(100vh-18rem)] bg-stone-100/50 overflow-auto">
+          <div className="p-6 flex-1 flex items-center justify-center min-h-[260px] bg-stone-100/50 overflow-auto">
             <canvas
               ref={canvasRef}
               onMouseDown={handleMouseDown}

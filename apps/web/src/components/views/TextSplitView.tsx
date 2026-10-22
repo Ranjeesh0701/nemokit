@@ -159,7 +159,7 @@ export function TextSplitView() {
               splitContent(val, splitBy, chunkSize, delimiter);
             }}
             placeholder="Paste your text here to split..."
-            className="mt-3 w-full flex-1 min-h-[350px] lg:min-h-[calc(100vh-21rem)] resize-y rounded-xl border border-stone-200/60 bg-[#fdfdfc] p-3.5 font-mono text-xs text-stone-900 leading-relaxed placeholder:text-stone-400 focus:border-stone-900 focus:outline-none focus:ring-1 focus:ring-stone-900 transition-all"
+            className="mt-3 w-full flex-1 min-h-[200px] resize-y rounded-xl border border-stone-200/60 bg-[#fdfdfc] p-3.5 font-mono text-xs text-stone-900 leading-relaxed placeholder:text-stone-400 focus:border-stone-900 focus:outline-none focus:ring-1 focus:ring-stone-900 transition-all"
             spellCheck={false}
           />
 
@@ -263,7 +263,7 @@ export function TextSplitView() {
             )}
           </div>
 
-          <div className="mt-3 flex-1 flex flex-col gap-3 min-h-[350px] lg:min-h-[calc(100vh-21rem)] max-h-[calc(100vh-18rem)] overflow-y-auto pr-1">
+          <div className="mt-3 flex-1 flex flex-col gap-3 min-h-[200px] overflow-y-auto pr-1">
             {output && output.chunks.length > 0 ? (
               output.chunks.map((chunk: TextChunk, idx: number) => (
                 <div

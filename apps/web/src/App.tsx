@@ -9,7 +9,6 @@ import {
   jwtTool,
   sqlFormatterTool,
   timestampTool,
-  documentConverterTool,
   pdfSplitTool,
   textSplitTool,
 } from '@nemokit/core';
@@ -17,6 +16,7 @@ import type { ToolMetadata } from '@nemokit/core';
 import { LandingPage } from './components/landing/LandingPage.js';
 import { AppSidebar } from './components/layout/AppSidebar.js';
 import { AppHeader } from './components/layout/AppHeader.js';
+import { CommandPalette } from './components/CommandPalette.js';
 import { HomeLandingView } from './components/views/HomeLandingView.js';
 import { JsonFormatterView } from './components/JsonFormatterView.js';
 import { Base64View } from './components/Base64View.js';
@@ -26,27 +26,25 @@ import { UuidToolView } from './components/views/UuidToolView.js';
 import { JwtToolView } from './components/views/JwtToolView.js';
 import { SqlFormatterView } from './components/views/SqlFormatterView.js';
 import { TimestampView } from './components/views/TimestampView.js';
-import { DocumentConverterView } from './components/views/DocumentConverterView.js';
 import { PdfSplitView } from './components/views/PdfSplitView.js';
 import { TextSplitView } from './components/views/TextSplitView.js';
 
-type RouteState = { mode: 'landing' } | { mode: 'app'; activeToolId: string }; // 'dashboard' or specific tool id
+type RouteState = { mode: 'landing' } | { mode: 'app'; activeToolId: string };
 
 export default function App() {
-  // Initialize and populate core engine registry with all registered tools
+  // Initialize and populate core engine registry with our 10 focused tools
   const registry = useMemo(() => {
     const reg = new ToolRegistry();
     reg.register(jsonFormatterTool);
+    reg.register(sqlFormatterTool);
+    reg.register(textSplitTool);
     reg.register(base64Tool);
-    reg.register(urlTool);
+    reg.register(jwtTool);
+    reg.register(timestampTool);
+    reg.register(pdfSplitTool);
     reg.register(hashTool);
     reg.register(uuidTool);
-    reg.register(jwtTool);
-    reg.register(sqlFormatterTool);
-    reg.register(timestampTool);
-    reg.register(documentConverterTool);
-    reg.register(pdfSplitTool);
-    reg.register(textSplitTool);
+    reg.register(urlTool);
     return reg;
   }, []);
 
@@ -54,7 +52,6 @@ export default function App() {
 
   const parseRouteFromHash = (): RouteState => {
     const hash = window.location.hash;
-    // Default root or #/ is the dedicated Landing Page
     if (!hash || hash === '#' || hash === '#/') {
       return { mode: 'landing' };
     }
@@ -68,7 +65,6 @@ export default function App() {
       return { mode: 'app', activeToolId: 'dashboard' };
     }
 
-    // Backward-compat for #/tools/xyz
     if (hash.startsWith('#/tools/')) {
       const toolId = hash.replace('#/tools/', '').trim();
       return { mode: 'app', activeToolId: toolId || 'dashboard' };
@@ -78,9 +74,9 @@ export default function App() {
   };
 
   const [route, setRoute] = useState<RouteState>(() => parseRouteFromHash());
-  const [searchQuery, setSearchQuery] = useState<string>('');
   const [isMobileSidebarOpen, setIsMobileSidebarOpen] = useState<boolean>(false);
   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState<boolean>(false);
+  const [isCommandPaletteOpen, setIsCommandPaletteOpen] = useState<boolean>(false);
 
   // Sync hash changes (browser back/forward navigation)
   useEffect(() => {
@@ -89,6 +85,18 @@ export default function App() {
     };
     window.addEventListener('hashchange', handleHashChange);
     return () => window.removeEventListener('hashchange', handleHashChange);
+  }, []);
+
+  // Global shortcut: ⌘K or Ctrl+K to open Command Palette
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
+        e.preventDefault();
+        setIsCommandPaletteOpen(prev => !prev);
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
   }, []);
 
   const handleLaunchApp = (toolId?: string) => {
@@ -115,7 +123,15 @@ export default function App() {
 
   return (
     <div className="flex h-screen w-full overflow-hidden bg-[#faf9f6] text-stone-800 antialiased selection:bg-stone-200">
-      {/* App Sidebar with Compact Mode */}
+      {/* Global ⌘K Command Palette */}
+      <CommandPalette
+        isOpen={isCommandPaletteOpen}
+        onClose={() => setIsCommandPaletteOpen(false)}
+        tools={tools}
+        onSelectTool={handleSelectView}
+      />
+
+      {/* App Sidebar with Compact Icon Mode */}
       <AppSidebar
         tools={tools}
         activeView={activeToolId === 'dashboard' ? 'home' : activeToolId}
@@ -126,58 +142,34 @@ export default function App() {
         onCloseMobile={() => setIsMobileSidebarOpen(false)}
       />
 
-      {/* Main App Workspace */}
+      {/* Main App Workspace Canvas */}
       <div className="flex flex-1 flex-col overflow-hidden min-w-0">
         <AppHeader
           activeView={activeToolId === 'dashboard' ? 'home' : activeToolId}
           activeTool={activeTool}
           onSelectView={handleSelectView}
           onOpenMobileSidebar={() => setIsMobileSidebarOpen(true)}
-          searchQuery={searchQuery}
-          onSearchChange={setSearchQuery}
+          onOpenCommandPalette={() => setIsCommandPaletteOpen(true)}
         />
 
-        {/* Scrollable Workspace View Container */}
-        <main className="flex-1 overflow-y-auto overflow-x-hidden px-4 py-6 sm:px-8 lg:px-10">
-          <div className="w-full">
-            {activeToolId === 'dashboard' ? (
-              <div className="max-w-6xl mx-auto">
-                <HomeLandingView
-                  tools={tools}
-                  onSelectTool={handleSelectView}
-                  searchQuery={searchQuery}
-                />
-              </div>
-            ) : (
-              <>
-                {activeToolId === 'json-formatter' && <JsonFormatterView />}
-                {activeToolId === 'base64-tool' && <Base64View />}
-                {activeToolId === 'url-tool' && <UrlToolView />}
-                {activeToolId === 'hash-tool' && <HashToolView />}
-                {activeToolId === 'uuid-tool' && <UuidToolView />}
-                {activeToolId === 'jwt-tool' && <JwtToolView />}
-                {activeToolId === 'sql-formatter' && <SqlFormatterView />}
-                {activeToolId === 'timestamp-tool' && <TimestampView />}
-                {activeToolId === 'document-converter' && <DocumentConverterView />}
-                {activeToolId === 'pdf-splitter' && <PdfSplitView />}
-                {activeToolId === 'text-splitter' && <TextSplitView />}
-              </>
+        {/* Scrollable View Area */}
+        <main className="flex-1 overflow-y-auto overflow-x-hidden p-4 sm:p-6 lg:p-8">
+          <div className="w-full max-w-7xl mx-auto">
+            {activeToolId === 'dashboard' && (
+              <HomeLandingView tools={tools} onSelectTool={handleSelectView} searchQuery="" />
             )}
+            {activeToolId === 'json-formatter' && <JsonFormatterView />}
+            {activeToolId === 'sql-formatter' && <SqlFormatterView />}
+            {activeToolId === 'text-splitter' && <TextSplitView />}
+            {activeToolId === 'base64-tool' && <Base64View />}
+            {activeToolId === 'jwt-tool' && <JwtToolView />}
+            {activeToolId === 'timestamp-tool' && <TimestampView />}
+            {activeToolId === 'pdf-splitter' && <PdfSplitView />}
+            {activeToolId === 'hash-tool' && <HashToolView />}
+            {activeToolId === 'uuid-tool' && <UuidToolView />}
+            {activeToolId === 'url-tool' && <UrlToolView />}
           </div>
         </main>
-
-        {/* Minimal Bottom Status Bar */}
-        <footer className="h-8 border-t border-stone-200/60 bg-[#fbfbf9]/80 px-4 sm:px-6 flex items-center justify-between text-[11px] text-stone-400 select-none">
-          <div className="flex items-center gap-2">
-            <span className="inline-block h-1.5 w-1.5 rounded-full bg-emerald-500" />
-            <span>Workspace Active • Client-Side Engine</span>
-          </div>
-          <div className="flex items-center gap-4">
-            <span>Shortcut: ⌘/Ctrl + Enter to run</span>
-            <span>•</span>
-            <span>Nemokit v0.1.0</span>
-          </div>
-        </footer>
       </div>
     </div>
   );

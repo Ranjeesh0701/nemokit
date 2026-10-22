@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useState, lazy, Suspense } from 'react';
 import {
   ToolRegistry,
   jsonFormatterTool,
@@ -19,6 +19,9 @@ import {
   qrTool,
   pdfMergeTool,
   curlConverterTool,
+  dataConverterTool,
+  fileHashTool,
+  markdownTool,
 } from '@nemokit/core';
 import type { ToolMetadata } from '@nemokit/core';
 import { LandingPage } from './components/landing/LandingPage.js';
@@ -26,29 +29,94 @@ import { AppSidebar } from './components/layout/AppSidebar.js';
 import { AppHeader } from './components/layout/AppHeader.js';
 import { CommandPalette } from './components/CommandPalette.js';
 import { HomeLandingView } from './components/views/HomeLandingView.js';
-import { JsonFormatterView } from './components/JsonFormatterView.js';
-import { Base64View } from './components/Base64View.js';
-import { UrlToolView } from './components/UrlToolView.js';
-import { HashToolView } from './components/HashToolView.js';
-import { UuidToolView } from './components/views/UuidToolView.js';
-import { JwtToolView } from './components/views/JwtToolView.js';
-import { SqlFormatterView } from './components/views/SqlFormatterView.js';
-import { TimestampView } from './components/views/TimestampView.js';
-import { PdfSplitView } from './components/views/PdfSplitView.js';
-import { TextSplitView } from './components/views/TextSplitView.js';
-import { DiffToolView } from './components/views/DiffToolView.js';
-import { PasswordToolView } from './components/views/PasswordToolView.js';
-import { ColorToolView } from './components/views/ColorToolView.js';
-import { CronToolView } from './components/views/CronToolView.js';
-import { RegexToolView } from './components/views/RegexToolView.js';
-import { QrToolView } from './components/views/QrToolView.js';
-import { PdfMergeView } from './components/views/PdfMergeView.js';
-import { CurlConverterView } from './components/views/CurlConverterView.js';
+import { useToolFavorites } from './hooks/useToolFavorites.js';
+
+// Lazy-loaded tool views for optimal bundle splitting and near-instant initial render
+const JsonFormatterView = lazy(() =>
+  import('./components/JsonFormatterView.js').then(m => ({ default: m.JsonFormatterView }))
+);
+const Base64View = lazy(() =>
+  import('./components/Base64View.js').then(m => ({ default: m.Base64View }))
+);
+const UrlToolView = lazy(() =>
+  import('./components/UrlToolView.js').then(m => ({ default: m.UrlToolView }))
+);
+const HashToolView = lazy(() =>
+  import('./components/HashToolView.js').then(m => ({ default: m.HashToolView }))
+);
+const UuidToolView = lazy(() =>
+  import('./components/views/UuidToolView.js').then(m => ({ default: m.UuidToolView }))
+);
+const JwtToolView = lazy(() =>
+  import('./components/views/JwtToolView.js').then(m => ({ default: m.JwtToolView }))
+);
+const SqlFormatterView = lazy(() =>
+  import('./components/views/SqlFormatterView.js').then(m => ({ default: m.SqlFormatterView }))
+);
+const TimestampView = lazy(() =>
+  import('./components/views/TimestampView.js').then(m => ({ default: m.TimestampView }))
+);
+const PdfSplitView = lazy(() =>
+  import('./components/views/PdfSplitView.js').then(m => ({ default: m.PdfSplitView }))
+);
+const TextSplitView = lazy(() =>
+  import('./components/views/TextSplitView.js').then(m => ({ default: m.TextSplitView }))
+);
+const DiffToolView = lazy(() =>
+  import('./components/views/DiffToolView.js').then(m => ({ default: m.DiffToolView }))
+);
+const PasswordToolView = lazy(() =>
+  import('./components/views/PasswordToolView.js').then(m => ({ default: m.PasswordToolView }))
+);
+const ColorToolView = lazy(() =>
+  import('./components/views/ColorToolView.js').then(m => ({ default: m.ColorToolView }))
+);
+const CronToolView = lazy(() =>
+  import('./components/views/CronToolView.js').then(m => ({ default: m.CronToolView }))
+);
+const RegexToolView = lazy(() =>
+  import('./components/views/RegexToolView.js').then(m => ({ default: m.RegexToolView }))
+);
+const QrToolView = lazy(() =>
+  import('./components/views/QrToolView.js').then(m => ({ default: m.QrToolView }))
+);
+const PdfMergeView = lazy(() =>
+  import('./components/views/PdfMergeView.js').then(m => ({ default: m.PdfMergeView }))
+);
+const CurlConverterView = lazy(() =>
+  import('./components/views/CurlConverterView.js').then(m => ({ default: m.CurlConverterView }))
+);
+const DataConverterView = lazy(() =>
+  import('./components/views/DataConverterView.js').then(m => ({ default: m.DataConverterView }))
+);
+const FileHashView = lazy(() =>
+  import('./components/views/FileHashView.js').then(m => ({ default: m.FileHashView }))
+);
+const MarkdownView = lazy(() =>
+  import('./components/views/MarkdownView.js').then(m => ({ default: m.MarkdownView }))
+);
+
+function ViewSkeleton() {
+  return (
+    <div className="flex flex-col gap-6 w-full animate-pulse">
+      <div className="flex items-center justify-between pb-6 border-b border-stone-200/80">
+        <div className="flex items-center gap-3">
+          <div className="h-8 w-8 rounded-lg bg-stone-200" />
+          <div className="flex flex-col gap-1.5">
+            <div className="h-5 w-48 rounded bg-stone-200" />
+            <div className="h-3 w-64 rounded bg-stone-100" />
+          </div>
+        </div>
+      </div>
+      <div className="h-72 w-full rounded-2xl bg-stone-100/70 border border-stone-200/60" />
+    </div>
+  );
+}
 
 type RouteState = { mode: 'landing' } | { mode: 'app'; activeToolId: string };
 
 export default function App() {
-  // Initialize and populate core engine registry with all tools
+  // Initialize and populate core engine registry with all 21 tools
   const registry = useMemo(() => {
     const reg = new ToolRegistry();
     reg.register(jsonFormatterTool);
@@ -56,15 +124,18 @@ export default function App() {
     reg.register(diffTool);
     reg.register(regexTool);
     reg.register(textSplitTool);
+    reg.register(markdownTool);
     reg.register(base64Tool);
     reg.register(jwtTool);
     reg.register(timestampTool);
     reg.register(colorTool);
+    reg.register(dataConverterTool);
     reg.register(pdfSplitTool);
     reg.register(pdfMergeTool);
     reg.register(hashTool);
     reg.register(uuidTool);
     reg.register(passwordTool);
+    reg.register(fileHashTool);
     reg.register(urlTool);
     reg.register(qrTool);
     reg.register(cronTool);
@@ -101,6 +172,9 @@ export default function App() {
   const [isMobileSidebarOpen, setIsMobileSidebarOpen] = useState<boolean>(false);
   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState<boolean>(false);
   const [isCommandPaletteOpen, setIsCommandPaletteOpen] = useState<boolean>(false);
+
+  const activeToolId = route.mode === 'app' ? route.activeToolId : undefined;
+  const { favorites, toggleFavorite, isFavorite } = useToolFavorites(activeToolId);
 
   // Sync hash changes (browser back/forward navigation)
   useEffect(() => {
@@ -142,7 +216,6 @@ export default function App() {
   }
 
   // Inside the Web App Workspace
-  const activeToolId = route.activeToolId;
   const activeTool = tools.find(t => t.id === activeToolId);
 
   return (
@@ -153,53 +226,68 @@ export default function App() {
         onClose={() => setIsCommandPaletteOpen(false)}
         tools={tools}
         onSelectTool={handleSelectView}
+        favorites={favorites}
       />
 
-      {/* App Sidebar with Compact Icon Mode */}
+      {/* App Sidebar with Compact Icon Mode & Favorites */}
       <AppSidebar
         tools={tools}
-        activeView={activeToolId === 'dashboard' ? 'home' : activeToolId}
+        activeView={activeToolId === 'dashboard' ? 'home' : (activeToolId ?? 'home')}
         onSelectView={handleSelectView}
         isCollapsed={isSidebarCollapsed}
         onToggleCollapse={() => setIsSidebarCollapsed(prev => !prev)}
         isMobileOpen={isMobileSidebarOpen}
         onCloseMobile={() => setIsMobileSidebarOpen(false)}
+        favorites={favorites}
       />
 
       {/* Main App Workspace Canvas */}
       <div className="flex flex-1 flex-col overflow-hidden min-w-0">
         <AppHeader
-          activeView={activeToolId === 'dashboard' ? 'home' : activeToolId}
+          activeView={activeToolId === 'dashboard' ? 'home' : (activeToolId ?? 'home')}
           activeTool={activeTool}
           onSelectView={handleSelectView}
           onOpenMobileSidebar={() => setIsMobileSidebarOpen(true)}
           onOpenCommandPalette={() => setIsCommandPaletteOpen(true)}
+          isFavorite={activeTool ? isFavorite(activeTool.id) : false}
+          onToggleFavorite={toggleFavorite}
         />
 
-        {/* Scrollable View Area */}
+        {/* Scrollable View Area with Suspense Lazy Boundaries */}
         <main className="flex-1 overflow-y-auto overflow-x-hidden p-4 sm:p-6 lg:p-8">
           <div className="w-full max-w-7xl mx-auto">
-            {activeToolId === 'dashboard' && (
-              <HomeLandingView tools={tools} onSelectTool={handleSelectView} searchQuery="" />
-            )}
-            {activeToolId === 'json-formatter' && <JsonFormatterView />}
-            {activeToolId === 'sql-formatter' && <SqlFormatterView />}
-            {activeToolId === 'diff-tool' && <DiffToolView />}
-            {activeToolId === 'regex-tester' && <RegexToolView />}
-            {activeToolId === 'text-splitter' && <TextSplitView />}
-            {activeToolId === 'base64-tool' && <Base64View />}
-            {activeToolId === 'jwt-tool' && <JwtToolView />}
-            {activeToolId === 'timestamp-tool' && <TimestampView />}
-            {activeToolId === 'color-tool' && <ColorToolView />}
-            {activeToolId === 'pdf-splitter' && <PdfSplitView />}
-            {activeToolId === 'pdf-merge' && <PdfMergeView />}
-            {activeToolId === 'hash-tool' && <HashToolView />}
-            {activeToolId === 'uuid-tool' && <UuidToolView />}
-            {activeToolId === 'password-tool' && <PasswordToolView />}
-            {activeToolId === 'url-tool' && <UrlToolView />}
-            {activeToolId === 'qr-tool' && <QrToolView />}
-            {activeToolId === 'cron-tool' && <CronToolView />}
-            {activeToolId === 'curl-converter' && <CurlConverterView />}
+            <Suspense fallback={<ViewSkeleton />}>
+              {activeToolId === 'dashboard' && (
+                <HomeLandingView
+                  tools={tools}
+                  onSelectTool={handleSelectView}
+                  searchQuery=""
+                  favorites={favorites}
+                  onToggleFavorite={toggleFavorite}
+                />
+              )}
+              {activeToolId === 'json-formatter' && <JsonFormatterView />}
+              {activeToolId === 'sql-formatter' && <SqlFormatterView />}
+              {activeToolId === 'diff-tool' && <DiffToolView />}
+              {activeToolId === 'regex-tester' && <RegexToolView />}
+              {activeToolId === 'text-splitter' && <TextSplitView />}
+              {activeToolId === 'markdown-preview' && <MarkdownView />}
+              {activeToolId === 'base64-tool' && <Base64View />}
+              {activeToolId === 'jwt-tool' && <JwtToolView />}
+              {activeToolId === 'timestamp-tool' && <TimestampView />}
+              {activeToolId === 'color-tool' && <ColorToolView />}
+              {activeToolId === 'data-converter' && <DataConverterView />}
+              {activeToolId === 'pdf-splitter' && <PdfSplitView />}
+              {activeToolId === 'pdf-merge' && <PdfMergeView />}
+              {activeToolId === 'hash-tool' && <HashToolView />}
+              {activeToolId === 'uuid-tool' && <UuidToolView />}
+              {activeToolId === 'password-tool' && <PasswordToolView />}
+              {activeToolId === 'file-checksum' && <FileHashView />}
+              {activeToolId === 'url-tool' && <UrlToolView />}
+              {activeToolId === 'qr-tool' && <QrToolView />}
+              {activeToolId === 'cron-tool' && <CronToolView />}
+              {activeToolId === 'curl-converter' && <CurlConverterView />}
+            </Suspense>
           </div>
         </main>
       </div>

@@ -20,6 +20,10 @@ import {
   QrCode,
   FilePlus2,
   Terminal,
+  Star,
+  FileCheck,
+  FileEdit,
+  RefreshCw,
   ShieldCheck,
   Zap,
   Cpu,
@@ -32,6 +36,8 @@ interface HomeLandingViewProps {
   readonly tools: ReadonlyArray<ToolMetadata>;
   readonly onSelectTool: (toolId: string) => void;
   readonly searchQuery: string;
+  readonly favorites?: ReadonlyArray<string>;
+  readonly onToggleFavorite?: (toolId: string) => void;
 }
 
 const CATEGORY_TITLES: Record<ToolCategory, { title: string; subtitle: string }> = {
@@ -57,7 +63,12 @@ const CATEGORY_TITLES: Record<ToolCategory, { title: string; subtitle: string }>
   },
 };
 
-export function HomeLandingView({ tools, onSelectTool, searchQuery }: HomeLandingViewProps) {
+export function HomeLandingView({
+  tools,
+  onSelectTool,
+  searchQuery,
+  favorites = [],
+}: HomeLandingViewProps) {
   const getToolIcon = (id: string) => {
     switch (id) {
       case 'json-formatter':
@@ -98,6 +109,12 @@ export function HomeLandingView({ tools, onSelectTool, searchQuery }: HomeLandin
         return <FilePlus2 className="h-5 w-5 text-rose-600" />;
       case 'curl-converter':
         return <Terminal className="h-5 w-5 text-emerald-600" />;
+      case 'data-converter':
+        return <RefreshCw className="h-5 w-5 text-indigo-600" />;
+      case 'file-checksum':
+        return <FileCheck className="h-5 w-5 text-teal-600" />;
+      case 'markdown-preview':
+        return <FileEdit className="h-5 w-5 text-amber-600" />;
       default:
         return <Layers className="h-5 w-5 text-stone-600" />;
     }
@@ -208,9 +225,14 @@ export function HomeLandingView({ tools, onSelectTool, searchQuery }: HomeLandin
                         <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-stone-50 border border-stone-100 group-hover:scale-105 transition-transform">
                           {getToolIcon(tool.id)}
                         </span>
-                        <span className="rounded-md bg-stone-100 px-2 py-0.5 text-[10px] font-medium text-stone-600 capitalize">
-                          {tool.category}
-                        </span>
+                        <div className="flex items-center gap-1.5">
+                          {favorites?.includes(tool.id) && (
+                            <Star className="h-3.5 w-3.5 fill-amber-400 text-amber-500" />
+                          )}
+                          <span className="rounded-md bg-stone-100 px-2 py-0.5 text-[10px] font-medium text-stone-600 capitalize">
+                            {tool.category}
+                          </span>
+                        </div>
                       </div>
 
                       <h3 className="mt-4 font-semibold text-sm text-stone-900 group-hover:text-stone-950">

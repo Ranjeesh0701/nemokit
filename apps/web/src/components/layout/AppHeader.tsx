@@ -1,5 +1,5 @@
 import type { ToolMetadata } from '@nemokit/core';
-import { Menu, Search, Home } from 'lucide-react';
+import { Menu, Search, Home, Star } from 'lucide-react';
 
 interface AppHeaderProps {
   readonly activeView: string;
@@ -7,6 +7,8 @@ interface AppHeaderProps {
   readonly onSelectView: (view: string) => void;
   readonly onOpenMobileSidebar: () => void;
   readonly onOpenCommandPalette: () => void;
+  readonly isFavorite?: boolean;
+  readonly onToggleFavorite?: (toolId: string) => void;
 }
 
 export function AppHeader({
@@ -15,6 +17,8 @@ export function AppHeader({
   onSelectView,
   onOpenMobileSidebar,
   onOpenCommandPalette,
+  isFavorite,
+  onToggleFavorite,
 }: AppHeaderProps) {
   return (
     <header className="sticky top-0 z-30 flex h-14 w-full items-center justify-between border-b border-stone-200/80 bg-white/90 px-4 sm:px-6 backdrop-blur-md select-none shrink-0">
@@ -54,6 +58,20 @@ export function AppHeader({
             <h1 className="text-sm font-bold text-stone-900 tracking-tight truncate">
               {activeTool.name}
             </h1>
+            {onToggleFavorite && (
+              <button
+                type="button"
+                onClick={() => onToggleFavorite(activeTool.id)}
+                title={isFavorite ? 'Remove from favorites' : 'Pin to favorites'}
+                className={`p-1 rounded-lg transition-colors shrink-0 ${
+                  isFavorite
+                    ? 'text-amber-500 hover:bg-amber-50'
+                    : 'text-stone-300 hover:text-stone-600 hover:bg-stone-100'
+                }`}
+              >
+                <Star className={`h-3.5 w-3.5 ${isFavorite ? 'fill-amber-400' : ''}`} />
+              </button>
+            )}
           </div>
         )}
       </div>

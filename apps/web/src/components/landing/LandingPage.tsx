@@ -26,6 +26,9 @@ import {
   QrCode,
   FilePlus2,
   Terminal,
+  RefreshCw,
+  FileCheck,
+  FileEdit,
 } from 'lucide-react';
 
 interface LandingPageProps {
@@ -74,6 +77,12 @@ export function LandingPage({ tools, onLaunchApp }: LandingPageProps) {
         return <FilePlus2 className="h-5 w-5 text-rose-600" />;
       case 'curl-converter':
         return <Terminal className="h-5 w-5 text-emerald-600" />;
+      case 'data-converter':
+        return <RefreshCw className="h-5 w-5 text-indigo-600" />;
+      case 'file-checksum':
+        return <FileCheck className="h-5 w-5 text-teal-600" />;
+      case 'markdown-preview':
+        return <FileEdit className="h-5 w-5 text-amber-600" />;
       default:
         return <Layers className="h-5 w-5 text-stone-600" />;
     }

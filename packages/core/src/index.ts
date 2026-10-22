@@ -19,3 +19,6 @@ export * from './tools/regex-tool.js';
 export * from './tools/qr-tool.js';
 export * from './tools/pdf-merge-tool.js';
 export * from './tools/curl-converter-tool.js';
+export * from './tools/data-converter-tool.js';
+export * from './tools/file-hash-tool.js';
+export * from './tools/markdown-tool.js';

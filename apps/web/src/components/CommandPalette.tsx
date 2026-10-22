@@ -19,6 +19,10 @@ import {
   QrCode,
   FilePlus2,
   Terminal,
+  Star,
+  FileCheck,
+  FileEdit,
+  RefreshCw,
   Layers,
   ArrowRight,
   X,
@@ -29,14 +33,28 @@ interface CommandPaletteProps {
   readonly onClose: () => void;
   readonly tools: ReadonlyArray<ToolMetadata>;
   readonly onSelectTool: (toolId: string) => void;
+  readonly favorites?: ReadonlyArray<string>;
 }
 
-export function CommandPalette({ isOpen, onClose, tools, onSelectTool }: CommandPaletteProps) {
+export function CommandPalette({
+  isOpen,
+  onClose,
+  tools,
+  onSelectTool,
+  favorites = [],
+}: CommandPaletteProps) {
   const [query, setQuery] = useState('');
   const [selectedIndex, setSelectedIndex] = useState(0);
 
   const filtered = useMemo(() => {
-    if (!query.trim()) return tools;
+    if (!query.trim()) {
+      // Sort favorites to top when query is empty
+      return [...tools].sort((a, b) => {
+        const aFav = favorites.includes(a.id) ? 1 : 0;
+        const bFav = favorites.includes(b.id) ? 1 : 0;
+        return bFav - aFav;
+      });
+    }
     const q = query.toLowerCase();
     return tools.filter(
       t =>
@@ -44,7 +62,7 @@ export function CommandPalette({ isOpen, onClose, tools, onSelectTool }: Command
         t.description.toLowerCase().includes(q) ||
         t.category.toLowerCase().includes(q)
     );
-  }, [tools, query]);
+  }, [tools, query, favorites]);
 
   // Keyboard navigation inside palette
   useEffect(() => {
@@ -118,6 +136,12 @@ export function CommandPalette({ isOpen, onClose, tools, onSelectTool }: Command
         return <FilePlus2 className="h-4 w-4" />;
       case 'curl-converter':
         return <Terminal className="h-4 w-4" />;
+      case 'data-converter':
+        return <RefreshCw className="h-4 w-4" />;
+      case 'file-checksum':
+        return <FileCheck className="h-4 w-4" />;
+      case 'markdown-preview':
+        return <FileEdit className="h-4 w-4" />;
       default:
         return <Layers className="h-4 w-4" />;
     }
@@ -183,6 +207,9 @@ export function CommandPalette({ isOpen, onClose, tools, onSelectTool }: Command
                   </div>
 
                   <div className="flex items-center gap-2 shrink-0">
+                    {favorites.includes(tool.id) && (
+                      <Star className="h-3.5 w-3.5 fill-amber-400 text-amber-500" />
+                    )}
                     <span
                       className={`rounded px-1.5 py-0.5 text-[10px] font-medium capitalize ${
                         isSelected ? 'bg-stone-800 text-stone-300' : 'bg-stone-100 text-stone-600'

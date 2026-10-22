@@ -10,7 +10,8 @@
   },
   "dependencies": {
     "pdf-lib": "^1.17.1",
-    "qrcode": "^1.5.4"
+    "qrcode": "^1.5.4",
+    "yaml": "^2.9.1"
   },
   "devDependencies": {
     "@types/qrcode": "^1.5.6"

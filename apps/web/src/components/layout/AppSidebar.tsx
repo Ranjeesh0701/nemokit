@@ -28,6 +28,10 @@ import {
   QrCode,
   FilePlus2,
   Terminal,
+  Star,
+  FileCheck,
+  FileEdit,
+  RefreshCw,
 } from 'lucide-react';
 
 interface AppSidebarProps {
@@ -38,6 +42,7 @@ interface AppSidebarProps {
   readonly onToggleCollapse: () => void;
   readonly isMobileOpen: boolean;
   readonly onCloseMobile: () => void;
+  readonly favorites?: ReadonlyArray<string>;
 }
 
 interface CategoryConfig {
@@ -61,7 +66,10 @@ export function AppSidebar({
   onToggleCollapse,
   isMobileOpen,
   onCloseMobile,
+  favorites = [],
 }: AppSidebarProps) {
+  const favoriteTools = tools.filter(t => favorites.includes(t.id));
+
   // Accordion state: by default, all categories are expanded
   const [openCategories, setOpenCategories] = useState<Set<ToolCategory>>(
     () => new Set<ToolCategory>(['formatters', 'converters', 'pdf', 'crypto', 'web'])
@@ -161,6 +169,12 @@ export function AppSidebar({
         return <FilePlus2 className="h-4 w-4" />;
       case 'curl-converter':
         return <Terminal className="h-4 w-4" />;
+      case 'data-converter':
+        return <RefreshCw className="h-4 w-4" />;
+      case 'file-checksum':
+        return <FileCheck className="h-4 w-4" />;
+      case 'markdown-preview':
+        return <FileEdit className="h-4 w-4" />;
       default:
         return <Layers className="h-4 w-4" />;
     }
@@ -258,9 +272,109 @@ export function AppSidebar({
             </button>
           </div>
 
+          {/* Pinned / Favorites Section (Normal Mode) */}
+          {!isCollapsed && favoriteTools.length > 0 && (
+            <div className="space-y-0.5 pt-1 pb-2 border-b border-stone-200/60">
+              <div className="flex items-center justify-between px-2.5 pt-1 pb-1 text-[10px] font-semibold uppercase tracking-wider text-amber-700">
+                <span className="flex items-center gap-1.5">
+                  <Star className="h-3 w-3 fill-amber-400 text-amber-500" />
+                  Favorites
+                </span>
+                <span className="text-[9px] font-mono text-stone-400">{favoriteTools.length}</span>
+              </div>
+              {favoriteTools.map(tool => {
+                const isActive = activeView === tool.id;
+                return (
+                  <button
+                    key={tool.id}
+                    type="button"
+                    onClick={() => {
+                      onSelectView(tool.id);
+                      onCloseMobile();
+                    }}
+                    className={`flex w-full items-center justify-between px-2.5 py-1.5 rounded-lg text-xs font-medium transition-colors ${
+                      isActive
+                        ? 'bg-stone-900 text-white shadow-xs font-semibold'
+                        : 'text-stone-700 hover:bg-stone-200/50 hover:text-stone-900'
+                    }`}
+                  >
+                    <div className="flex items-center gap-2 truncate">
+                      <span className={`shrink-0 ${isActive ? 'text-white' : 'text-stone-400'}`}>
+                        {getToolIcon(tool.id)}
+                      </span>
+                      <span className="truncate">{tool.name}</span>
+                    </div>
+                    {isActive && <ChevronRight className="h-3 w-3 text-stone-400 shrink-0" />}
+                  </button>
+                );
+              })}
+            </div>
+          )}
+
           {/* Compact Mode: Icon-Only for Categories with Popover Flyout */}
           {isCollapsed ? (
             <div className="space-y-2 pt-1 border-t border-stone-200/70">
+              {/* Compact Mode Favorites Button */}
+              {favoriteTools.length > 0 && (
+                <div
+                  className="relative flex justify-center pb-2 border-b border-stone-200/60"
+                  onMouseEnter={() => handleMouseEnter('favorites' as unknown as ToolCategory)}
+                  onMouseLeave={handleMouseLeave}
+                >
+                  <button
+                    type="button"
+                    title={`Favorites (${favoriteTools.length} pinned)`}
+                    onClick={() => {
+                      if (favoriteTools[0]) {
+                        onSelectView(favoriteTools[0].id);
+                        setPopoverCategory(null);
+                      }
+                    }}
+                    className="flex h-10 w-10 items-center justify-center rounded-xl text-amber-500 hover:bg-amber-50 transition-colors"
+                  >
+                    <Star className="h-4 w-4 fill-amber-400" />
+                  </button>
+
+                  {popoverCategory === ('favorites' as unknown as ToolCategory) && (
+                    <div
+                      className="absolute left-full top-0 z-50 -ml-1 pl-3"
+                      onMouseEnter={() => handleMouseEnter('favorites' as unknown as ToolCategory)}
+                      onMouseLeave={handleMouseLeave}
+                    >
+                      <div className="w-56 rounded-xl border border-stone-200/90 bg-white p-1.5 shadow-xl animate-in fade-in zoom-in-95 duration-100">
+                        <div className="flex items-center justify-between px-2.5 py-1.5 pb-1 border-b border-stone-100 mb-1">
+                          <span className="text-xs font-semibold text-amber-700 flex items-center gap-1.5">
+                            <Star className="h-3 w-3 fill-amber-400" />
+                            Favorites
+                          </span>
+                          <span className="text-[10px] font-mono text-stone-400 bg-stone-100 px-1.5 py-0.5 rounded">
+                            {favoriteTools.length}
+                          </span>
+                        </div>
+                        <div className="space-y-0.5">
+                          {favoriteTools.map(tool => (
+                            <button
+                              key={tool.id}
+                              type="button"
+                              onClick={() => {
+                                onSelectView(tool.id);
+                                setPopoverCategory(null);
+                              }}
+                              className="flex w-full items-center justify-between px-2.5 py-1.5 rounded-lg text-xs font-medium text-stone-700 hover:bg-stone-100 transition-colors"
+                            >
+                              <div className="flex items-center gap-2 truncate">
+                                <span className="text-stone-400">{getToolIcon(tool.id)}</span>
+                                <span className="truncate">{tool.name}</span>
+                              </div>
+                            </button>
+                          ))}
+                        </div>
+                      </div>
+                    </div>
+                  )}
+                </div>
+              )}
+
               {categories.map(category => {
                 const categoryTools = tools.filter(t => t.category === category);
                 if (categoryTools.length === 0) return null;

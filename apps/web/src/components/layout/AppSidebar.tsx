@@ -11,14 +11,18 @@ import {
   Layers,
   ChevronRight,
   ShieldCheck,
-  ArrowLeft,
+  PanelLeftClose,
+  PanelLeftOpen,
+  Database,
+  Clock,
 } from 'lucide-react';
 
 interface AppSidebarProps {
   readonly tools: ReadonlyArray<ToolMetadata>;
   readonly activeView: string; // 'home' or toolId
   readonly onSelectView: (viewId: string) => void;
-  readonly onExitToLanding: () => void;
+  readonly isCollapsed: boolean;
+  readonly onToggleCollapse: () => void;
   readonly isMobileOpen: boolean;
   readonly onCloseMobile: () => void;
 }
@@ -34,7 +38,8 @@ export function AppSidebar({
   tools,
   activeView,
   onSelectView,
-  onExitToLanding,
+  isCollapsed,
+  onToggleCollapse,
   isMobileOpen,
   onCloseMobile,
 }: AppSidebarProps) {
@@ -52,6 +57,10 @@ export function AppSidebar({
         return <Fingerprint className="h-4 w-4" />;
       case 'jwt-tool':
         return <FileKey className="h-4 w-4" />;
+      case 'sql-formatter':
+        return <Database className="h-4 w-4" />;
+      case 'timestamp-tool':
+        return <Clock className="h-4 w-4" />;
       default:
         return <Layers className="h-4 w-4" />;
     }
@@ -71,52 +80,75 @@ export function AppSidebar({
 
       {/* Sidebar container */}
       <aside
-        className={`fixed top-0 bottom-0 left-0 z-50 flex w-64 flex-col border-r border-stone-200/80 bg-[#fbfbf9] transition-transform duration-200 md:static md:translate-x-0 ${
+        className={`fixed top-0 bottom-0 left-0 z-50 flex flex-col border-r border-stone-200/80 bg-[#fbfbf9] transition-all duration-200 md:static md:translate-x-0 ${
           isMobileOpen ? 'translate-x-0' : '-translate-x-full'
-        }`}
+        } ${isCollapsed ? 'w-16' : 'w-64'}`}
       >
-        {/* Brand Header */}
-        <div className="flex h-16 items-center justify-between px-5 border-b border-stone-200/60">
-          <button
-            type="button"
-            onClick={() => {
-              onSelectView('home');
-              onCloseMobile();
-            }}
-            className="flex items-center gap-2.5 text-left group"
-          >
-            <span className="flex h-8 w-8 items-center justify-center rounded-xl bg-stone-900 text-white shadow-xs group-hover:bg-stone-800 transition-colors">
-              <Boxes className="h-4 w-4" />
-            </span>
-            <div className="flex flex-col">
-              <span className="text-sm font-bold tracking-tight text-stone-900 leading-none">
-                Nemokit
-              </span>
-              <span className="text-[10px] text-stone-400 font-medium tracking-tight mt-0.5">
-                Tool Engine
-              </span>
-            </div>
-          </button>
-        </div>
-
-        {/* Navigation list */}
-        <div className="flex-1 overflow-y-auto px-3 py-4 space-y-6">
-          {/* Main Views */}
-          <div className="space-y-1">
+        {/* Brand & Collapse Header */}
+        <div
+          className={`flex h-16 items-center border-b border-stone-200/60 ${
+            isCollapsed ? 'justify-center px-2' : 'justify-between px-4'
+          }`}
+        >
+          {!isCollapsed && (
             <button
               type="button"
               onClick={() => {
                 onSelectView('home');
                 onCloseMobile();
               }}
-              className={`flex w-full items-center gap-2.5 rounded-xl px-3 py-2 text-xs font-medium transition-colors ${
+              className="flex items-center gap-2.5 text-left group truncate"
+            >
+              <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-xl bg-stone-900 text-white shadow-xs group-hover:bg-stone-800 transition-colors">
+                <Boxes className="h-4 w-4" />
+              </span>
+              <div className="flex flex-col truncate">
+                <span className="text-sm font-bold tracking-tight text-stone-900 leading-none">
+                  Nemokit
+                </span>
+                <span className="text-[10px] text-stone-400 font-medium tracking-tight mt-0.5">
+                  Tool Engine
+                </span>
+              </div>
+            </button>
+          )}
+
+          {/* Collapse/Expand Toggle Button */}
+          <button
+            type="button"
+            onClick={onToggleCollapse}
+            title={isCollapsed ? 'Expand sidebar' : 'Collapse sidebar'}
+            className="flex h-8 w-8 items-center justify-center rounded-lg text-stone-400 hover:bg-stone-200/60 hover:text-stone-700 transition-colors"
+          >
+            {isCollapsed ? (
+              <PanelLeftOpen className="h-4 w-4" />
+            ) : (
+              <PanelLeftClose className="h-4 w-4" />
+            )}
+          </button>
+        </div>
+
+        {/* Navigation list */}
+        <div className={`flex-1 overflow-y-auto py-4 space-y-5 ${isCollapsed ? 'px-2' : 'px-3'}`}>
+          {/* Main Dashboard Link */}
+          <div className="space-y-1">
+            <button
+              type="button"
+              title={isCollapsed ? 'Overview & Dashboard' : undefined}
+              onClick={() => {
+                onSelectView('home');
+                onCloseMobile();
+              }}
+              className={`flex w-full items-center rounded-xl text-xs font-medium transition-colors ${
+                isCollapsed ? 'justify-center h-10 px-0' : 'gap-2.5 px-3 py-2'
+              } ${
                 activeView === 'home'
                   ? 'bg-stone-900 text-white shadow-xs'
                   : 'text-stone-600 hover:bg-stone-200/50 hover:text-stone-900'
               }`}
             >
-              <Home className="h-4 w-4" />
-              <span>Overview & Dashboard</span>
+              <Home className="h-4 w-4 shrink-0" />
+              {!isCollapsed && <span>Overview & Dashboard</span>}
             </button>
           </div>
 
@@ -127,9 +159,13 @@ export function AppSidebar({
 
             return (
               <div key={category} className="space-y-1">
-                <div className="px-3 pb-1 text-[10px] font-semibold uppercase tracking-wider text-stone-400">
-                  {CATEGORY_LABELS[category]}
-                </div>
+                {isCollapsed ? (
+                  <div className="my-2 border-t border-stone-200/60" />
+                ) : (
+                  <div className="px-3 pb-1 text-[10px] font-semibold uppercase tracking-wider text-stone-400">
+                    {CATEGORY_LABELS[category]}
+                  </div>
+                )}
 
                 {categoryTools.map(tool => {
                   const isActive = activeView === tool.id;
@@ -137,23 +173,28 @@ export function AppSidebar({
                     <button
                       key={tool.id}
                       type="button"
+                      title={isCollapsed ? tool.name : undefined}
                       onClick={() => {
                         onSelectView(tool.id);
                         onCloseMobile();
                       }}
-                      className={`flex w-full items-center justify-between rounded-xl px-3 py-2 text-xs font-medium transition-colors ${
+                      className={`flex w-full items-center rounded-xl text-xs font-medium transition-colors ${
+                        isCollapsed ? 'justify-center h-10 px-0' : 'justify-between px-3 py-2'
+                      } ${
                         isActive
                           ? 'bg-stone-900 text-white shadow-xs'
                           : 'text-stone-600 hover:bg-stone-200/50 hover:text-stone-900'
                       }`}
                     >
                       <div className="flex items-center gap-2.5 truncate">
-                        <span className={isActive ? 'text-white' : 'text-stone-500'}>
+                        <span className={`shrink-0 ${isActive ? 'text-white' : 'text-stone-500'}`}>
                           {getToolIcon(tool.id)}
                         </span>
-                        <span className="truncate">{tool.name}</span>
+                        {!isCollapsed && <span className="truncate">{tool.name}</span>}
                       </div>
-                      {isActive && <ChevronRight className="h-3.5 w-3.5 text-stone-400" />}
+                      {!isCollapsed && isActive && (
+                        <ChevronRight className="h-3.5 w-3.5 text-stone-400 shrink-0" />
+                      )}
                     </button>
                   );
                 })}
@@ -163,22 +204,20 @@ export function AppSidebar({
         </div>
 
         {/* Sidebar Footer */}
-        <div className="border-t border-stone-200/60 p-4 space-y-3">
-          <button
-            type="button"
-            onClick={onExitToLanding}
-            className="flex w-full items-center gap-2 rounded-xl border border-stone-200 bg-white px-3 py-2 text-xs font-medium text-stone-700 hover:bg-stone-50 transition-colors"
+        <div className={`border-t border-stone-200/60 ${isCollapsed ? 'p-2' : 'p-3'}`}>
+          <div
+            className={`flex items-center rounded-xl bg-white border border-stone-200/80 shadow-2xs ${
+              isCollapsed ? 'justify-center p-2.5' : 'gap-2 p-2.5'
+            }`}
+            title="100% Client-Side Engine • Zero tracking"
           >
-            <ArrowLeft className="h-3.5 w-3.5 text-stone-400" />
-            <span>Back to Landing Page</span>
-          </button>
-
-          <div className="flex items-center gap-2 rounded-xl bg-white border border-stone-200/80 p-2.5 shadow-2xs">
             <ShieldCheck className="h-4 w-4 text-emerald-600 shrink-0" />
-            <div className="flex flex-col text-[11px] leading-tight">
-              <span className="font-semibold text-stone-800">100% Client-Side</span>
-              <span className="text-stone-400">Zero data leaves device</span>
-            </div>
+            {!isCollapsed && (
+              <div className="flex flex-col text-[11px] leading-tight truncate">
+                <span className="font-semibold text-stone-800">100% Client-Side</span>
+                <span className="text-stone-400">Zero data leaves device</span>
+              </div>
+            )}
           </div>
         </div>
       </aside>

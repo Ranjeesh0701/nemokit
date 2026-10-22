@@ -7,6 +7,8 @@ import {
   hashTool,
   uuidTool,
   jwtTool,
+  sqlFormatterTool,
+  timestampTool,
 } from '@nemokit/core';
 import type { ToolMetadata } from '@nemokit/core';
 import { LandingPage } from './components/landing/LandingPage.js';
@@ -19,6 +21,8 @@ import { UrlToolView } from './components/UrlToolView.js';
 import { HashToolView } from './components/HashToolView.js';
 import { UuidToolView } from './components/views/UuidToolView.js';
 import { JwtToolView } from './components/views/JwtToolView.js';
+import { SqlFormatterView } from './components/views/SqlFormatterView.js';
+import { TimestampView } from './components/views/TimestampView.js';
 
 type RouteState = { mode: 'landing' } | { mode: 'app'; activeToolId: string }; // 'dashboard' or specific tool id
 
@@ -32,6 +36,8 @@ export default function App() {
     reg.register(hashTool);
     reg.register(uuidTool);
     reg.register(jwtTool);
+    reg.register(sqlFormatterTool);
+    reg.register(timestampTool);
     return reg;
   }, []);
 
@@ -65,6 +71,7 @@ export default function App() {
   const [route, setRoute] = useState<RouteState>(() => parseRouteFromHash());
   const [searchQuery, setSearchQuery] = useState<string>('');
   const [isMobileSidebarOpen, setIsMobileSidebarOpen] = useState<boolean>(false);
+  const [isSidebarCollapsed, setIsSidebarCollapsed] = useState<boolean>(false);
 
   // Sync hash changes (browser back/forward navigation)
   useEffect(() => {
@@ -78,10 +85,6 @@ export default function App() {
   const handleLaunchApp = (toolId?: string) => {
     const targetTool = toolId ?? 'json-formatter';
     window.location.hash = `#/app/${targetTool}`;
-  };
-
-  const handleExitToLanding = () => {
-    window.location.hash = '#/';
   };
 
   const handleSelectView = (viewId: string) => {
@@ -103,12 +106,13 @@ export default function App() {
 
   return (
     <div className="flex h-screen w-screen overflow-hidden bg-[#faf9f6] text-stone-800 antialiased selection:bg-stone-200">
-      {/* App Sidebar */}
+      {/* App Sidebar with Compact Mode */}
       <AppSidebar
         tools={tools}
         activeView={activeToolId === 'dashboard' ? 'home' : activeToolId}
         onSelectView={handleSelectView}
-        onExitToLanding={handleExitToLanding}
+        isCollapsed={isSidebarCollapsed}
+        onToggleCollapse={() => setIsSidebarCollapsed(prev => !prev)}
         isMobileOpen={isMobileSidebarOpen}
         onCloseMobile={() => setIsMobileSidebarOpen(false)}
       />
@@ -140,6 +144,8 @@ export default function App() {
             {activeToolId === 'hash-tool' && <HashToolView />}
             {activeToolId === 'uuid-tool' && <UuidToolView />}
             {activeToolId === 'jwt-tool' && <JwtToolView />}
+            {activeToolId === 'sql-formatter' && <SqlFormatterView />}
+            {activeToolId === 'timestamp-tool' && <TimestampView />}
           </div>
         </main>
 
@@ -152,13 +158,7 @@ export default function App() {
           <div className="flex items-center gap-4">
             <span>Shortcut: ⌘/Ctrl + Enter to run</span>
             <span>•</span>
-            <button
-              type="button"
-              onClick={handleExitToLanding}
-              className="text-stone-500 hover:text-stone-800 transition-colors"
-            >
-              Exit to Landing
-            </button>
+            <span>Nemokit v0.1.0</span>
           </div>
         </footer>
       </div>

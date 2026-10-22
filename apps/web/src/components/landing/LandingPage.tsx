@@ -11,6 +11,8 @@ import {
   KeyRound,
   Fingerprint,
   FileKey,
+  Database,
+  Clock,
   Layers,
   Sparkles,
   Lock,
@@ -36,6 +38,10 @@ export function LandingPage({ tools, onLaunchApp }: LandingPageProps) {
         return <Fingerprint className="h-5 w-5 text-indigo-600" />;
       case 'jwt-tool':
         return <FileKey className="h-5 w-5 text-rose-600" />;
+      case 'sql-formatter':
+        return <Database className="h-5 w-5 text-cyan-600" />;
+      case 'timestamp-tool':
+        return <Clock className="h-5 w-5 text-teal-600" />;
       default:
         return <Layers className="h-5 w-5 text-stone-600" />;
     }

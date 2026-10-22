@@ -25,3 +25,6 @@ export * from './tools/markdown-tool.js';
 export * from './tools/chmod-tool.js';
 export * from './tools/html-preview-tool.js';
 export * from './tools/http-ref-tool.js';
+export * from './tools/bg-remover-tool.js';
+export * from './tools/image-redactor-tool.js';
+export * from './tools/image-converter-tool.js';

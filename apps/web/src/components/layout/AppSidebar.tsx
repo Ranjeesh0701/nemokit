@@ -34,6 +34,9 @@ import {
   RefreshCw,
   RotateCcw,
   Code2,
+  Image as ImageIcon,
+  EyeOff,
+  Scale,
 } from 'lucide-react';
 
 interface AppSidebarProps {
@@ -58,6 +61,7 @@ interface CategoryConfig {
 const CATEGORY_CONFIG: Record<ToolCategory, CategoryConfig> = {
   formatters: { label: 'Formatters', icon: FileCode },
   converters: { label: 'Converters', icon: ArrowRightLeft },
+  images: { label: 'Image Studio', icon: ImageIcon },
   pdf: { label: 'PDF Studio', icon: Scissors },
   crypto: { label: 'Security', icon: Lock },
   web: { label: 'Web', icon: Globe },
@@ -79,7 +83,15 @@ export function AppSidebar({
   // Accordion state: by default, all categories are expanded
   const [openCategories, setOpenCategories] = useState<Set<SidebarCategory>>(
     () =>
-      new Set<SidebarCategory>(['favorites', 'formatters', 'converters', 'pdf', 'crypto', 'web'])
+      new Set<SidebarCategory>([
+        'favorites',
+        'formatters',
+        'converters',
+        'images',
+        'pdf',
+        'crypto',
+        'web',
+      ])
   );
 
   // Popover state for compact mode when hovering over a category icon
@@ -188,12 +200,25 @@ export function AppSidebar({
         return <Code2 className="h-4 w-4" />;
       case 'http-reference':
         return <Globe className="h-4 w-4" />;
+      case 'bg-remover':
+        return <ImageIcon className="h-4 w-4" />;
+      case 'image-redactor':
+        return <EyeOff className="h-4 w-4" />;
+      case 'image-converter':
+        return <Scale className="h-4 w-4" />;
       default:
         return <Layers className="h-4 w-4" />;
     }
   };
 
-  const categories: ToolCategory[] = ['formatters', 'converters', 'pdf', 'crypto', 'web'];
+  const categories: ToolCategory[] = [
+    'formatters',
+    'converters',
+    'images',
+    'pdf',
+    'crypto',
+    'web',
+  ];
 
   return (
     <>

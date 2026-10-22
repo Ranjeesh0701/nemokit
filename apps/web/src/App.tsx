@@ -25,6 +25,9 @@ import {
   chmodTool,
   htmlPreviewTool,
   httpRefTool,
+  bgRemoverTool,
+  imageRedactorTool,
+  imageConverterTool,
 } from '@nemokit/core';
 import type { ToolMetadata } from '@nemokit/core';
 import { LandingPage } from './components/landing/LandingPage.js';
@@ -109,6 +112,15 @@ const HtmlPreviewView = lazy(() =>
 const HttpRefView = lazy(() =>
   import('./components/views/HttpRefView.js').then(m => ({ default: m.HttpRefView }))
 );
+const BgRemoverView = lazy(() =>
+  import('./components/views/BgRemoverView.js').then(m => ({ default: m.BgRemoverView }))
+);
+const ImageRedactorView = lazy(() =>
+  import('./components/views/ImageRedactorView.js').then(m => ({ default: m.ImageRedactorView }))
+);
+const ImageConverterView = lazy(() =>
+  import('./components/views/ImageConverterView.js').then(m => ({ default: m.ImageConverterView }))
+);
 
 function ViewSkeleton() {
   return (
@@ -157,6 +169,9 @@ export default function App() {
     reg.register(chmodTool);
     reg.register(htmlPreviewTool);
     reg.register(httpRefTool);
+    reg.register(bgRemoverTool);
+    reg.register(imageRedactorTool);
+    reg.register(imageConverterTool);
     return reg;
   }, []);
 
@@ -357,6 +372,9 @@ export default function App() {
               {activeToolId === 'chmod-calculator' && <ChmodToolView />}
               {activeToolId === 'html-preview' && <HtmlPreviewView />}
               {activeToolId === 'http-reference' && <HttpRefView />}
+              {activeToolId === 'bg-remover' && <BgRemoverView />}
+              {activeToolId === 'image-redactor' && <ImageRedactorView />}
+              {activeToolId === 'image-converter' && <ImageConverterView />}
             </Suspense>
           </div>
         </main>

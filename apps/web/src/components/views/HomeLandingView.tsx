@@ -25,6 +25,9 @@ import {
   FileEdit,
   RefreshCw,
   Code2,
+  Image as ImageIcon,
+  EyeOff,
+  Scale,
   ShieldCheck,
   Zap,
   Cpu,
@@ -49,6 +52,10 @@ const CATEGORY_TITLES: Record<ToolCategory, { title: string; subtitle: string }>
   converters: {
     title: 'Converters & Decoders',
     subtitle: 'Transform between formats, encodings, and tokens.',
+  },
+  images: {
+    title: 'Image Studio',
+    subtitle: 'Client-side background removal, privacy redaction, and image compression.',
   },
   crypto: {
     title: 'Cryptography & Identifiers',
@@ -122,6 +129,12 @@ export function HomeLandingView({
         return <Code2 className="h-5 w-5 text-orange-600" />;
       case 'http-reference':
         return <Globe className="h-5 w-5 text-cyan-600" />;
+      case 'bg-remover':
+        return <ImageIcon className="h-5 w-5 text-violet-600" />;
+      case 'image-redactor':
+        return <EyeOff className="h-5 w-5 text-rose-600" />;
+      case 'image-converter':
+        return <Scale className="h-5 w-5 text-indigo-600" />;
       default:
         return <Layers className="h-5 w-5 text-stone-600" />;
     }
@@ -205,7 +218,7 @@ export function HomeLandingView({
 
       {/* Categorized Tools Directory */}
       <div className="flex flex-col gap-10">
-        {(['formatters', 'converters', 'pdf', 'crypto', 'web'] as const).map(category => {
+        {(['formatters', 'converters', 'images', 'pdf', 'crypto', 'web'] as const).map(category => {
           const categoryTools = groupedTools.get(category) ?? [];
           if (categoryTools.length === 0) return null;
           const meta = CATEGORY_TITLES[category];

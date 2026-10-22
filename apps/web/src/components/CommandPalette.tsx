@@ -24,6 +24,9 @@ import {
   FileEdit,
   RefreshCw,
   Code2,
+  Image as ImageIcon,
+  EyeOff,
+  Scale,
   Layers,
   X,
 } from 'lucide-react';
@@ -39,6 +42,7 @@ interface CommandPaletteProps {
 const CATEGORY_NAMES: Record<ToolCategory, string> = {
   formatters: 'Formatters & Beautifiers',
   converters: 'Converters & Decoders',
+  images: 'Image Studio',
   crypto: 'Cryptography & Identifiers',
   web: 'Web & Network',
   pdf: 'PDF Utilities',
@@ -47,6 +51,7 @@ const CATEGORY_NAMES: Record<ToolCategory, string> = {
 const CATEGORY_ORDER: ReadonlyArray<ToolCategory> = [
   'formatters',
   'converters',
+  'images',
   'crypto',
   'web',
   'pdf',
@@ -209,6 +214,12 @@ export function CommandPalette({
         return <Code2 className="h-4 w-4" />;
       case 'http-reference':
         return <Globe className="h-4 w-4" />;
+      case 'bg-remover':
+        return <ImageIcon className="h-4 w-4" />;
+      case 'image-redactor':
+        return <EyeOff className="h-4 w-4" />;
+      case 'image-converter':
+        return <Scale className="h-4 w-4" />;
       default:
         return <Layers className="h-4 w-4" />;
     }

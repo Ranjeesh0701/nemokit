@@ -20,6 +20,7 @@ export const jsonFormatterTool: Tool<JsonFormatterInput, JsonFormatterOutput> = 
   id: 'json-formatter',
   name: 'JSON Formatter',
   description: 'Validates and formats JSON strings with customizable indentation.',
+  category: 'formatters',
 
   execute(input: JsonFormatterInput): ToolExecutionResult<JsonFormatterOutput> {
     if (!input || typeof input.raw !== 'string' || input.raw.trim() === '') {

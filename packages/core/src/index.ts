@@ -1,3 +1,6 @@
 export * from './types.js';
 export * from './registry.js';
 export * from './tools/json-formatter.js';
+export * from './tools/base64-tool.js';
+export * from './tools/url-tool.js';
+export * from './tools/hash-tool.js';

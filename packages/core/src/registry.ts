@@ -1,4 +1,4 @@
-import type { Tool, ToolMetadata } from './types.js';
+import type { Tool, ToolCategory, ToolMetadata } from './types.js';
 
 /**
  * In-memory registry for discovering and accessing Nemokit tools.
@@ -43,6 +43,13 @@ export class ToolRegistry {
    */
   public getAll(): ReadonlyArray<ToolMetadata> {
     return Array.from(this.tools.values());
+  }
+
+  /**
+   * Returns all registered tools matching the given category.
+   */
+  public getByCategory(category: ToolCategory): ReadonlyArray<ToolMetadata> {
+    return Array.from(this.tools.values()).filter(tool => tool.category === category);
   }
 
   /**

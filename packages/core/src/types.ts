@@ -13,6 +13,7 @@ export interface ToolExecutionError {
 export interface ToolExecutionSuccess<TOutput> {
   readonly success: true;
   readonly data: TOutput;
+  readonly durationMs?: number;
 }
 
 /**
@@ -34,12 +35,18 @@ export type ToolExecutionResult<TOutput> = ToolExecutionSuccess<TOutput> | ToolE
 export type MaybePromise<T> = T | Promise<T>;
 
 /**
+ * Standard functional categories for organizing tools.
+ */
+export type ToolCategory = 'formatters' | 'converters' | 'crypto' | 'web';
+
+/**
  * Basic metadata describing a tool for identification and discovery.
  */
 export interface ToolMetadata {
   readonly id: string;
   readonly name: string;
   readonly description: string;
+  readonly category: ToolCategory;
 }
 
 /**
@@ -51,10 +58,17 @@ export interface Tool<TInput = unknown, TOutput = unknown> extends ToolMetadata 
 }
 
 /**
- * Helper to construct a typed success result.
+ * Helper to construct a typed success result with optional execution duration.
  */
-export function successResult<TOutput>(data: TOutput): ToolExecutionSuccess<TOutput> {
-  return { success: true, data };
+export function successResult<TOutput>(
+  data: TOutput,
+  durationMs?: number
+): ToolExecutionSuccess<TOutput> {
+  return {
+    success: true,
+    data,
+    ...(durationMs !== undefined && { durationMs }),
+  };
 }
 
 /**

@@ -1,28 +1,70 @@
 import { useMemo, useState } from 'react';
-import { ToolRegistry, jsonFormatterTool } from '@nemokit/core';
-import type { ToolMetadata } from '@nemokit/core';
+import { ToolRegistry, jsonFormatterTool, base64Tool, urlTool, hashTool } from '@nemokit/core';
+import type { ToolCategory, ToolMetadata } from '@nemokit/core';
 import { JsonFormatterView } from './components/JsonFormatterView.js';
-import { Boxes, ShieldCheck, Sparkles, Code2, Search } from 'lucide-react';
+import { Base64View } from './components/Base64View.js';
+import { UrlToolView } from './components/UrlToolView.js';
+import { HashToolView } from './components/HashToolView.js';
+import {
+  Boxes,
+  ShieldCheck,
+  Sparkles,
+  Search,
+  FileCode,
+  Binary,
+  Globe,
+  KeyRound,
+  Layers,
+} from 'lucide-react';
 
 export default function App() {
-  // Initialize and populate core engine registry
+  // Initialize and populate core engine registry with all built-in tools
   const registry = useMemo(() => {
     const reg = new ToolRegistry();
     reg.register(jsonFormatterTool);
+    reg.register(base64Tool);
+    reg.register(urlTool);
+    reg.register(hashTool);
     return reg;
   }, []);
 
   const tools: ReadonlyArray<ToolMetadata> = useMemo(() => registry.getAll(), [registry]);
   const [activeToolId, setActiveToolId] = useState<string>('json-formatter');
+  const [activeCategory, setActiveCategory] = useState<ToolCategory | 'all'>('all');
   const [searchQuery, setSearchQuery] = useState<string>('');
 
   const filteredTools = useMemo(() => {
-    if (!searchQuery.trim()) return tools;
-    const q = searchQuery.toLowerCase();
-    return tools.filter(
-      t => t.name.toLowerCase().includes(q) || t.description.toLowerCase().includes(q)
-    );
-  }, [tools, searchQuery]);
+    let result = tools;
+
+    if (activeCategory !== 'all') {
+      result = result.filter(t => t.category === activeCategory);
+    }
+
+    if (searchQuery.trim()) {
+      const q = searchQuery.toLowerCase();
+      result = result.filter(
+        t => t.name.toLowerCase().includes(q) || t.description.toLowerCase().includes(q)
+      );
+    }
+
+    return result;
+  }, [tools, activeCategory, searchQuery]);
+
+  // Helper icon lookup
+  const getToolIcon = (id: string) => {
+    switch (id) {
+      case 'json-formatter':
+        return <FileCode className="h-3.5 w-3.5" />;
+      case 'base64-tool':
+        return <Binary className="h-3.5 w-3.5" />;
+      case 'url-tool':
+        return <Globe className="h-3.5 w-3.5" />;
+      case 'hash-tool':
+        return <KeyRound className="h-3.5 w-3.5" />;
+      default:
+        return <Layers className="h-3.5 w-3.5" />;
+    }
+  };
 
   return (
     <div className="min-h-screen bg-[#faf9f6] text-stone-800 flex flex-col">
@@ -64,22 +106,46 @@ export default function App() {
         </div>
       </header>
 
-      {/* Hero / Banner */}
-      <section className="border-b border-stone-200/60 bg-gradient-to-b from-[#f5f3ee] to-[#faf9f6] py-10 px-4 sm:px-6 lg:px-8">
+      {/* Hero / Category Filter Bar */}
+      <section className="border-b border-stone-200/60 bg-gradient-to-b from-[#f5f3ee] to-[#faf9f6] py-8 px-4 sm:px-6 lg:px-8">
         <div className="mx-auto max-w-7xl">
-          <div className="inline-flex items-center gap-2 rounded-full border border-stone-200/80 bg-white px-3 py-1 text-xs font-medium text-stone-600 shadow-xs mb-3">
-            <Sparkles className="h-3 w-3 text-amber-500" />
-            <span>Fast, zero-latency browser tools</span>
-          </div>
-          <h2 className="text-2xl sm:text-3xl font-bold tracking-tight text-stone-900">
-            Your tools. One place. No clutter.
-          </h2>
-          <p className="mt-1.5 max-w-2xl text-sm sm:text-base text-stone-500">
-            Everyday utilities designed with purpose. No ads, no telemetry, and powered by an
-            independent client-side engine.
-          </p>
+          <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-4">
+            <div>
+              <div className="inline-flex items-center gap-2 rounded-full border border-stone-200/80 bg-white px-3 py-1 text-xs font-medium text-stone-600 shadow-xs mb-2">
+                <Sparkles className="h-3 w-3 text-amber-500" />
+                <span>Zero latency • 100% Client-side execution</span>
+              </div>
+              <h2 className="text-2xl font-bold tracking-tight text-stone-900">
+                Your tools. One place. No clutter.
+              </h2>
+            </div>
 
-          {/* Tool Category Selector */}
+            {/* Category Filter Pills */}
+            <div className="flex flex-wrap items-center gap-1.5">
+              {[
+                { id: 'all', label: 'All Tools' },
+                { id: 'formatters', label: 'Formatters' },
+                { id: 'converters', label: 'Converters' },
+                { id: 'crypto', label: 'Crypto' },
+                { id: 'web', label: 'Web' },
+              ].map(cat => (
+                <button
+                  key={cat.id}
+                  type="button"
+                  onClick={() => setActiveCategory(cat.id as ToolCategory | 'all')}
+                  className={`rounded-lg px-2.5 py-1 text-xs font-medium transition-all ${
+                    activeCategory === cat.id
+                      ? 'bg-stone-900 text-white shadow-xs'
+                      : 'bg-white/80 border border-stone-200/80 text-stone-600 hover:bg-stone-100 hover:text-stone-900'
+                  }`}
+                >
+                  {cat.label}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          {/* Tool Switcher Pills */}
           <div className="mt-6 flex flex-wrap items-center gap-2">
             {filteredTools.map(tool => (
               <button
@@ -92,7 +158,7 @@ export default function App() {
                     : 'bg-white border border-stone-200/80 text-stone-700 hover:bg-stone-100/70 hover:border-stone-300'
                 }`}
               >
-                <Code2 className="h-3.5 w-3.5" />
+                {getToolIcon(tool.id)}
                 <span>{tool.name}</span>
               </button>
             ))}
@@ -103,13 +169,10 @@ export default function App() {
       {/* Main Tool Workspace */}
       <main className="flex-1 py-8 px-4 sm:px-6 lg:px-8">
         <div className="mx-auto max-w-7xl">
-          {activeToolId === 'json-formatter' ? (
-            <JsonFormatterView />
-          ) : (
-            <div className="rounded-2xl border border-stone-200 bg-white p-12 text-center text-sm text-stone-500">
-              Tool not selected or under construction.
-            </div>
-          )}
+          {activeToolId === 'json-formatter' && <JsonFormatterView />}
+          {activeToolId === 'base64-tool' && <Base64View />}
+          {activeToolId === 'url-tool' && <UrlToolView />}
+          {activeToolId === 'hash-tool' && <HashToolView />}
         </div>
       </main>
 
@@ -121,6 +184,8 @@ export default function App() {
             <span>Light mode only</span>
             <span>•</span>
             <span>No backend required</span>
+            <span>•</span>
+            <span>Keyboard: ⌘/Ctrl + Enter to run</span>
           </div>
         </div>
       </footer>

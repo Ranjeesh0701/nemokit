@@ -22,10 +22,12 @@ export function JsonFormatterView() {
   const [input, setInput] = useState<string>(SAMPLE_JSON);
   const [indent, setIndent] = useState<number | '\t'>(2);
   const [output, setOutput] = useState<JsonFormatterOutput | null>(null);
+  const [duration, setDuration] = useState<number | null>(null);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [copied, setCopied] = useState(false);
 
   const formatText = async (textToFormat: string, indentSpacing: number | '\t') => {
+    const startTime = performance.now();
     const result = await jsonFormatterTool.execute({
       raw: textToFormat,
       indent: indentSpacing,
@@ -33,6 +35,7 @@ export function JsonFormatterView() {
 
     if (result.success) {
       setOutput(result.data);
+      setDuration(result.durationMs ?? performance.now() - startTime);
       setErrorMessage(null);
     } else {
       setErrorMessage(result.error.message);
@@ -167,6 +170,12 @@ export function JsonFormatterView() {
               setInput(e.target.value);
               if (errorMessage) setErrorMessage(null);
             }}
+            onKeyDown={e => {
+              if ((e.metaKey || e.ctrlKey) && e.key === 'Enter') {
+                e.preventDefault();
+                handleFormat();
+              }
+            }}
             placeholder="Paste your JSON here..."
             rows={18}
             className="mt-3 w-full resize-y rounded-xl border border-stone-200/60 bg-[#fdfdfc] p-3.5 font-mono text-xs text-stone-900 leading-relaxed placeholder:text-stone-400 focus:border-stone-900 focus:outline-none focus:ring-1 focus:ring-stone-900 transition-all"
@@ -216,7 +225,7 @@ export function JsonFormatterView() {
                 onClick={() => handleFormat()}
                 className="rounded-lg bg-stone-900 px-3.5 py-1.5 text-xs font-medium text-white shadow-xs hover:bg-stone-800 transition-colors"
               >
-                Format
+                Format <span className="opacity-60 text-[10px] ml-1">⌘↵</span>
               </button>
             </div>
           </div>
@@ -233,6 +242,12 @@ export function JsonFormatterView() {
                 <span>{output.linesCount} lines</span>
                 <span>•</span>
                 <span>{output.byteSize} bytes</span>
+                {duration !== null && (
+                  <>
+                    <span>•</span>
+                    <span className="text-emerald-700">{duration.toFixed(2)} ms</span>
+                  </>
+                )}
               </div>
             )}
           </div>

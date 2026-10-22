@@ -34,6 +34,7 @@ import {
   jsonSchemaTool,
   logoBuilderTool,
   patternGeneratorTool,
+  randomSvgTool,
 } from '@nemokit/core';
 import type { ToolMetadata } from '@nemokit/core';
 import { LandingPage } from './components/landing/LandingPage.js';
@@ -155,6 +156,11 @@ const PatternGeneratorView = lazy(() =>
     default: m.PatternGeneratorView,
   }))
 );
+const RandomSvgView = lazy(() =>
+  import('./components/views/RandomSvgView.js').then(m => ({
+    default: m.RandomSvgView,
+  }))
+);
 
 function ViewSkeleton() {
   return (
@@ -212,6 +218,7 @@ export default function App() {
     reg.register(jsonSchemaTool);
     reg.register(logoBuilderTool);
     reg.register(patternGeneratorTool);
+    reg.register(randomSvgTool);
     return reg;
   }, []);
 
@@ -421,6 +428,7 @@ export default function App() {
               {activeToolId === 'json-schema' && <JsonSchemaView />}
               {activeToolId === 'logo-builder' && <LogoBuilderView />}
               {activeToolId === 'pattern-generator' && <PatternGeneratorView />}
+              {activeToolId === 'random-svg' && <RandomSvgView />}
             </Suspense>
           </div>
         </main>

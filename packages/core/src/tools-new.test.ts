@@ -4,6 +4,7 @@ import {
   jsonSchemaTool,
   logoBuilderTool,
   patternGeneratorTool,
+  randomSvgTool,
   colorTool,
   evaluateWcagContrast,
   generateGradientCss,
@@ -296,5 +297,57 @@ describe('patternGeneratorTool', () => {
     if (!res.success) return;
     expect(res.data.svg).toContain('<circle');
     expect(res.data.svg).not.toContain('<rect');
+  });
+});
+
+describe('randomSvgTool', () => {
+  it('generates organic blob SVGs with cubic bezier curves and React JSX', () => {
+    const res = randomSvgTool.execute({
+      type: 'blob',
+      complexity: 6,
+      color1: '#06b6d4',
+      color2: '#a855f7',
+      background: '#09090b',
+      isTransparent: false,
+      seed: 42,
+    });
+
+    expect(res.success).toBe(true);
+    if (!res.success) return;
+    expect(res.data.svg).toContain('<svg');
+    expect(res.data.svg).toContain('<path');
+    expect(res.data.reactJsx).toContain('export function GeneratedGraphic');
+    expect(res.data.cssDataUrl).toContain('data:image/svg+xml');
+  });
+
+  it('generates symmetrical pixel identicons and circuit node maps', () => {
+    const identiconRes = randomSvgTool.execute({
+      type: 'identicon',
+      complexity: 5,
+      color1: '#f43f5e',
+      color2: '#fb923c',
+      background: '#ffffff',
+      isTransparent: false,
+      seed: 99,
+    });
+    expect(identiconRes.success).toBe(true);
+    if (identiconRes.success) {
+      expect(identiconRes.data.svg).toContain('<rect');
+    }
+
+    const circuitsRes = randomSvgTool.execute({
+      type: 'circuits',
+      complexity: 8,
+      color1: '#10b981',
+      color2: '#34d399',
+      background: 'transparent',
+      isTransparent: true,
+      seed: 77,
+    });
+    expect(circuitsRes.success).toBe(true);
+    if (circuitsRes.success) {
+      expect(circuitsRes.data.svg).toContain('<path');
+      expect(circuitsRes.data.svg).toContain('<circle');
+    }
   });
 });

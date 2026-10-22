@@ -677,6 +677,9 @@ export function LogoBuilderView() {
           </div>
         </div>
       </div>
+
+      {/* Guaranteed Bottom Spacing Spacer matching other screens */}
+      <div className="h-12 sm:h-16 shrink-0 w-full" aria-hidden="true" />
     </div>
   );
 }

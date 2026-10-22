@@ -150,6 +150,8 @@ export function HomeLandingView({
         return <Shapes className="h-5 w-5 text-purple-600" />;
       case 'pattern-generator':
         return <Grid className="h-5 w-5 text-fuchsia-600" />;
+      case 'random-svg':
+        return <Sparkles className="h-5 w-5 text-pink-600" />;
       default:
         return <Layers className="h-5 w-5 text-stone-600" />;
     }

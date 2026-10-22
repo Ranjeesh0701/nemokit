@@ -222,6 +222,8 @@ export function AppSidebar({
         return <Shapes className="h-4 w-4" />;
       case 'pattern-generator':
         return <Grid className="h-4 w-4" />;
+      case 'random-svg':
+        return <Sparkles className="h-4 w-4" />;
       default:
         return <Layers className="h-4 w-4" />;
     }

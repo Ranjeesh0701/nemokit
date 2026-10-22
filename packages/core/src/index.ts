@@ -34,3 +34,4 @@ export * from './tools/svg-optimizer-tool.js';
 export * from './tools/json-schema-tool.js';
 export * from './tools/logo-builder-tool.js';
 export * from './tools/pattern-tool.js';
+export * from './tools/random-svg-tool.js';

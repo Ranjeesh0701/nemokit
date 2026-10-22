@@ -135,7 +135,7 @@ export function PatternGeneratorView() {
   };
 
   return (
-    <div className="flex flex-col gap-6 w-full flex-1 min-h-0">
+    <div className="flex flex-col gap-6 w-full flex-1 pb-12 min-h-0">
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 border-b border-stone-200/80 pb-6 shrink-0">
         <div>
@@ -180,9 +180,9 @@ export function PatternGeneratorView() {
       </div>
 
       {/* Main Workspace: Left Controls + Right Live Canvas */}
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 flex-1 min-h-[460px]">
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start flex-1 min-h-[460px] pb-8">
         {/* Left Control Panel (6 cols) */}
-        <div className="lg:col-span-6 flex flex-col gap-5 overflow-y-auto pr-1">
+        <div className="lg:col-span-6 flex flex-col gap-5 min-w-0">
           {/* Pattern Type Picker */}
           <div className="rounded-xl border border-stone-200/90 bg-white p-5 shadow-xs space-y-3">
             <span className="text-xs font-semibold uppercase tracking-wider text-stone-500 block">
@@ -334,7 +334,7 @@ export function PatternGeneratorView() {
         </div>
 
         {/* Right Live Preview Canvas & Export Cards (6 cols) */}
-        <div className="lg:col-span-6 flex flex-col gap-4">
+        <div className="lg:col-span-6 flex flex-col gap-4 lg:sticky lg:top-4 self-start">
           {/* Full-bleed repeating canvas */}
           <div className="rounded-2xl border border-stone-200 bg-white p-5 shadow-xs flex flex-col flex-1 min-h-[300px]">
             <div className="flex items-center justify-between mb-3">

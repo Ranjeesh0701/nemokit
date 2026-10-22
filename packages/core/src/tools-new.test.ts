@@ -179,6 +179,50 @@ describe('logoBuilderTool', () => {
     expect(res.data.svg).toContain('PRO');
     expect(res.data.svg).toContain('STUDIO');
   });
+
+  it('supports expanded shape catalog including starburst and curved shield', () => {
+    const starburstRes = logoBuilderTool.execute({
+      shape: 'starburst',
+      backgroundType: 'gradient',
+      bgColor1: '#ea580c',
+      bgColor2: '#f59e0b',
+      gradientAngle: 45,
+      borderWidth: 2,
+      borderColor: '#ffffff',
+      shadow: true,
+      contentType: 'icon',
+      iconId: 'star',
+      monogramText: '',
+      monogramFont: 'sans',
+      symbolColor: '#ffffff',
+      symbolScale: 0.5,
+    });
+    expect(starburstRes.success).toBe(true);
+    if (starburstRes.success) {
+      expect(starburstRes.data.svg).toContain('polygon');
+    }
+
+    const curvedShieldRes = logoBuilderTool.execute({
+      shape: 'shield-curved',
+      backgroundType: 'solid',
+      bgColor1: '#059669',
+      bgColor2: '#059669',
+      gradientAngle: 0,
+      borderWidth: 4,
+      borderColor: '#ffffff',
+      shadow: false,
+      contentType: 'icon',
+      iconId: 'shield',
+      monogramText: '',
+      monogramFont: 'sans',
+      symbolColor: '#ffffff',
+      symbolScale: 0.5,
+    });
+    expect(curvedShieldRes.success).toBe(true);
+    if (curvedShieldRes.success) {
+      expect(curvedShieldRes.data.svg).toContain('path');
+    }
+  });
 });
 
 describe('colorTool expansions', () => {

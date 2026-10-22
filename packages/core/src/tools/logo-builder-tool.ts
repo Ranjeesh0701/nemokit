@@ -1,7 +1,26 @@
 import type { Tool, ResultHandlers, ToolExecutionResult } from '../types.js';
 import { onSuccess, onFailure } from '../types.js';
 
-export type LogoShape = 'squircle' | 'circle' | 'shield' | 'hexagon' | 'diamond' | 'octagon';
+export type LogoShape =
+  | 'squircle'
+  | 'circle'
+  | 'square'
+  | 'rounded-rect'
+  | 'diamond'
+  | 'hexagon'
+  | 'hexagon-horizontal'
+  | 'octagon'
+  | 'triangle'
+  | 'triangle-inverted'
+  | 'pentagon'
+  | 'shield'
+  | 'shield-curved'
+  | 'shield-pointed'
+  | 'pill'
+  | 'arch'
+  | 'starburst'
+  | 'clover'
+  | 'cross';
 
 export interface LogoIconDefinition {
   readonly id: string;
@@ -69,6 +88,41 @@ export const LOGO_ICONS: ReadonlyArray<LogoIconDefinition> = [
     id: 'flame',
     name: 'Flame Power',
     path: 'M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z',
+  },
+  {
+    id: 'globe',
+    name: 'Globe Network',
+    path: 'M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2zm6.93 6h-2.95a15.65 15.65 0 0 0-1.38-3.56A8 8 0 0 1 18.93 8zM12 4.07c.83 1.2 1.48 2.53 1.91 3.93h-3.82c.43-1.4 1.08-2.73 1.91-3.93zm-4.55.37A15.65 15.65 0 0 0 6.07 8H3.12a8 8 0 0 1 4.33-3.56zM2.08 10h3.2a16.8 16.8 0 0 0 0 4H2.08a8.03 8.03 0 0 1 0-4zm1.04 6h2.95a15.65 15.65 0 0 0 1.38 3.56A8 8 0 0 1 3.12 16zm4.33 3.56c-.83-1.2-1.48-2.53-1.91-3.93h3.82c-.43 1.4-1.08 2.73-1.91 3.93zm4.55-.37A15.65 15.65 0 0 0 15.93 16h2.95a8 8 0 0 1-4.33 3.56zM18.72 14h-3.2a16.8 16.8 0 0 0 0-4h3.2a8.03 8.03 0 0 1 0 4z',
+  },
+  {
+    id: 'heart',
+    name: 'Heart Community',
+    path: 'M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z',
+  },
+  {
+    id: 'star',
+    name: 'Star Favorite',
+    path: 'M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z',
+  },
+  {
+    id: 'key',
+    name: 'Access Key',
+    path: 'm21 2-2 2m-1.5 1.5L12 11l4 4-3.5 3.5-1.5-1.5-2 2-1.5-1.5-2 2-2-2 2-2-1.5-1.5 3.5-3.5 5.5-5.5A4 4 0 1 1 21 2z',
+  },
+  {
+    id: 'compass',
+    name: 'Compass Explorer',
+    path: 'M12 22a10 10 0 1 0 0-20 10 10 0 0 0 0 20zm4.24-14.24-2.12 6.36-6.36 2.12 2.12-6.36 6.36-2.12z',
+  },
+  {
+    id: 'feather',
+    name: 'Feather Light',
+    path: 'M20.24 12.24a6 6 0 0 0-8.49-8.49L5 10.5V19h8.5zM16 8 2 22M17.5 15H9',
+  },
+  {
+    id: 'pulse',
+    name: 'Pulse Activity',
+    path: 'M22 12h-4l-3 9L9 3l-3 9H2',
   },
 ];
 
@@ -202,14 +256,40 @@ function getShapeMarkup(shape: LogoShape, borderWidth: number, borderColor: stri
   switch (shape) {
     case 'circle':
       return `<circle cx="256" cy="256" r="236" fill="url(#bgGrad)" ${strokeAttr} />`;
-    case 'hexagon':
-      return `<polygon points="256,20 460,138 460,374 256,492 52,374 52,138" fill="url(#bgGrad)" ${strokeAttr} stroke-linejoin="round" />`;
+    case 'square':
+      return `<rect x="20" y="20" width="472" height="472" fill="url(#bgGrad)" ${strokeAttr} />`;
+    case 'rounded-rect':
+      return `<rect x="20" y="20" width="472" height="472" rx="48" ry="48" fill="url(#bgGrad)" ${strokeAttr} />`;
     case 'diamond':
       return `<polygon points="256,20 492,256 256,492 20,256" fill="url(#bgGrad)" ${strokeAttr} stroke-linejoin="round" />`;
-    case 'shield':
-      return `<path d="M 256,24 C 360,24 476,52 476,144 C 476,336 336,448 256,488 C 176,448 36,336 36,144 C 36,52 152,24 256,24 Z" fill="url(#bgGrad)" ${strokeAttr} stroke-linejoin="round" />`;
+    case 'hexagon':
+      return `<polygon points="256,20 460,138 460,374 256,492 52,374 52,138" fill="url(#bgGrad)" ${strokeAttr} stroke-linejoin="round" />`;
+    case 'hexagon-horizontal':
+      return `<polygon points="20,256 138,52 374,52 492,256 374,460 138,460" fill="url(#bgGrad)" ${strokeAttr} stroke-linejoin="round" />`;
     case 'octagon':
       return `<polygon points="160,20 352,20 492,160 492,352 352,492 160,492 20,352 20,160" fill="url(#bgGrad)" ${strokeAttr} stroke-linejoin="round" />`;
+    case 'triangle':
+      return `<polygon points="256,28 488,464 24,464" fill="url(#bgGrad)" ${strokeAttr} stroke-linejoin="round" />`;
+    case 'triangle-inverted':
+      return `<polygon points="24,48 488,48 256,484" fill="url(#bgGrad)" ${strokeAttr} stroke-linejoin="round" />`;
+    case 'pentagon':
+      return `<polygon points="256,20 488,188 400,476 112,476 24,188" fill="url(#bgGrad)" ${strokeAttr} stroke-linejoin="round" />`;
+    case 'shield':
+      return `<path d="M 256,24 C 360,24 476,52 476,144 C 476,336 336,448 256,488 C 176,448 36,336 36,144 C 36,52 152,24 256,24 Z" fill="url(#bgGrad)" ${strokeAttr} stroke-linejoin="round" />`;
+    case 'shield-curved':
+      return `<path d="M 40,40 L 472,40 C 472,260 380,420 256,488 C 132,420 40,260 40,40 Z" fill="url(#bgGrad)" ${strokeAttr} stroke-linejoin="round" />`;
+    case 'shield-pointed':
+      return `<path d="M 256,24 L 476,100 L 476,280 C 476,396 360,464 256,492 C 152,464 36,396 36,280 L 36,100 Z" fill="url(#bgGrad)" ${strokeAttr} stroke-linejoin="round" />`;
+    case 'pill':
+      return `<rect x="32" y="76" width="448" height="360" rx="180" ry="180" fill="url(#bgGrad)" ${strokeAttr} />`;
+    case 'arch':
+      return `<path d="M 40,472 L 40,240 C 40,120 136,24 256,24 C 376,24 472,120 472,240 L 472,472 Z" fill="url(#bgGrad)" ${strokeAttr} stroke-linejoin="round" />`;
+    case 'starburst':
+      return `<polygon points="256,20 286,84 353,42 362,114 434,92 419,163 487,167 448,228 492,256 448,284 487,345 419,349 434,420 362,398 353,470 286,428 256,492 226,428 159,470 150,398 78,420 93,349 25,345 64,284 20,256 64,228 25,167 93,163 78,92 150,114 159,42 226,84" fill="url(#bgGrad)" ${strokeAttr} stroke-linejoin="round" />`;
+    case 'clover':
+      return `<path d="M 256,60 C 290,20 370,20 404,60 C 444,94 444,174 404,208 C 444,242 444,322 404,356 C 370,396 290,396 256,356 C 222,396 142,396 108,356 C 68,322 68,242 108,208 C 68,174 68,94 108,60 C 142,20 222,20 256,60 Z" fill="url(#bgGrad)" ${strokeAttr} stroke-linejoin="round" />`;
+    case 'cross':
+      return `<polygon points="176,24 336,24 336,176 488,176 488,336 336,336 336,488 176,488 176,336 24,336 24,176 176,176" fill="url(#bgGrad)" ${strokeAttr} stroke-linejoin="round" />`;
     case 'squircle':
     default:
       return `<rect x="20" y="20" width="472" height="472" rx="104" ry="104" fill="url(#bgGrad)" ${strokeAttr} />`;

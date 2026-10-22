@@ -148,17 +148,53 @@ export function LogoBuilderView() {
     img.src = url;
   };
 
-  const shapes: Array<{ id: LogoShape; label: string }> = [
-    { id: 'squircle', label: 'Squircle' },
-    { id: 'circle', label: 'Circle' },
-    { id: 'shield', label: 'Shield' },
-    { id: 'hexagon', label: 'Hexagon' },
-    { id: 'diamond', label: 'Diamond' },
-    { id: 'octagon', label: 'Octagon' },
+  const SHAPE_CATEGORIES: Array<{
+    category: string;
+    shapes: Array<{ id: LogoShape; label: string }>;
+  }> = [
+    {
+      category: 'Geometry',
+      shapes: [
+        { id: 'squircle', label: 'Squircle' },
+        { id: 'circle', label: 'Circle' },
+        { id: 'rounded-rect', label: 'Rounded' },
+        { id: 'square', label: 'Square' },
+        { id: 'diamond', label: 'Diamond' },
+      ],
+    },
+    {
+      category: 'Polygons & Tech',
+      shapes: [
+        { id: 'hexagon', label: 'Hexagon' },
+        { id: 'hexagon-horizontal', label: 'Hex Wide' },
+        { id: 'octagon', label: 'Octagon' },
+        { id: 'pentagon', label: 'Pentagon' },
+        { id: 'triangle', label: 'Triangle' },
+        { id: 'triangle-inverted', label: 'Triangle Inv' },
+      ],
+    },
+    {
+      category: 'Badges & Shields',
+      shapes: [
+        { id: 'shield', label: 'Crest Shield' },
+        { id: 'shield-curved', label: 'Knight Shield' },
+        { id: 'shield-pointed', label: 'Cyber Shield' },
+        { id: 'arch', label: 'Arch' },
+        { id: 'pill', label: 'Pill' },
+      ],
+    },
+    {
+      category: 'Emblems & Seals',
+      shapes: [
+        { id: 'starburst', label: 'Starburst Seal' },
+        { id: 'clover', label: 'Clover Quad' },
+        { id: 'cross', label: 'Swiss Cross' },
+      ],
+    },
   ];
 
   return (
-    <div className="flex flex-col gap-6 w-full flex-1 min-h-0">
+    <div className="flex flex-col gap-6 w-full flex-1 pb-12 min-h-0">
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 border-b border-stone-200/80 pb-6 shrink-0">
         <div>
@@ -200,34 +236,45 @@ export function LogoBuilderView() {
       </div>
 
       {/* Main Workspace: Left Controls + Right Live Canvas */}
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 flex-1 min-h-[460px]">
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start flex-1 min-h-[460px] pb-8">
         {/* Left Control Panel (7 cols) */}
-        <div className="lg:col-span-7 flex flex-col gap-5 overflow-y-auto pr-1">
+        <div className="lg:col-span-7 flex flex-col gap-6 min-w-0">
           {/* Section 1: Shape & Geometry */}
           <div className="rounded-xl border border-stone-200/90 bg-white p-5 shadow-xs space-y-4">
-            <h3 className="text-xs font-semibold uppercase tracking-wider text-stone-500 flex items-center gap-1.5">
-              <Shapes className="h-3.5 w-3.5 text-indigo-600" />
-              Shape & Frame
-            </h3>
+            <div className="flex items-center justify-between">
+              <h3 className="text-xs font-semibold uppercase tracking-wider text-stone-500 flex items-center gap-1.5">
+                <Shapes className="h-3.5 w-3.5 text-indigo-600" />
+                Shape & Frame Library (19 Shapes)
+              </h3>
+            </div>
 
-            <div className="grid grid-cols-3 sm:grid-cols-6 gap-2">
-              {shapes.map(s => (
-                <button
-                  key={s.id}
-                  type="button"
-                  onClick={() => setConfig(prev => ({ ...prev, shape: s.id }))}
-                  className={`flex flex-col items-center justify-center p-2.5 rounded-lg border text-xs font-medium transition-all ${
-                    config.shape === s.id
-                      ? 'border-indigo-600 bg-indigo-50/50 text-indigo-900 shadow-xs'
-                      : 'border-stone-200 bg-white text-stone-600 hover:bg-stone-50'
-                  }`}
-                >
-                  <span>{s.label}</span>
-                </button>
+            <div className="space-y-3">
+              {SHAPE_CATEGORIES.map(group => (
+                <div key={group.category} className="space-y-1.5">
+                  <span className="text-[11px] font-semibold text-stone-400 uppercase tracking-wider">
+                    {group.category}
+                  </span>
+                  <div className="grid grid-cols-3 sm:grid-cols-5 md:grid-cols-6 gap-2">
+                    {group.shapes.map(s => (
+                      <button
+                        key={s.id}
+                        type="button"
+                        onClick={() => setConfig(prev => ({ ...prev, shape: s.id }))}
+                        className={`flex flex-col items-center justify-center py-2 px-1.5 rounded-lg border text-xs font-medium transition-all ${
+                          config.shape === s.id
+                            ? 'border-indigo-600 bg-indigo-50/60 text-indigo-900 font-semibold shadow-xs ring-1 ring-indigo-500/20'
+                            : 'border-stone-200 bg-white text-stone-600 hover:bg-stone-50'
+                        }`}
+                      >
+                        <span className="truncate w-full text-center">{s.label}</span>
+                      </button>
+                    ))}
+                  </div>
+                </div>
               ))}
             </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2 border-t border-stone-100">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-3 border-t border-stone-100">
               <div>
                 <label className="text-xs font-medium text-stone-600 block mb-1">
                   Border Width ({config.borderWidth}px)
@@ -518,7 +565,7 @@ export function LogoBuilderView() {
         </div>
 
         {/* Right Preview Canvas & Actions (5 cols) */}
-        <div className="lg:col-span-5 flex flex-col gap-4">
+        <div className="lg:col-span-5 flex flex-col gap-4 lg:sticky lg:top-4 self-start">
           {/* Canvas Preview Box */}
           <div className="rounded-2xl border border-stone-200/90 bg-white p-6 shadow-xs flex flex-col items-center">
             {/* Canvas Background Toggles */}

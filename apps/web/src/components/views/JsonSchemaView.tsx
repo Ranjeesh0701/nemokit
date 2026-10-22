@@ -181,7 +181,7 @@ export function JsonSchemaView() {
   };
 
   return (
-    <div className="flex flex-col gap-6 w-full flex-1 min-h-0">
+    <div className="flex flex-col gap-6 w-full flex-1 pb-12 min-h-0">
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 border-b border-stone-200/80 pb-6 shrink-0">
         <div>

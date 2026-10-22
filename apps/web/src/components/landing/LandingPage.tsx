@@ -159,50 +159,48 @@ export function LandingPage({ tools, onLaunchApp, canInstall, onInstallApp }: La
   return (
     <div className="min-h-screen bg-[#faf9f6] text-stone-800 antialiased selection:bg-stone-200 flex flex-col">
       {/* Public Navigation */}
-      <nav className="border-b border-stone-200/70 bg-[#faf9f6]/80 sticky top-0 z-40 backdrop-blur-md">
-        <div className="mx-auto flex max-w-6xl items-center justify-between px-6 h-20">
-          <div className="flex items-center gap-3">
-            <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-stone-900 text-white shadow-xs">
-              <Boxes className="h-5 w-5" />
+      <nav className="border-b border-stone-200/70 bg-[#faf9f6]/90 sticky top-0 z-40 backdrop-blur-md">
+        <div className="mx-auto flex max-w-6xl items-center justify-between px-6 h-16">
+          <div className="flex items-center gap-2.5">
+            <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-stone-900 text-white shadow-2xs">
+              <Boxes className="h-4 w-4" />
             </span>
-            <div className="flex flex-col">
-              <span className="text-lg font-bold tracking-tight text-stone-900 leading-none">
-                Nemokit
-              </span>
-              <span className="text-[11px] text-stone-400 font-medium tracking-tight mt-0.5">
-                Modern Utility Platform
-              </span>
-            </div>
+            <span className="text-base font-bold tracking-tight text-stone-900 leading-none">
+              Nemokit
+            </span>
+            <span className="rounded-md bg-stone-200/60 px-1.5 py-0.5 text-[10px] font-semibold text-stone-600 leading-none">
+              v0.1
+            </span>
           </div>
 
-          <div className="hidden md:flex items-center gap-8 text-sm font-medium text-stone-600">
-            <a href="#tools" className="hover:text-stone-900 transition-colors">
-              Tools
+          <div className="hidden sm:flex items-center gap-6 text-xs font-semibold text-stone-600">
+            <a href="#tools" className="hover:text-stone-950 transition-colors">
+              Tools ({tools.length})
             </a>
-            <a href="#architecture" className="hover:text-stone-900 transition-colors">
+            <a href="#architecture" className="hover:text-stone-950 transition-colors">
               Architecture
             </a>
-            <a href="#privacy" className="hover:text-stone-900 transition-colors">
+            <a href="#privacy" className="hover:text-stone-950 transition-colors">
               Privacy
             </a>
           </div>
 
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-2.5">
             {canInstall && onInstallApp && (
               <button
                 type="button"
                 onClick={onInstallApp}
-                className="hidden sm:inline-flex items-center gap-2 rounded-xl border border-stone-200 bg-white px-3.5 py-2.5 text-xs font-semibold text-stone-700 shadow-xs hover:bg-stone-50 transition-colors"
+                className="hidden sm:inline-flex items-center gap-1.5 rounded-xl border border-stone-200 bg-white px-3 py-1.5 text-xs font-medium text-stone-700 shadow-2xs hover:bg-stone-50 transition-colors"
               >
                 <Download className="h-3.5 w-3.5 text-stone-500" />
-                <span>Install App</span>
+                <span>Install</span>
               </button>
             )}
 
             <button
               type="button"
               onClick={() => onLaunchApp()}
-              className="inline-flex items-center gap-2 rounded-xl bg-stone-900 px-4 py-2.5 text-xs font-semibold text-white shadow-xs hover:bg-stone-800 transition-all hover:gap-2.5"
+              className="inline-flex items-center gap-1.5 rounded-xl bg-stone-900 px-3.5 py-2 text-xs font-semibold text-white shadow-xs hover:bg-stone-800 transition-colors"
             >
               <span>Launch App</span>
               <ArrowRight className="h-3.5 w-3.5" />
@@ -490,24 +488,137 @@ if (result.success) {
       </section>
 
       {/* Public Footer */}
-      <footer className="mt-auto py-10 px-6 bg-white border-t border-stone-200/70 text-xs text-stone-500">
-        <div className="mx-auto max-w-6xl flex flex-col sm:flex-row items-center justify-between gap-4">
-          <div className="flex items-center gap-2">
-            <span className="font-semibold text-stone-900">Nemokit</span>
-            <span>•</span>
-            <span>Your tools. One place. No clutter.</span>
+      <footer className="mt-auto border-t border-stone-200/70 bg-[#f7f6f2]/80 px-6 pt-12 pb-8 text-xs text-stone-600">
+        <div className="mx-auto max-w-6xl">
+          <div className="flex flex-col md:flex-row items-start justify-between gap-8 pb-10 border-b border-stone-200/60">
+            {/* Left brand column */}
+            <div className="flex flex-col items-start gap-3 max-w-sm">
+              <div className="flex items-center gap-2.5">
+                <span className="flex h-7 w-7 items-center justify-center rounded-lg bg-stone-900 text-white shadow-2xs">
+                  <Boxes className="h-3.5 w-3.5" />
+                </span>
+                <span className="text-sm font-bold tracking-tight text-stone-900">Nemokit</span>
+                <span className="rounded bg-stone-200/60 px-1.5 py-0.5 text-[9px] font-semibold text-stone-600">
+                  v0.1
+                </span>
+              </div>
+              <p className="text-stone-500 text-xs leading-relaxed">
+                Privacy-first developer utilities running 100% locally in your browser memory.
+                No servers, no tracking, and zero latency.
+              </p>
+              <div className="flex items-center gap-2 pt-1 text-[11px] text-stone-500">
+                <span className="inline-flex items-center gap-1">
+                  <ShieldCheck className="h-3.5 w-3.5 text-emerald-600" />
+                  100% Client-Side
+                </span>
+                <span>•</span>
+                <span>Zero Telemetry</span>
+              </div>
+            </div>
+
+            {/* Right link columns */}
+            <div className="grid grid-cols-2 sm:grid-cols-3 gap-8 text-xs">
+              <div>
+                <span className="font-semibold text-stone-900 uppercase tracking-wider text-[11px] block mb-3">
+                  Categories
+                </span>
+                <ul className="space-y-2 text-stone-500">
+                  <li>
+                    <a
+                      href="#tools"
+                      onClick={() => setActiveCategory('formatters')}
+                      className="hover:text-stone-900 transition-colors"
+                    >
+                      Formatters
+                    </a>
+                  </li>
+                  <li>
+                    <a
+                      href="#tools"
+                      onClick={() => setActiveCategory('converters')}
+                      className="hover:text-stone-900 transition-colors"
+                    >
+                      Converters
+                    </a>
+                  </li>
+                  <li>
+                    <a
+                      href="#tools"
+                      onClick={() => setActiveCategory('crypto')}
+                      className="hover:text-stone-900 transition-colors"
+                    >
+                      Cryptography
+                    </a>
+                  </li>
+                  <li>
+                    <a
+                      href="#tools"
+                      onClick={() => setActiveCategory('web')}
+                      className="hover:text-stone-900 transition-colors"
+                    >
+                      Web & Network
+                    </a>
+                  </li>
+                  <li>
+                    <a
+                      href="#tools"
+                      onClick={() => setActiveCategory('pdf')}
+                      className="hover:text-stone-900 transition-colors"
+                    >
+                      PDF Studio
+                    </a>
+                  </li>
+                </ul>
+              </div>
+
+              <div>
+                <span className="font-semibold text-stone-900 uppercase tracking-wider text-[11px] block mb-3">
+                  Platform
+                </span>
+                <ul className="space-y-2 text-stone-500">
+                  <li>
+                    <a href="#architecture" className="hover:text-stone-900 transition-colors">
+                      Engine Architecture
+                    </a>
+                  </li>
+                  <li>
+                    <a href="#privacy" className="hover:text-stone-900 transition-colors">
+                      Privacy Principle
+                    </a>
+                  </li>
+                  <li>
+                    <span className="text-stone-400">PWA Offline Enabled</span>
+                  </li>
+                  <li>
+                    <span className="text-stone-400">Command Palette (⌘K)</span>
+                  </li>
+                </ul>
+              </div>
+
+              <div className="col-span-2 sm:col-span-1">
+                <span className="font-semibold text-stone-900 uppercase tracking-wider text-[11px] block mb-3">
+                  Quick Access
+                </span>
+                <button
+                  type="button"
+                  onClick={() => onLaunchApp('json-formatter')}
+                  className="inline-flex items-center gap-1.5 rounded-xl border border-stone-200 bg-white px-3 py-2 text-xs font-semibold text-stone-800 shadow-2xs hover:bg-stone-50 hover:border-stone-300 transition-all"
+                >
+                  <span>Open Web App</span>
+                  <ArrowRight className="h-3 w-3" />
+                </button>
+              </div>
+            </div>
           </div>
 
-          <div className="flex items-center gap-6">
-            <button
-              type="button"
-              onClick={() => onLaunchApp()}
-              className="font-medium text-stone-800 hover:text-stone-950 transition-colors"
-            >
-              Open Web App
-            </button>
-            <span>Light mode only</span>
-            <span>© {new Date().getFullYear()}</span>
+          {/* Bottom Copyright & Status */}
+          <div className="pt-6 flex flex-col sm:flex-row items-center justify-between text-xs text-stone-500 gap-3">
+            <p>© {new Date().getFullYear()} Nemokit. Engineered for distraction-free work.</p>
+            <div className="flex items-center gap-4 text-stone-400 text-[11px]">
+              <span>Client memory execution</span>
+              <span>•</span>
+              <span>Open web standards</span>
+            </div>
           </div>
         </div>
       </footer>

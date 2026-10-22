@@ -6,6 +6,7 @@
     "apps/*"
   ],
   "scripts": {
+    "dev": "npm run --workspace=@nemokit/web dev",
     "typecheck": "npm run --workspaces --if-present typecheck",
     "test": "npm run --workspaces --if-present test",
     "build": "npm run --workspaces --if-present build",

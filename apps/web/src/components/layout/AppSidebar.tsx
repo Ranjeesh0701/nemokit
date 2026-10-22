@@ -11,12 +11,14 @@ import {
   Layers,
   ChevronRight,
   ShieldCheck,
+  ArrowLeft,
 } from 'lucide-react';
 
 interface AppSidebarProps {
   readonly tools: ReadonlyArray<ToolMetadata>;
   readonly activeView: string; // 'home' or toolId
   readonly onSelectView: (viewId: string) => void;
+  readonly onExitToLanding: () => void;
   readonly isMobileOpen: boolean;
   readonly onCloseMobile: () => void;
 }
@@ -32,6 +34,7 @@ export function AppSidebar({
   tools,
   activeView,
   onSelectView,
+  onExitToLanding,
   isMobileOpen,
   onCloseMobile,
 }: AppSidebarProps) {
@@ -160,7 +163,16 @@ export function AppSidebar({
         </div>
 
         {/* Sidebar Footer */}
-        <div className="border-t border-stone-200/60 p-4">
+        <div className="border-t border-stone-200/60 p-4 space-y-3">
+          <button
+            type="button"
+            onClick={onExitToLanding}
+            className="flex w-full items-center gap-2 rounded-xl border border-stone-200 bg-white px-3 py-2 text-xs font-medium text-stone-700 hover:bg-stone-50 transition-colors"
+          >
+            <ArrowLeft className="h-3.5 w-3.5 text-stone-400" />
+            <span>Back to Landing Page</span>
+          </button>
+
           <div className="flex items-center gap-2 rounded-xl bg-white border border-stone-200/80 p-2.5 shadow-2xs">
             <ShieldCheck className="h-4 w-4 text-emerald-600 shrink-0" />
             <div className="flex flex-col text-[11px] leading-tight">

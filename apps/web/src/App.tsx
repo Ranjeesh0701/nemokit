@@ -9,6 +9,7 @@ import {
   jwtTool,
 } from '@nemokit/core';
 import type { ToolMetadata } from '@nemokit/core';
+import { LandingPage } from './components/landing/LandingPage.js';
 import { AppSidebar } from './components/layout/AppSidebar.js';
 import { AppHeader } from './components/layout/AppHeader.js';
 import { HomeLandingView } from './components/views/HomeLandingView.js';
@@ -18,6 +19,8 @@ import { UrlToolView } from './components/UrlToolView.js';
 import { HashToolView } from './components/HashToolView.js';
 import { UuidToolView } from './components/views/UuidToolView.js';
 import { JwtToolView } from './components/views/JwtToolView.js';
+
+type RouteState = { mode: 'landing' } | { mode: 'app'; activeToolId: string }; // 'dashboard' or specific tool id
 
 export default function App() {
   // Initialize and populate core engine registry with all registered tools
@@ -34,46 +37,78 @@ export default function App() {
 
   const tools: ReadonlyArray<ToolMetadata> = useMemo(() => registry.getAll(), [registry]);
 
-  // Read view from window hash (e.g. #/tools/json-formatter -> 'json-formatter')
-  const getViewFromHash = (): string => {
+  const parseRouteFromHash = (): RouteState => {
     const hash = window.location.hash;
-    if (hash.startsWith('#/tools/')) {
-      return hash.replace('#/tools/', '') || 'home';
+    // Default root or #/ is the dedicated Landing Page
+    if (!hash || hash === '#' || hash === '#/') {
+      return { mode: 'landing' };
     }
-    return 'home';
+
+    if (hash.startsWith('#/app/')) {
+      const toolId = hash.replace('#/app/', '').trim();
+      return { mode: 'app', activeToolId: toolId || 'dashboard' };
+    }
+
+    if (hash === '#/app') {
+      return { mode: 'app', activeToolId: 'dashboard' };
+    }
+
+    // Backward-compat for #/tools/xyz
+    if (hash.startsWith('#/tools/')) {
+      const toolId = hash.replace('#/tools/', '').trim();
+      return { mode: 'app', activeToolId: toolId || 'dashboard' };
+    }
+
+    return { mode: 'landing' };
   };
 
-  const [activeView, setActiveView] = useState<string>(() => getViewFromHash());
+  const [route, setRoute] = useState<RouteState>(() => parseRouteFromHash());
   const [searchQuery, setSearchQuery] = useState<string>('');
   const [isMobileSidebarOpen, setIsMobileSidebarOpen] = useState<boolean>(false);
 
   // Sync hash changes (browser back/forward navigation)
   useEffect(() => {
     const handleHashChange = () => {
-      setActiveView(getViewFromHash());
+      setRoute(parseRouteFromHash());
     };
     window.addEventListener('hashchange', handleHashChange);
     return () => window.removeEventListener('hashchange', handleHashChange);
   }, []);
 
+  const handleLaunchApp = (toolId?: string) => {
+    const targetTool = toolId ?? 'json-formatter';
+    window.location.hash = `#/app/${targetTool}`;
+  };
+
+  const handleExitToLanding = () => {
+    window.location.hash = '#/';
+  };
+
   const handleSelectView = (viewId: string) => {
-    setActiveView(viewId);
-    if (viewId === 'home') {
-      window.location.hash = '#/';
+    if (viewId === 'home' || viewId === 'dashboard') {
+      window.location.hash = '#/app/dashboard';
     } else {
-      window.location.hash = `#/tools/${viewId}`;
+      window.location.hash = `#/app/${viewId}`;
     }
   };
 
-  const activeTool = useMemo(() => tools.find(t => t.id === activeView), [tools, activeView]);
+  // If on Landing Page mode, render the dedicated public marketing landing page
+  if (route.mode === 'landing') {
+    return <LandingPage tools={tools} onLaunchApp={handleLaunchApp} />;
+  }
+
+  // Inside the Web App Workspace
+  const activeToolId = route.activeToolId;
+  const activeTool = tools.find(t => t.id === activeToolId);
 
   return (
     <div className="flex h-screen w-screen overflow-hidden bg-[#faf9f6] text-stone-800 antialiased selection:bg-stone-200">
       {/* App Sidebar */}
       <AppSidebar
         tools={tools}
-        activeView={activeView}
+        activeView={activeToolId === 'dashboard' ? 'home' : activeToolId}
         onSelectView={handleSelectView}
+        onExitToLanding={handleExitToLanding}
         isMobileOpen={isMobileSidebarOpen}
         onCloseMobile={() => setIsMobileSidebarOpen(false)}
       />
@@ -81,7 +116,7 @@ export default function App() {
       {/* Main App Workspace */}
       <div className="flex flex-1 flex-col overflow-hidden min-w-0">
         <AppHeader
-          activeView={activeView}
+          activeView={activeToolId === 'dashboard' ? 'home' : activeToolId}
           activeTool={activeTool}
           onSelectView={handleSelectView}
           onOpenMobileSidebar={() => setIsMobileSidebarOpen(true)}
@@ -89,22 +124,22 @@ export default function App() {
           onSearchChange={setSearchQuery}
         />
 
-        {/* Scrollable View Container */}
+        {/* Scrollable Workspace View Container */}
         <main className="flex-1 overflow-y-auto px-4 py-8 sm:px-8">
           <div className="mx-auto max-w-6xl">
-            {activeView === 'home' && (
+            {activeToolId === 'dashboard' && (
               <HomeLandingView
                 tools={tools}
                 onSelectTool={handleSelectView}
                 searchQuery={searchQuery}
               />
             )}
-            {activeView === 'json-formatter' && <JsonFormatterView />}
-            {activeView === 'base64-tool' && <Base64View />}
-            {activeView === 'url-tool' && <UrlToolView />}
-            {activeView === 'hash-tool' && <HashToolView />}
-            {activeView === 'uuid-tool' && <UuidToolView />}
-            {activeView === 'jwt-tool' && <JwtToolView />}
+            {activeToolId === 'json-formatter' && <JsonFormatterView />}
+            {activeToolId === 'base64-tool' && <Base64View />}
+            {activeToolId === 'url-tool' && <UrlToolView />}
+            {activeToolId === 'hash-tool' && <HashToolView />}
+            {activeToolId === 'uuid-tool' && <UuidToolView />}
+            {activeToolId === 'jwt-tool' && <JwtToolView />}
           </div>
         </main>
 
@@ -112,12 +147,18 @@ export default function App() {
         <footer className="h-8 border-t border-stone-200/60 bg-[#fbfbf9]/80 px-4 sm:px-6 flex items-center justify-between text-[11px] text-stone-400 select-none">
           <div className="flex items-center gap-2">
             <span className="inline-block h-1.5 w-1.5 rounded-full bg-emerald-500" />
-            <span>Browser-First Engine Active</span>
+            <span>Workspace Active • Client-Side Engine</span>
           </div>
           <div className="flex items-center gap-4">
             <span>Shortcut: ⌘/Ctrl + Enter to run</span>
             <span>•</span>
-            <span>Nemokit v0.1.0</span>
+            <button
+              type="button"
+              onClick={handleExitToLanding}
+              className="text-stone-500 hover:text-stone-800 transition-colors"
+            >
+              Exit to Landing
+            </button>
           </div>
         </footer>
       </div>

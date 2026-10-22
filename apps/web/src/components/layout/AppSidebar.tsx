@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import type { ToolCategory, ToolMetadata } from '@nemokit/core';
 import {
   Boxes,
@@ -65,6 +65,33 @@ export function AppSidebar({
 
   // Popover state for compact mode when hovering over a category icon
   const [popoverCategory, setPopoverCategory] = useState<ToolCategory | null>(null);
+  const popoverTimeoutRef = useRef<number | null>(null);
+
+  const handleMouseEnter = (category: ToolCategory) => {
+    if (popoverTimeoutRef.current !== null) {
+      window.clearTimeout(popoverTimeoutRef.current);
+      popoverTimeoutRef.current = null;
+    }
+    setPopoverCategory(category);
+  };
+
+  const handleMouseLeave = () => {
+    if (popoverTimeoutRef.current !== null) {
+      window.clearTimeout(popoverTimeoutRef.current);
+    }
+    popoverTimeoutRef.current = window.setTimeout(() => {
+      setPopoverCategory(null);
+      popoverTimeoutRef.current = null;
+    }, 180);
+  };
+
+  useEffect(() => {
+    return () => {
+      if (popoverTimeoutRef.current !== null) {
+        window.clearTimeout(popoverTimeoutRef.current);
+      }
+    };
+  }, []);
 
   const activeTool = tools.find(t => t.id === activeView);
 
@@ -234,8 +261,8 @@ export function AppSidebar({
                   <div
                     key={category}
                     className="relative flex justify-center"
-                    onMouseEnter={() => setPopoverCategory(category)}
-                    onMouseLeave={() => setPopoverCategory(null)}
+                    onMouseEnter={() => handleMouseEnter(category)}
+                    onMouseLeave={handleMouseLeave}
                   >
                     <button
                       type="button"
@@ -257,55 +284,57 @@ export function AppSidebar({
                       <CategoryIcon className="h-4 w-4" />
                     </button>
 
-                    {/* Compact Mode Floating Flyout */}
+                    {/* Compact Mode Floating Flyout with Zero-Gap Bridge */}
                     {isPopoverOpen && (
                       <div
-                        className="absolute left-12 top-0 z-50 ml-2 w-56 rounded-xl border border-stone-200/90 bg-white p-1.5 shadow-xl animate-in fade-in zoom-in-95 duration-100"
-                        onMouseEnter={() => setPopoverCategory(category)}
-                        onMouseLeave={() => setPopoverCategory(null)}
+                        className="absolute left-full top-0 z-50 -ml-1 pl-3"
+                        onMouseEnter={() => handleMouseEnter(category)}
+                        onMouseLeave={handleMouseLeave}
                       >
-                        <div className="flex items-center justify-between px-2.5 py-1.5 pb-1 border-b border-stone-100 mb-1">
-                          <span className="text-xs font-semibold text-stone-800">
-                            {config.label}
-                          </span>
-                          <span className="text-[10px] font-mono text-stone-400 bg-stone-100 px-1.5 py-0.5 rounded">
-                            {categoryTools.length}
-                          </span>
-                        </div>
+                        <div className="w-56 rounded-xl border border-stone-200/90 bg-white p-1.5 shadow-xl animate-in fade-in zoom-in-95 duration-100">
+                          <div className="flex items-center justify-between px-2.5 py-1.5 pb-1 border-b border-stone-100 mb-1">
+                            <span className="text-xs font-semibold text-stone-800">
+                              {config.label}
+                            </span>
+                            <span className="text-[10px] font-mono text-stone-400 bg-stone-100 px-1.5 py-0.5 rounded">
+                              {categoryTools.length}
+                            </span>
+                          </div>
 
-                        <div className="space-y-0.5">
-                          {categoryTools.map(tool => {
-                            const isActive = activeView === tool.id;
-                            return (
-                              <button
-                                key={tool.id}
-                                type="button"
-                                onClick={() => {
-                                  onSelectView(tool.id);
-                                  setPopoverCategory(null);
-                                }}
-                                className={`flex w-full items-center justify-between px-2.5 py-1.5 rounded-lg text-xs font-medium transition-colors ${
-                                  isActive
-                                    ? 'bg-stone-900 text-white shadow-2xs font-semibold'
-                                    : 'text-stone-600 hover:bg-stone-100 hover:text-stone-900'
-                                }`}
-                              >
-                                <div className="flex items-center gap-2 truncate">
-                                  <span
-                                    className={`shrink-0 ${
-                                      isActive ? 'text-white' : 'text-stone-400'
-                                    }`}
-                                  >
-                                    {getToolIcon(tool.id)}
-                                  </span>
-                                  <span className="truncate">{tool.name}</span>
-                                </div>
-                                {isActive && (
-                                  <ChevronRight className="h-3 w-3 text-stone-400 shrink-0" />
-                                )}
-                              </button>
-                            );
-                          })}
+                          <div className="space-y-0.5">
+                            {categoryTools.map(tool => {
+                              const isActive = activeView === tool.id;
+                              return (
+                                <button
+                                  key={tool.id}
+                                  type="button"
+                                  onClick={() => {
+                                    onSelectView(tool.id);
+                                    setPopoverCategory(null);
+                                  }}
+                                  className={`flex w-full items-center justify-between px-2.5 py-1.5 rounded-lg text-xs font-medium transition-colors ${
+                                    isActive
+                                      ? 'bg-stone-900 text-white shadow-2xs font-semibold'
+                                      : 'text-stone-600 hover:bg-stone-100 hover:text-stone-900'
+                                  }`}
+                                >
+                                  <div className="flex items-center gap-2 truncate">
+                                    <span
+                                      className={`shrink-0 ${
+                                        isActive ? 'text-white' : 'text-stone-400'
+                                      }`}
+                                    >
+                                      {getToolIcon(tool.id)}
+                                    </span>
+                                    <span className="truncate">{tool.name}</span>
+                                  </div>
+                                  {isActive && (
+                                    <ChevronRight className="h-3 w-3 text-stone-400 shrink-0" />
+                                  )}
+                                </button>
+                              );
+                            })}
+                          </div>
                         </div>
                       </div>
                     )}

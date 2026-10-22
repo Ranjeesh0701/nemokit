@@ -1,4 +1,4 @@
-import { useEffect, useState, useMemo } from 'react';
+import { useEffect, useState, useMemo, useRef } from 'react';
 import type { ToolMetadata } from '@nemokit/core';
 import {
   Search,
@@ -24,7 +24,6 @@ import {
   FileEdit,
   RefreshCw,
   Layers,
-  ArrowRight,
   X,
 } from 'lucide-react';
 
@@ -45,6 +44,7 @@ export function CommandPalette({
 }: CommandPaletteProps) {
   const [query, setQuery] = useState('');
   const [selectedIndex, setSelectedIndex] = useState(0);
+  const listRef = useRef<HTMLDivElement>(null);
 
   const filtered = useMemo(() => {
     if (!query.trim()) {
@@ -63,6 +63,15 @@ export function CommandPalette({
         t.category.toLowerCase().includes(q)
     );
   }, [tools, query, favorites]);
+
+  // Auto-scroll the active item into view when navigating via keyboard
+  useEffect(() => {
+    if (!isOpen || !listRef.current) return;
+    const activeElement = listRef.current.children[selectedIndex] as HTMLElement | undefined;
+    if (activeElement) {
+      activeElement.scrollIntoView({ block: 'nearest' });
+    }
+  }, [selectedIndex, isOpen]);
 
   // Keyboard navigation inside palette
   useEffect(() => {
@@ -91,9 +100,12 @@ export function CommandPalette({
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [isOpen, filtered, selectedIndex, onSelectTool, onClose]);
 
-  // Reset selected index on query change
+  // Reset selected index and scroll position on query change
   useEffect(() => {
     setSelectedIndex(0);
+    if (listRef.current) {
+      listRef.current.scrollTop = 0;
+    }
   }, [query]);
 
   if (!isOpen) return null;
@@ -174,7 +186,7 @@ export function CommandPalette({
         </div>
 
         {/* Results List */}
-        <div className="max-h-80 overflow-y-auto p-2 space-y-1">
+        <div ref={listRef} className="max-h-80 overflow-y-auto p-2 space-y-1">
           {filtered.length > 0 ? (
             filtered.map((tool, idx) => {
               const isSelected = idx === selectedIndex;
@@ -217,7 +229,6 @@ export function CommandPalette({
                     >
                       {tool.category}
                     </span>
-                    {isSelected && <ArrowRight className="h-3.5 w-3.5" />}
                   </div>
                 </div>
               );

@@ -12,6 +12,10 @@ import {
   Clock,
   Scissors,
   AlignLeft,
+  GitCompare,
+  Lock,
+  Palette,
+  CalendarClock,
   Layers,
   ArrowRight,
   X,
@@ -95,6 +99,14 @@ export function CommandPalette({ isOpen, onClose, tools, onSelectTool }: Command
         return <Scissors className="h-4 w-4" />;
       case 'text-splitter':
         return <AlignLeft className="h-4 w-4" />;
+      case 'diff-tool':
+        return <GitCompare className="h-4 w-4" />;
+      case 'password-tool':
+        return <Lock className="h-4 w-4" />;
+      case 'color-tool':
+        return <Palette className="h-4 w-4" />;
+      case 'cron-tool':
+        return <CalendarClock className="h-4 w-4" />;
       default:
         return <Layers className="h-4 w-4" />;
     }

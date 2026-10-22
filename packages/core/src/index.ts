@@ -11,3 +11,7 @@ export * from './tools/timestamp-tool.js';
 export * from './tools/document-converter.js';
 export * from './tools/pdf-split-tool.js';
 export * from './tools/text-splitter-tool.js';
+export * from './tools/diff-tool.js';
+export * from './tools/password-tool.js';
+export * from './tools/color-tool.js';
+export * from './tools/cron-tool.js';

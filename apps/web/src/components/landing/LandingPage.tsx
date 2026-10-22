@@ -19,6 +19,9 @@ import {
   Layers,
   Sparkles,
   Lock,
+  GitCompare,
+  Palette,
+  CalendarClock,
 } from 'lucide-react';
 
 interface LandingPageProps {
@@ -51,6 +54,14 @@ export function LandingPage({ tools, onLaunchApp }: LandingPageProps) {
         return <Scissors className="h-5 w-5 text-red-600" />;
       case 'text-splitter':
         return <AlignLeft className="h-5 w-5 text-sky-600" />;
+      case 'diff-tool':
+        return <GitCompare className="h-5 w-5 text-indigo-600" />;
+      case 'password-tool':
+        return <Lock className="h-5 w-5 text-emerald-600" />;
+      case 'color-tool':
+        return <Palette className="h-5 w-5 text-pink-600" />;
+      case 'cron-tool':
+        return <CalendarClock className="h-5 w-5 text-amber-600" />;
       default:
         return <Layers className="h-5 w-5 text-stone-600" />;
     }

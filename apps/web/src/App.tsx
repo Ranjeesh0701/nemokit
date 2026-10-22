@@ -11,6 +11,10 @@ import {
   timestampTool,
   pdfSplitTool,
   textSplitTool,
+  diffTool,
+  passwordTool,
+  colorTool,
+  cronTool,
 } from '@nemokit/core';
 import type { ToolMetadata } from '@nemokit/core';
 import { LandingPage } from './components/landing/LandingPage.js';
@@ -28,23 +32,31 @@ import { SqlFormatterView } from './components/views/SqlFormatterView.js';
 import { TimestampView } from './components/views/TimestampView.js';
 import { PdfSplitView } from './components/views/PdfSplitView.js';
 import { TextSplitView } from './components/views/TextSplitView.js';
+import { DiffToolView } from './components/views/DiffToolView.js';
+import { PasswordToolView } from './components/views/PasswordToolView.js';
+import { ColorToolView } from './components/views/ColorToolView.js';
+import { CronToolView } from './components/views/CronToolView.js';
 
 type RouteState = { mode: 'landing' } | { mode: 'app'; activeToolId: string };
 
 export default function App() {
-  // Initialize and populate core engine registry with our 10 focused tools
+  // Initialize and populate core engine registry with all tools
   const registry = useMemo(() => {
     const reg = new ToolRegistry();
     reg.register(jsonFormatterTool);
     reg.register(sqlFormatterTool);
+    reg.register(diffTool);
     reg.register(textSplitTool);
     reg.register(base64Tool);
     reg.register(jwtTool);
     reg.register(timestampTool);
+    reg.register(colorTool);
     reg.register(pdfSplitTool);
     reg.register(hashTool);
     reg.register(uuidTool);
+    reg.register(passwordTool);
     reg.register(urlTool);
+    reg.register(cronTool);
     return reg;
   }, []);
 
@@ -160,14 +172,18 @@ export default function App() {
             )}
             {activeToolId === 'json-formatter' && <JsonFormatterView />}
             {activeToolId === 'sql-formatter' && <SqlFormatterView />}
+            {activeToolId === 'diff-tool' && <DiffToolView />}
             {activeToolId === 'text-splitter' && <TextSplitView />}
             {activeToolId === 'base64-tool' && <Base64View />}
             {activeToolId === 'jwt-tool' && <JwtToolView />}
             {activeToolId === 'timestamp-tool' && <TimestampView />}
+            {activeToolId === 'color-tool' && <ColorToolView />}
             {activeToolId === 'pdf-splitter' && <PdfSplitView />}
             {activeToolId === 'hash-tool' && <HashToolView />}
             {activeToolId === 'uuid-tool' && <UuidToolView />}
+            {activeToolId === 'password-tool' && <PasswordToolView />}
             {activeToolId === 'url-tool' && <UrlToolView />}
+            {activeToolId === 'cron-tool' && <CronToolView />}
           </div>
         </main>
       </div>

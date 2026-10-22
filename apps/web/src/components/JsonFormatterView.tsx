@@ -1,7 +1,9 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useMemo } from 'react';
 import { jsonFormatterTool } from '@nemokit/core';
 import type { JsonFormatterOutput } from '@nemokit/core';
-import { Copy, Check, Trash2, FileCode, ArrowDownToLine, AlertCircle } from 'lucide-react';
+import { Copy, Check, Trash2, FileCode, ArrowDownToLine, AlertCircle, Share2 } from 'lucide-react';
+import { DropzoneWrapper } from './common/DropzoneWrapper.js';
+import { serializeStateToUrl, parseSharedState } from '../utils/shareState.js';
 
 const SAMPLE_JSON = `{
   "product": "Nemokit",
@@ -19,12 +21,17 @@ const SAMPLE_JSON = `{
 }`;
 
 export function JsonFormatterView() {
-  const [input, setInput] = useState<string>(SAMPLE_JSON);
-  const [indent, setIndent] = useState<number | '\t'>(2);
+  const initial = useMemo(() => {
+    return parseSharedState<{ input?: string; indent?: number | '\t' }>('json-formatter');
+  }, []);
+
+  const [input, setInput] = useState<string>(initial?.input ?? SAMPLE_JSON);
+  const [indent, setIndent] = useState<number | '\t'>(initial?.indent ?? 2);
   const [output, setOutput] = useState<JsonFormatterOutput | null>(null);
   const [duration, setDuration] = useState<number | null>(null);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [copied, setCopied] = useState(false);
+  const [shareSuccess, setShareSuccess] = useState(false);
 
   const formatText = async (textToFormat: string, indentSpacing: number | '\t') => {
     await jsonFormatterTool.execute(
@@ -46,8 +53,15 @@ export function JsonFormatterView() {
   };
 
   useEffect(() => {
-    void formatText(SAMPLE_JSON, 2);
+    void formatText(input, indent);
   }, []);
+
+  const handleShareLink = () => {
+    const url = serializeStateToUrl('json-formatter', { input, indent });
+    navigator.clipboard.writeText(url);
+    setShareSuccess(true);
+    setTimeout(() => setShareSuccess(false), 2500);
+  };
 
   const handleFormat = (overrideIndent?: number | '\t') => {
     const activeIndent = overrideIndent ?? indent;
@@ -129,6 +143,23 @@ export function JsonFormatterView() {
         <div className="flex items-center gap-2">
           <button
             type="button"
+            onClick={handleShareLink}
+            className="inline-flex items-center gap-1.5 rounded-lg border border-stone-200 bg-white px-3 py-1.5 text-xs font-medium text-stone-700 shadow-xs hover:bg-stone-50 transition-colors"
+          >
+            {shareSuccess ? (
+              <>
+                <Check className="h-3.5 w-3.5 text-emerald-600" />
+                <span className="text-emerald-700">Link Copied!</span>
+              </>
+            ) : (
+              <>
+                <Share2 className="h-3.5 w-3.5 text-stone-500" />
+                <span>Share Link</span>
+              </>
+            )}
+          </button>
+          <button
+            type="button"
             onClick={handleLoadSample}
             className="inline-flex items-center gap-1.5 rounded-lg border border-stone-200 bg-white px-3 py-1.5 text-xs font-medium text-stone-700 shadow-xs hover:bg-stone-50 transition-colors"
           >
@@ -167,23 +198,32 @@ export function JsonFormatterView() {
             <span className="text-xs font-mono text-stone-400">{input.length} chars</span>
           </div>
 
-          <textarea
-            value={input}
-            onChange={e => {
-              setInput(e.target.value);
-              if (errorMessage) setErrorMessage(null);
+          <DropzoneWrapper
+            allowedExtensions={['.json', '.txt', '.jsonl']}
+            onFileLoaded={content => {
+              setInput(content);
+              void formatText(content, indent);
             }}
-            onKeyDown={e => {
-              if ((e.metaKey || e.ctrlKey) && e.key === 'Enter') {
-                e.preventDefault();
-                handleFormat();
-              }
-            }}
-            placeholder="Paste your JSON here..."
-            rows={18}
-            className="mt-3 w-full resize-y rounded-xl border border-stone-200/60 bg-[#fdfdfc] p-3.5 font-mono text-xs text-stone-900 leading-relaxed placeholder:text-stone-400 focus:border-stone-900 focus:outline-none focus:ring-1 focus:ring-stone-900 transition-all"
-            spellCheck={false}
-          />
+            label="Drop .json file here to load"
+          >
+            <textarea
+              value={input}
+              onChange={e => {
+                setInput(e.target.value);
+                if (errorMessage) setErrorMessage(null);
+              }}
+              onKeyDown={e => {
+                if ((e.metaKey || e.ctrlKey) && e.key === 'Enter') {
+                  e.preventDefault();
+                  handleFormat();
+                }
+              }}
+              placeholder="Paste or drop your JSON here..."
+              rows={18}
+              className="mt-3 w-full resize-y rounded-xl border border-stone-200/60 bg-[#fdfdfc] p-3.5 font-mono text-xs text-stone-900 leading-relaxed placeholder:text-stone-400 focus:border-stone-900 focus:outline-none focus:ring-1 focus:ring-stone-900 transition-all"
+              spellCheck={false}
+            />
+          </DropzoneWrapper>
 
           <div className="mt-4 flex flex-wrap items-center justify-between gap-3 pt-3 border-t border-stone-100">
             {/* Indent selector */}

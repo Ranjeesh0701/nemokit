@@ -33,6 +33,7 @@ import {
   FileEdit,
   RefreshCw,
   RotateCcw,
+  Code2,
 } from 'lucide-react';
 
 interface AppSidebarProps {
@@ -181,6 +182,12 @@ export function AppSidebar({
         return <FileCheck className="h-4 w-4" />;
       case 'markdown-preview':
         return <FileEdit className="h-4 w-4" />;
+      case 'chmod-calculator':
+        return <Lock className="h-4 w-4" />;
+      case 'html-preview':
+        return <Code2 className="h-4 w-4" />;
+      case 'http-reference':
+        return <Globe className="h-4 w-4" />;
       default:
         return <Layers className="h-4 w-4" />;
     }

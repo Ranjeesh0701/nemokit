@@ -24,6 +24,7 @@ import {
   FileCheck,
   FileEdit,
   RefreshCw,
+  Code2,
   ShieldCheck,
   Zap,
   Cpu,
@@ -115,6 +116,12 @@ export function HomeLandingView({
         return <FileCheck className="h-5 w-5 text-teal-600" />;
       case 'markdown-preview':
         return <FileEdit className="h-5 w-5 text-amber-600" />;
+      case 'chmod-calculator':
+        return <Lock className="h-5 w-5 text-amber-600" />;
+      case 'html-preview':
+        return <Code2 className="h-5 w-5 text-orange-600" />;
+      case 'http-reference':
+        return <Globe className="h-5 w-5 text-cyan-600" />;
       default:
         return <Layers className="h-5 w-5 text-stone-600" />;
     }
@@ -138,7 +145,7 @@ export function HomeLandingView({
   }, [tools, searchQuery]);
 
   return (
-    <div className="flex flex-col gap-12 max-w-6xl pb-16">
+    <div className="flex flex-col gap-12 max-w-6xl pb-8">
       {/* Hero Section */}
       <div className="flex flex-col items-start gap-4 pt-4">
         <div className="inline-flex items-center gap-2 rounded-full border border-stone-200 bg-white/90 px-3 py-1 text-xs font-medium text-stone-600 shadow-xs">

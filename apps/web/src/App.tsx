@@ -22,6 +22,9 @@ import {
   dataConverterTool,
   fileHashTool,
   markdownTool,
+  chmodTool,
+  htmlPreviewTool,
+  httpRefTool,
 } from '@nemokit/core';
 import type { ToolMetadata } from '@nemokit/core';
 import { LandingPage } from './components/landing/LandingPage.js';
@@ -97,6 +100,15 @@ const FileHashView = lazy(() =>
 const MarkdownView = lazy(() =>
   import('./components/views/MarkdownView.js').then(m => ({ default: m.MarkdownView }))
 );
+const ChmodToolView = lazy(() =>
+  import('./components/views/ChmodToolView.js').then(m => ({ default: m.ChmodToolView }))
+);
+const HtmlPreviewView = lazy(() =>
+  import('./components/views/HtmlPreviewView.js').then(m => ({ default: m.HtmlPreviewView }))
+);
+const HttpRefView = lazy(() =>
+  import('./components/views/HttpRefView.js').then(m => ({ default: m.HttpRefView }))
+);
 
 function ViewSkeleton() {
   return (
@@ -142,6 +154,9 @@ export default function App() {
     reg.register(qrTool);
     reg.register(cronTool);
     reg.register(curlConverterTool);
+    reg.register(chmodTool);
+    reg.register(htmlPreviewTool);
+    reg.register(httpRefTool);
     return reg;
   }, []);
 
@@ -154,7 +169,8 @@ export default function App() {
     }
 
     if (hash.startsWith('#/app/')) {
-      const toolId = hash.replace('#/app/', '').trim();
+      const raw = hash.replace('#/app/', '').trim();
+      const toolId = raw.split('?')[0];
       return { mode: 'app', activeToolId: toolId || 'dashboard' };
     }
 
@@ -163,7 +179,8 @@ export default function App() {
     }
 
     if (hash.startsWith('#/tools/')) {
-      const toolId = hash.replace('#/tools/', '').trim();
+      const raw = hash.replace('#/tools/', '').trim();
+      const toolId = raw.split('?')[0];
       return { mode: 'app', activeToolId: toolId || 'dashboard' };
     }
 
@@ -337,6 +354,9 @@ export default function App() {
               {activeToolId === 'qr-tool' && <QrToolView />}
               {activeToolId === 'cron-tool' && <CronToolView />}
               {activeToolId === 'curl-converter' && <CurlConverterView />}
+              {activeToolId === 'chmod-calculator' && <ChmodToolView />}
+              {activeToolId === 'html-preview' && <HtmlPreviewView />}
+              {activeToolId === 'http-reference' && <HttpRefView />}
             </Suspense>
           </div>
         </main>

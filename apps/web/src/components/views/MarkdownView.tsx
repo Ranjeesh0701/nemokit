@@ -206,7 +206,7 @@ export function MarkdownView() {
             <span className="font-mono text-stone-400">HTML Preview</span>
           </div>
           <div
-            className="w-full h-full min-h-[380px] rounded-xl border border-stone-200 bg-white p-6 shadow-xs overflow-y-auto prose prose-stone max-w-none text-xs sm:text-sm leading-relaxed"
+            className="w-full h-full min-h-95 rounded-xl border border-stone-200 bg-white p-6 shadow-xs overflow-y-auto prose prose-stone max-w-none text-xs sm:text-sm leading-relaxed"
             dangerouslySetInnerHTML={{ __html: output?.html ?? '' }}
           />
         </div>

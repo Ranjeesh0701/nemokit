@@ -22,3 +22,6 @@ export * from './tools/curl-converter-tool.js';
 export * from './tools/data-converter-tool.js';
 export * from './tools/file-hash-tool.js';
 export * from './tools/markdown-tool.js';
+export * from './tools/chmod-tool.js';
+export * from './tools/html-preview-tool.js';
+export * from './tools/http-ref-tool.js';

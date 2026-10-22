@@ -1,5 +1,5 @@
 import { useEffect, useState, useMemo, useRef } from 'react';
-import type { ToolMetadata } from '@nemokit/core';
+import type { ToolCategory, ToolMetadata } from '@nemokit/core';
 import {
   Search,
   FileCode,
@@ -23,6 +23,7 @@ import {
   FileCheck,
   FileEdit,
   RefreshCw,
+  Code2,
   Layers,
   X,
 } from 'lucide-react';
@@ -34,6 +35,22 @@ interface CommandPaletteProps {
   readonly onSelectTool: (toolId: string) => void;
   readonly favorites?: ReadonlyArray<string>;
 }
+
+const CATEGORY_NAMES: Record<ToolCategory, string> = {
+  formatters: 'Formatters & Beautifiers',
+  converters: 'Converters & Decoders',
+  crypto: 'Cryptography & Identifiers',
+  web: 'Web & Network',
+  pdf: 'PDF Utilities',
+};
+
+const CATEGORY_ORDER: ReadonlyArray<ToolCategory> = [
+  'formatters',
+  'converters',
+  'crypto',
+  'web',
+  'pdf',
+];
 
 export function CommandPalette({
   isOpen,
@@ -47,27 +64,59 @@ export function CommandPalette({
   const listRef = useRef<HTMLDivElement>(null);
 
   const filtered = useMemo(() => {
-    if (!query.trim()) {
-      // Sort favorites to top when query is empty
-      return [...tools].sort((a, b) => {
-        const aFav = favorites.includes(a.id) ? 1 : 0;
-        const bFav = favorites.includes(b.id) ? 1 : 0;
-        return bFav - aFav;
-      });
+    let list = tools;
+    if (query.trim()) {
+      const q = query.toLowerCase();
+      list = tools.filter(
+        t =>
+          t.name.toLowerCase().includes(q) ||
+          t.description.toLowerCase().includes(q) ||
+          t.category.toLowerCase().includes(q)
+      );
     }
-    const q = query.toLowerCase();
-    return tools.filter(
-      t =>
-        t.name.toLowerCase().includes(q) ||
-        t.description.toLowerCase().includes(q) ||
-        t.category.toLowerCase().includes(q)
-    );
-  }, [tools, query, favorites]);
+
+    // Sort by CATEGORY_ORDER, then by name
+    return [...list].sort((a, b) => {
+      const catA = CATEGORY_ORDER.indexOf(a.category);
+      const catB = CATEGORY_ORDER.indexOf(b.category);
+      if (catA !== catB) return catA - catB;
+      return a.name.localeCompare(b.name);
+    });
+  }, [tools, query]);
+
+  // Group items by category while preserving their index in `filtered`
+  const groupedSections = useMemo(() => {
+    const sections: Array<{
+      category: ToolCategory;
+      title: string;
+      items: Array<{ tool: ToolMetadata; index: number }>;
+    }> = [];
+
+    CATEGORY_ORDER.forEach(cat => {
+      const items: Array<{ tool: ToolMetadata; index: number }> = [];
+      filtered.forEach((tool, idx) => {
+        if (tool.category === cat) {
+          items.push({ tool, index: idx });
+        }
+      });
+      if (items.length > 0) {
+        sections.push({
+          category: cat,
+          title: CATEGORY_NAMES[cat] || cat,
+          items,
+        });
+      }
+    });
+
+    return sections;
+  }, [filtered]);
 
   // Auto-scroll the active item into view when navigating via keyboard
   useEffect(() => {
     if (!isOpen || !listRef.current) return;
-    const activeElement = listRef.current.children[selectedIndex] as HTMLElement | undefined;
+    const activeElement = listRef.current.querySelector(
+      `[data-index="${selectedIndex}"]`
+    ) as HTMLElement | null;
     if (activeElement) {
       activeElement.scrollIntoView({ block: 'nearest' });
     }
@@ -154,6 +203,12 @@ export function CommandPalette({
         return <FileCheck className="h-4 w-4" />;
       case 'markdown-preview':
         return <FileEdit className="h-4 w-4" />;
+      case 'chmod-calculator':
+        return <Lock className="h-4 w-4" />;
+      case 'html-preview':
+        return <Code2 className="h-4 w-4" />;
+      case 'http-reference':
+        return <Globe className="h-4 w-4" />;
       default:
         return <Layers className="h-4 w-4" />;
     }
@@ -174,7 +229,7 @@ export function CommandPalette({
             value={query}
             onChange={e => setQuery(e.target.value)}
             placeholder="Type a tool name or category..."
-            className="flex-1 bg-transparent text-sm text-stone-900 placeholder:text-stone-400 focus:outline-none"
+            className="flex-1 bg-transparent text-sm text-stone-900 placeholder:text-stone-400 focus:outline-hidden"
           />
           <button
             type="button"
@@ -185,54 +240,66 @@ export function CommandPalette({
           </button>
         </div>
 
-        {/* Results List */}
-        <div ref={listRef} className="max-h-80 overflow-y-auto p-2 space-y-1">
+        {/* Results List Grouped by Category */}
+        <div ref={listRef} className="max-h-84 overflow-y-auto p-2 space-y-3">
           {filtered.length > 0 ? (
-            filtered.map((tool, idx) => {
-              const isSelected = idx === selectedIndex;
-              return (
-                <div
-                  key={tool.id}
-                  onClick={() => {
-                    onSelectTool(tool.id);
-                    onClose();
-                  }}
-                  onMouseEnter={() => setSelectedIndex(idx)}
-                  className={`flex items-center justify-between rounded-xl px-3.5 py-2.5 cursor-pointer text-xs transition-colors ${
-                    isSelected ? 'bg-stone-900 text-white' : 'text-stone-700 hover:bg-stone-100'
-                  }`}
-                >
-                  <div className="flex items-center gap-3 truncate pr-3">
-                    <span className={isSelected ? 'text-white' : 'text-stone-500'}>
-                      {getToolIcon(tool.id)}
-                    </span>
-                    <div className="flex flex-col truncate">
-                      <span className="font-semibold truncate">{tool.name}</span>
-                      <span
-                        className={`text-[11px] truncate ${
-                          isSelected ? 'text-stone-300' : 'text-stone-400'
-                        }`}
-                      >
-                        {tool.description}
-                      </span>
-                    </div>
-                  </div>
+            groupedSections.map(section => (
+              <div key={section.category} className="space-y-1">
+                <div className="px-3 pt-1.5 pb-0.5 text-[10px] font-bold uppercase tracking-wider text-stone-400 select-none flex items-center justify-between">
+                  <span>{section.title}</span>
+                  <span className="font-mono text-[9px] text-stone-400 font-normal">
+                    {section.items.length}
+                  </span>
+                </div>
 
-                  <div className="flex items-center gap-2 shrink-0">
-                    {favorites.includes(tool.id) && (
-                      <Star className="h-3.5 w-3.5 fill-amber-400 text-amber-500" />
-                    )}
-                    <span
-                      className={`rounded px-1.5 py-0.5 text-[10px] font-medium capitalize ${
-                        isSelected ? 'bg-stone-800 text-stone-300' : 'bg-stone-100 text-stone-600'
+                {section.items.map(({ tool, index }) => {
+                  const isSelected = index === selectedIndex;
+                  return (
+                    <div
+                      key={tool.id}
+                      data-index={index}
+                      onClick={() => {
+                        onSelectTool(tool.id);
+                        onClose();
+                      }}
+                      onMouseEnter={() => setSelectedIndex(index)}
+                      className={`flex items-center justify-between rounded-xl px-3.5 py-2 cursor-pointer text-xs transition-colors ${
+                        isSelected ? 'bg-stone-900 text-white' : 'text-stone-700 hover:bg-stone-100'
                       }`}
                     >
-                      {tool.category}
-                    </span>
-                  </div>
-                </div>
-              );
-            })
+                      <div className="flex items-center gap-3 truncate pr-3">
+                        <span className={isSelected ? 'text-white' : 'text-stone-500'}>
+                          {getToolIcon(tool.id)}
+                        </span>
+                        <div className="flex flex-col truncate">
+                          <span className="font-semibold truncate">{tool.name}</span>
+                          <span
+                            className={`text-[11px] truncate ${
+                              isSelected ? 'text-stone-300' : 'text-stone-400'
+                            }`}
+                          >
+                            {tool.description}
+                          </span>
+                        </div>
+                      </div>
+
+                      <div className="flex items-center gap-2 shrink-0">
+                        {favorites.includes(tool.id) && (
+                          <Star className="h-3.5 w-3.5 fill-amber-400 text-amber-500" />
+                        )}
+                        <span
+                          className={`rounded px-1.5 py-0.5 text-[10px] font-medium capitalize ${
+                            isSelected ? 'bg-stone-800 text-stone-300' : 'bg-stone-100 text-stone-600'
+                          }`}
+                        >
+                          {tool.category}
+                        </span>
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            ))
           ) : (
             <div className="py-8 text-center text-xs text-stone-400">
               No matching tools found for "{query}".

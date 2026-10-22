@@ -1,4 +1,5 @@
-import type { ToolMetadata } from '@nemokit/core';
+import { useState, useMemo } from 'react';
+import type { ToolCategory, ToolMetadata } from '@nemokit/core';
 import {
   Boxes,
   ArrowRight,
@@ -38,6 +39,37 @@ interface LandingPageProps {
   readonly canInstall?: boolean;
   readonly onInstallApp?: () => void;
 }
+
+const CATEGORY_DETAILS: Record<ToolCategory, { title: string; subtitle: string }> = {
+  formatters: {
+    title: 'Formatters & Beautifiers',
+    subtitle: 'Clean, validate, and restructure source code and structured data.',
+  },
+  converters: {
+    title: 'Converters & Decoders',
+    subtitle: 'Transform between data formats, encodings, timestamps, and permissions.',
+  },
+  crypto: {
+    title: 'Cryptography & Security',
+    subtitle: 'Generate secure tokens, cryptographically secure IDs, and file checksums.',
+  },
+  web: {
+    title: 'Web & Network Utilities',
+    subtitle: 'Inspect URLs, test regexes, generate QR codes, and consult HTTP specs.',
+  },
+  pdf: {
+    title: 'PDF Document Studio',
+    subtitle: 'Client-side PDF page extraction, splitting, and merging.',
+  },
+};
+
+const CATEGORIES_ORDER: ReadonlyArray<ToolCategory> = [
+  'formatters',
+  'converters',
+  'crypto',
+  'web',
+  'pdf',
+];
 
 export function LandingPage({ tools, onLaunchApp, canInstall, onInstallApp }: LandingPageProps) {
   const getToolIcon = (id: string) => {
@@ -86,10 +118,43 @@ export function LandingPage({ tools, onLaunchApp, canInstall, onInstallApp }: La
         return <FileCheck className="h-5 w-5 text-teal-600" />;
       case 'markdown-preview':
         return <FileEdit className="h-5 w-5 text-amber-600" />;
+      case 'chmod-calculator':
+        return <Lock className="h-5 w-5 text-amber-600" />;
+      case 'html-preview':
+        return <Code2 className="h-5 w-5 text-orange-600" />;
+      case 'http-reference':
+        return <Globe className="h-5 w-5 text-cyan-600" />;
       default:
         return <Layers className="h-5 w-5 text-stone-600" />;
     }
   };
+
+  const [activeCategory, setActiveCategory] = useState<'all' | ToolCategory>('all');
+  const [searchQuery, setSearchQuery] = useState('');
+
+  const filteredTools = useMemo(() => {
+    return tools.filter(tool => {
+      const matchesCat = activeCategory === 'all' || tool.category === activeCategory;
+      const matchesSearch =
+        !searchQuery.trim() ||
+        tool.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        tool.description.toLowerCase().includes(searchQuery.toLowerCase());
+      return matchesCat && matchesSearch;
+    });
+  }, [tools, activeCategory, searchQuery]);
+
+  const groupedByCategory = useMemo(() => {
+    const map = new Map<ToolCategory, ToolMetadata[]>();
+    CATEGORIES_ORDER.forEach(cat => {
+      map.set(cat, []);
+    });
+    filteredTools.forEach(tool => {
+      const list = map.get(tool.category) ?? [];
+      list.push(tool);
+      map.set(tool.category, list);
+    });
+    return map;
+  }, [filteredTools]);
 
   return (
     <div className="min-h-screen bg-[#faf9f6] text-stone-800 antialiased selection:bg-stone-200 flex flex-col">
@@ -147,7 +212,7 @@ export function LandingPage({ tools, onLaunchApp, canInstall, onInstallApp }: La
       </nav>
 
       {/* Hero Section */}
-      <section className="relative px-6 pt-20 pb-24 overflow-hidden border-b border-stone-200/60 bg-gradient-to-b from-[#f5f3ee] to-[#faf9f6]">
+      <section className="relative px-6 pt-20 pb-24 overflow-hidden border-b border-stone-200/60 bg-linear-to-b from-[#f5f3ee] to-[#faf9f6]">
         <div className="mx-auto max-w-4xl text-center flex flex-col items-center">
           <div className="inline-flex items-center gap-2 rounded-full border border-stone-200/80 bg-white/90 px-3.5 py-1.5 text-xs font-medium text-stone-700 shadow-2xs mb-6">
             <Sparkles className="h-3.5 w-3.5 text-amber-500" />
@@ -205,7 +270,7 @@ export function LandingPage({ tools, onLaunchApp, canInstall, onInstallApp }: La
       {/* Tools Showcase Section */}
       <section id="tools" className="py-20 px-6 border-b border-stone-200/60">
         <div className="mx-auto max-w-6xl">
-          <div className="flex flex-col items-center text-center mb-14">
+          <div className="flex flex-col items-center text-center mb-10">
             <h2 className="text-2xl sm:text-3xl font-bold tracking-tight text-stone-900">
               Built for focused work
             </h2>
@@ -215,37 +280,122 @@ export function LandingPage({ tools, onLaunchApp, canInstall, onInstallApp }: La
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
-            {tools.map(tool => (
-              <div
-                key={tool.id}
-                onClick={() => onLaunchApp(tool.id)}
-                className="group cursor-pointer flex flex-col justify-between rounded-2xl border border-stone-200/90 bg-white p-6 shadow-xs hover:border-stone-400 hover:shadow-md transition-all"
+          {/* Category Filter Chips & Instant Search */}
+          <div className="flex flex-col md:flex-row items-center justify-between gap-4 mb-12">
+            <div className="flex flex-wrap items-center justify-center gap-1.5">
+              <button
+                type="button"
+                onClick={() => setActiveCategory('all')}
+                className={`px-3.5 py-1.5 rounded-xl text-xs font-semibold transition-all ${
+                  activeCategory === 'all'
+                    ? 'bg-stone-900 text-white shadow-xs'
+                    : 'bg-white text-stone-600 border border-stone-200/80 hover:bg-stone-50'
+                }`}
               >
-                <div>
-                  <div className="flex items-center justify-between">
-                    <span className="flex h-11 w-11 items-center justify-center rounded-xl bg-stone-50 border border-stone-100 group-hover:scale-105 transition-transform">
-                      {getToolIcon(tool.id)}
-                    </span>
-                    <span className="rounded-md bg-stone-100 px-2.5 py-0.5 text-[10px] font-medium text-stone-600 uppercase tracking-wider">
-                      {tool.category}
+                All Tools ({tools.length})
+              </button>
+              {CATEGORIES_ORDER.map(cat => {
+                const count = tools.filter(t => t.category === cat).length;
+                return (
+                  <button
+                    key={cat}
+                    type="button"
+                    onClick={() => setActiveCategory(cat)}
+                    className={`px-3.5 py-1.5 rounded-xl text-xs font-semibold transition-all ${
+                      activeCategory === cat
+                        ? 'bg-stone-900 text-white shadow-xs'
+                        : 'bg-white text-stone-600 border border-stone-200/80 hover:bg-stone-50'
+                    }`}
+                  >
+                    {CATEGORY_DETAILS[cat].title.split('&')[0]?.trim() || cat} ({count})
+                  </button>
+                );
+              })}
+            </div>
+
+            <div className="relative w-full md:w-64">
+              <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-stone-400" />
+              <input
+                type="text"
+                value={searchQuery}
+                onChange={e => setSearchQuery(e.target.value)}
+                placeholder="Filter tools..."
+                className="w-full pl-9 pr-3 py-1.5 bg-white border border-stone-200 rounded-xl text-xs text-stone-800 placeholder:text-stone-400 focus:outline-hidden focus:ring-1 focus:ring-stone-400 shadow-2xs"
+              />
+              {searchQuery && (
+                <button
+                  type="button"
+                  onClick={() => setSearchQuery('')}
+                  className="absolute right-2.5 top-1/2 -translate-y-1/2 text-[10px] text-stone-400 hover:text-stone-600"
+                >
+                  ✕
+                </button>
+              )}
+            </div>
+          </div>
+
+          {/* Categorized Tools Sections */}
+          <div className="flex flex-col gap-14">
+            {CATEGORIES_ORDER.map(category => {
+              const categoryTools = groupedByCategory.get(category) ?? [];
+              if (categoryTools.length === 0) return null;
+              const meta = CATEGORY_DETAILS[category];
+
+              return (
+                <div key={category} className="flex flex-col gap-5">
+                  <div className="flex flex-col sm:flex-row sm:items-baseline justify-between border-b border-stone-200/60 pb-3 gap-1">
+                    <div>
+                      <h3 className="text-lg font-bold tracking-tight text-stone-900">
+                        {meta.title}
+                      </h3>
+                      <p className="text-xs text-stone-500 mt-0.5">{meta.subtitle}</p>
+                    </div>
+                    <span className="text-xs font-mono font-medium text-stone-400">
+                      {categoryTools.length} {categoryTools.length === 1 ? 'tool' : 'tools'}
                     </span>
                   </div>
 
-                  <h3 className="mt-5 font-semibold text-base text-stone-900 group-hover:text-stone-950">
-                    {tool.name}
-                  </h3>
-                  <p className="mt-1.5 text-xs text-stone-500 leading-relaxed line-clamp-2">
-                    {tool.description}
-                  </p>
-                </div>
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+                    {categoryTools.map(tool => (
+                      <div
+                        key={tool.id}
+                        onClick={() => onLaunchApp(tool.id)}
+                        className="group cursor-pointer flex flex-col justify-between rounded-2xl border border-stone-200/90 bg-white p-6 shadow-xs hover:border-stone-400 hover:shadow-md transition-all"
+                      >
+                        <div>
+                          <div className="flex items-center justify-between">
+                            <span className="flex h-11 w-11 items-center justify-center rounded-xl bg-stone-50 border border-stone-100 group-hover:scale-105 transition-transform">
+                              {getToolIcon(tool.id)}
+                            </span>
+                            <span className="rounded-md bg-stone-100 px-2.5 py-0.5 text-[10px] font-medium text-stone-600 uppercase tracking-wider">
+                              {tool.category}
+                            </span>
+                          </div>
 
-                <div className="mt-6 flex items-center gap-1.5 text-xs font-semibold text-stone-800 group-hover:text-stone-950">
-                  <span>Launch tool workspace</span>
-                  <ArrowRight className="h-3.5 w-3.5 group-hover:translate-x-1 transition-transform" />
+                          <h4 className="mt-5 font-semibold text-base text-stone-900 group-hover:text-stone-950">
+                            {tool.name}
+                          </h4>
+                          <p className="mt-1.5 text-xs text-stone-500 leading-relaxed line-clamp-2">
+                            {tool.description}
+                          </p>
+                        </div>
+
+                        <div className="mt-6 flex items-center gap-1.5 text-xs font-semibold text-stone-800 group-hover:text-stone-950">
+                          <span>Launch tool workspace</span>
+                          <ArrowRight className="h-3.5 w-3.5 group-hover:translate-x-1 transition-transform" />
+                        </div>
+                      </div>
+                    ))}
+                  </div>
                 </div>
+              );
+            })}
+
+            {filteredTools.length === 0 && (
+              <div className="rounded-2xl border border-dashed border-stone-300 p-12 text-center text-xs text-stone-500">
+                No tools found matching "{searchQuery}".
               </div>
-            ))}
+            )}
           </div>
         </div>
       </section>

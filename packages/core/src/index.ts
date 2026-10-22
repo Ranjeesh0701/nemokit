@@ -30,3 +30,6 @@ export * from './tools/image-redactor-tool.js';
 export * from './tools/image-converter-tool.js';
 export * from './tools/image-to-svg-tool.js';
 export * from './tools/favicon-tool.js';
+export * from './tools/svg-optimizer-tool.js';
+export * from './tools/json-schema-tool.js';
+export * from './tools/logo-builder-tool.js';

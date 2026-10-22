@@ -30,6 +30,9 @@ import {
   imageConverterTool,
   imageToSvgTool,
   faviconTool,
+  svgOptimizerTool,
+  jsonSchemaTool,
+  logoBuilderTool,
 } from '@nemokit/core';
 import type { ToolMetadata } from '@nemokit/core';
 import { LandingPage } from './components/landing/LandingPage.js';
@@ -131,6 +134,21 @@ const FaviconGeneratorView = lazy(() =>
     default: m.FaviconGeneratorView,
   }))
 );
+const SvgOptimizerView = lazy(() =>
+  import('./components/views/SvgOptimizerView.js').then(m => ({
+    default: m.SvgOptimizerView,
+  }))
+);
+const JsonSchemaView = lazy(() =>
+  import('./components/views/JsonSchemaView.js').then(m => ({
+    default: m.JsonSchemaView,
+  }))
+);
+const LogoBuilderView = lazy(() =>
+  import('./components/views/LogoBuilderView.js').then(m => ({
+    default: m.LogoBuilderView,
+  }))
+);
 
 function ViewSkeleton() {
   return (
@@ -184,6 +202,9 @@ export default function App() {
     reg.register(imageConverterTool);
     reg.register(imageToSvgTool);
     reg.register(faviconTool);
+    reg.register(svgOptimizerTool);
+    reg.register(jsonSchemaTool);
+    reg.register(logoBuilderTool);
     return reg;
   }, []);
 
@@ -389,6 +410,9 @@ export default function App() {
               {activeToolId === 'image-converter' && <ImageConverterView />}
               {activeToolId === 'image-to-svg' && <ImageToSvgView />}
               {activeToolId === 'favicon-generator' && <FaviconGeneratorView />}
+              {activeToolId === 'svg-optimizer' && <SvgOptimizerView />}
+              {activeToolId === 'json-schema' && <JsonSchemaView />}
+              {activeToolId === 'logo-builder' && <LogoBuilderView />}
             </Suspense>
           </div>
         </main>

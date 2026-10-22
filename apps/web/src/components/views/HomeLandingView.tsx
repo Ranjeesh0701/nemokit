@@ -34,6 +34,8 @@ import {
   ArrowRight,
   Layers,
   Sparkles,
+  Shapes,
+  FileCheck2,
 } from 'lucide-react';
 
 interface HomeLandingViewProps {
@@ -139,6 +141,12 @@ export function HomeLandingView({
         return <Sparkles className="h-5 w-5 text-amber-600" />;
       case 'favicon-generator':
         return <Globe className="h-5 w-5 text-teal-600" />;
+      case 'svg-optimizer':
+        return <Sparkles className="h-5 w-5 text-emerald-600" />;
+      case 'json-schema':
+        return <FileCheck2 className="h-5 w-5 text-indigo-600" />;
+      case 'logo-builder':
+        return <Shapes className="h-5 w-5 text-purple-600" />;
       default:
         return <Layers className="h-5 w-5 text-stone-600" />;
     }

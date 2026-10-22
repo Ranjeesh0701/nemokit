@@ -23,6 +23,41 @@ export interface ColorHsv {
   readonly v: number;
 }
 
+export interface ColorHarmonies {
+  readonly complementary: string;
+  readonly analogous: readonly [string, string];
+  readonly triadic: readonly [string, string];
+  readonly tetradic: readonly [string, string, string];
+  readonly splitComplementary: readonly [string, string];
+}
+
+export interface GradientStop {
+  readonly color: string;
+  readonly position: number; // 0 - 100
+}
+
+export interface GradientOptions {
+  readonly type: 'linear' | 'radial' | 'conic';
+  readonly angle?: number;
+  readonly stops: ReadonlyArray<GradientStop>;
+}
+
+export interface GradientResult {
+  readonly css: string;
+  readonly backgroundStyle: string;
+  readonly tailwindArbitrary: string;
+}
+
+export interface WcagEvaluation {
+  readonly ratio: number;
+  readonly aaNormal: boolean;
+  readonly aaLarge: boolean;
+  readonly aaaNormal: boolean;
+  readonly aaaLarge: boolean;
+  readonly graphicalObjects: boolean;
+  readonly scoreLabel: 'Fail' | 'Poor' | 'Good' | 'Very Good' | 'Superb';
+}
+
 export interface ColorToolInput {
   readonly color: string;
   readonly compareColor?: string;
@@ -50,6 +85,7 @@ export interface ColorToolOutput {
     readonly hex: string;
     readonly isBase?: boolean;
   }>;
+  readonly harmonies?: ColorHarmonies;
 }
 
 interface ParsedRgba {
@@ -305,6 +341,21 @@ export const colorTool: Tool<ColorToolInput, ColorToolOutput> = {
       };
     });
 
+    // Generate harmonies
+    const getHueHex = (offset: number): string => {
+      const h = (hsl.h + offset + 360) % 360;
+      const rgbH = hslToRgb(h, hsl.s / 100, hsl.l / 100);
+      return `#${toHex(rgbH.r)}${toHex(rgbH.g)}${toHex(rgbH.b)}`;
+    };
+
+    const harmonies: ColorHarmonies = {
+      complementary: getHueHex(180),
+      analogous: [getHueHex(30), getHueHex(-30)],
+      triadic: [getHueHex(120), getHueHex(240)],
+      tetradic: [getHueHex(90), getHueHex(180), getHueHex(270)],
+      splitComplementary: [getHueHex(150), getHueHex(210)],
+    };
+
     const durationMs = Math.round((performance.now() - startTime) * 100) / 100;
     const result: ColorToolOutput = {
       inputColor: rawColor,
@@ -318,6 +369,7 @@ export const colorTool: Tool<ColorToolInput, ColorToolOutput> = {
       contrastWithBlack,
       customContrast,
       palette,
+      harmonies,
     };
 
     const successRes = onSuccess(result, durationMs);
@@ -325,3 +377,69 @@ export const colorTool: Tool<ColorToolInput, ColorToolOutput> = {
     return successRes;
   },
 };
+
+/**
+ * Computes WCAG 2.1 accessibility contrast compliance between two colors
+ */
+export function evaluateWcagContrast(
+  foreground: string,
+  background: string
+): WcagEvaluation | null {
+  const fg = parseColorToRgba(foreground);
+  const bg = parseColorToRgba(background);
+  if (!fg || !bg) return null;
+
+  const fgLum = getRelativeLuminance(fg.r, fg.g, fg.b);
+  const bgLum = getRelativeLuminance(bg.r, bg.g, bg.b);
+  const ratio = getContrastRatio(fgLum, bgLum);
+
+  const aaNormal = ratio >= 4.5;
+  const aaLarge = ratio >= 3.0;
+  const aaaNormal = ratio >= 7.0;
+  const aaaLarge = ratio >= 4.5;
+  const graphicalObjects = ratio >= 3.0;
+
+  let scoreLabel: WcagEvaluation['scoreLabel'] = 'Fail';
+  if (ratio >= 10) scoreLabel = 'Superb';
+  else if (ratio >= 7.0) scoreLabel = 'Very Good';
+  else if (ratio >= 4.5) scoreLabel = 'Good';
+  else if (ratio >= 3.0) scoreLabel = 'Poor';
+
+  return {
+    ratio,
+    aaNormal,
+    aaLarge,
+    aaaNormal,
+    aaaLarge,
+    graphicalObjects,
+    scoreLabel,
+  };
+}
+
+/**
+ * Generates CSS gradient strings and Tailwind arbitrary classes
+ */
+export function generateGradientCss(options: GradientOptions): GradientResult {
+  const { type = 'linear', angle = 90, stops = [] } = options;
+
+  const sortedStops = [...stops].sort((a, b) => a.position - b.position);
+  const stopsStr = sortedStops.map(s => `${s.color} ${s.position}%`).join(', ');
+
+  let bgStyle = '';
+  if (type === 'linear') {
+    bgStyle = `linear-gradient(${angle}deg, ${stopsStr})`;
+  } else if (type === 'radial') {
+    bgStyle = `radial-gradient(circle at center, ${stopsStr})`;
+  } else {
+    bgStyle = `conic-gradient(from ${angle}deg at 50% 50%, ${stopsStr})`;
+  }
+
+  const css = `background: ${bgStyle};`;
+  const tailwindArbitrary = `bg-[${bgStyle.replace(/\s+/g, '_')}]`;
+
+  return {
+    css,
+    backgroundStyle: bgStyle,
+    tailwindArbitrary,
+  };
+}

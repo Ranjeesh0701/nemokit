@@ -1,3 +1,4 @@
+import { useState, useEffect } from 'react';
 import type { ToolCategory, ToolMetadata } from '@nemokit/core';
 import {
   Boxes,
@@ -10,6 +11,7 @@ import {
   FileKey,
   Layers,
   ChevronRight,
+  ChevronDown,
   ShieldCheck,
   PanelLeftClose,
   PanelLeftOpen,
@@ -21,6 +23,7 @@ import {
   Lock,
   Palette,
   CalendarClock,
+  ArrowRightLeft,
 } from 'lucide-react';
 
 interface AppSidebarProps {
@@ -33,12 +36,17 @@ interface AppSidebarProps {
   readonly onCloseMobile: () => void;
 }
 
-const CATEGORY_CONFIG: Record<ToolCategory, { label: string }> = {
-  formatters: { label: 'Formatters' },
-  converters: { label: 'Converters' },
-  pdf: { label: 'PDF Studio' },
-  crypto: { label: 'Security' },
-  web: { label: 'Web' },
+interface CategoryConfig {
+  readonly label: string;
+  readonly icon: React.ComponentType<{ className?: string }>;
+}
+
+const CATEGORY_CONFIG: Record<ToolCategory, CategoryConfig> = {
+  formatters: { label: 'Formatters', icon: FileCode },
+  converters: { label: 'Converters', icon: ArrowRightLeft },
+  pdf: { label: 'PDF Studio', icon: Scissors },
+  crypto: { label: 'Security', icon: Lock },
+  web: { label: 'Web', icon: Globe },
 };
 
 export function AppSidebar({
@@ -50,6 +58,40 @@ export function AppSidebar({
   isMobileOpen,
   onCloseMobile,
 }: AppSidebarProps) {
+  // Accordion state: by default, all categories are expanded
+  const [openCategories, setOpenCategories] = useState<Set<ToolCategory>>(
+    () => new Set<ToolCategory>(['formatters', 'converters', 'pdf', 'crypto', 'web'])
+  );
+
+  // Popover state for compact mode when hovering over a category icon
+  const [popoverCategory, setPopoverCategory] = useState<ToolCategory | null>(null);
+
+  const activeTool = tools.find(t => t.id === activeView);
+
+  // Auto-expand category containing active tool if it was closed
+  useEffect(() => {
+    if (activeTool) {
+      setOpenCategories(prev => {
+        if (prev.has(activeTool.category)) return prev;
+        const next = new Set(prev);
+        next.add(activeTool.category);
+        return next;
+      });
+    }
+  }, [activeTool]);
+
+  const toggleCategory = (category: ToolCategory) => {
+    setOpenCategories(prev => {
+      const next = new Set(prev);
+      if (next.has(category)) {
+        next.delete(category);
+      } else {
+        next.add(category);
+      }
+      return next;
+    });
+  };
+
   const getToolIcon = (id: string) => {
     switch (id) {
       case 'json-formatter':
@@ -133,7 +175,10 @@ export function AppSidebar({
           {/* Collapse/Expand Toggle Button */}
           <button
             type="button"
-            onClick={onToggleCollapse}
+            onClick={() => {
+              setPopoverCategory(null);
+              onToggleCollapse();
+            }}
             title={isCollapsed ? 'Expand sidebar' : 'Collapse sidebar'}
             className="flex h-7 w-7 items-center justify-center rounded-lg text-stone-400 hover:bg-stone-200/60 hover:text-stone-700 transition-colors"
           >
@@ -145,8 +190,12 @@ export function AppSidebar({
           </button>
         </div>
 
-        {/* Navigation list */}
-        <div className={`flex-1 overflow-y-auto py-3 space-y-4 ${isCollapsed ? 'px-2' : 'px-2.5'}`}>
+        {/* Navigation Content */}
+        <div
+          className={`flex-1 py-3 space-y-3 ${
+            isCollapsed ? 'px-2 overflow-visible' : 'px-2.5 overflow-y-auto'
+          }`}
+        >
           {/* Main Dashboard Link */}
           <div>
             <button
@@ -155,70 +204,202 @@ export function AppSidebar({
               onClick={() => {
                 onSelectView('home');
                 onCloseMobile();
+                setPopoverCategory(null);
               }}
               className={`flex w-full items-center rounded-xl text-xs font-medium transition-colors ${
-                isCollapsed ? 'justify-center h-9 px-0' : 'gap-2 px-2.5 py-1.5'
+                isCollapsed ? 'justify-center h-10 px-0' : 'gap-2 px-2.5 py-1.5'
               } ${
                 activeView === 'home'
                   ? 'bg-stone-900 text-white shadow-xs font-semibold'
                   : 'text-stone-600 hover:bg-stone-200/60 hover:text-stone-900'
               }`}
             >
-              <Home className="h-3.5 w-3.5 shrink-0" />
+              <Home className="h-4 w-4 shrink-0" />
               {!isCollapsed && <span>Dashboard</span>}
             </button>
           </div>
 
-          {/* Grouped Tools */}
-          {categories.map(category => {
-            const categoryTools = tools.filter(t => t.category === category);
-            if (categoryTools.length === 0) return null;
+          {/* Compact Mode: Icon-Only for Categories with Popover Flyout */}
+          {isCollapsed ? (
+            <div className="space-y-2 pt-1 border-t border-stone-200/70">
+              {categories.map(category => {
+                const categoryTools = tools.filter(t => t.category === category);
+                if (categoryTools.length === 0) return null;
+                const isCategoryActive = activeTool?.category === category;
+                const config = CATEGORY_CONFIG[category];
+                const CategoryIcon = config.icon;
+                const isPopoverOpen = popoverCategory === category;
 
-            return (
-              <div key={category} className="space-y-0.5">
-                {isCollapsed ? (
-                  <div className="my-1.5 border-t border-stone-200/70" />
-                ) : (
-                  <div className="flex items-center justify-between px-2.5 pt-1.5 pb-1 text-[10px] font-semibold uppercase tracking-wider text-stone-400">
-                    <span>{CATEGORY_CONFIG[category].label}</span>
-                    <span className="text-[9px] font-mono opacity-60">{categoryTools.length}</span>
-                  </div>
-                )}
-
-                {categoryTools.map(tool => {
-                  const isActive = activeView === tool.id;
-                  return (
+                return (
+                  <div
+                    key={category}
+                    className="relative flex justify-center"
+                    onMouseEnter={() => setPopoverCategory(category)}
+                    onMouseLeave={() => setPopoverCategory(null)}
+                  >
                     <button
-                      key={tool.id}
                       type="button"
-                      title={isCollapsed ? tool.name : undefined}
+                      title={`${config.label} (${categoryTools.length} tools)`}
                       onClick={() => {
-                        onSelectView(tool.id);
-                        onCloseMobile();
+                        // Navigate to active tool in this category or the first one
+                        const targetTool = isCategoryActive ? activeView : categoryTools[0]?.id;
+                        if (targetTool) {
+                          onSelectView(targetTool);
+                          setPopoverCategory(null);
+                        }
                       }}
-                      className={`flex w-full items-center rounded-xl text-xs font-medium transition-colors ${
-                        isCollapsed ? 'justify-center h-9 px-0' : 'justify-between px-2.5 py-1.5'
-                      } ${
-                        isActive
+                      className={`flex h-10 w-10 items-center justify-center rounded-xl transition-all ${
+                        isCategoryActive
                           ? 'bg-stone-900 text-white shadow-xs font-semibold'
-                          : 'text-stone-600 hover:bg-stone-200/50 hover:text-stone-900'
+                          : 'text-stone-500 hover:bg-stone-200/70 hover:text-stone-900'
+                      }`}
+                    >
+                      <CategoryIcon className="h-4 w-4" />
+                    </button>
+
+                    {/* Compact Mode Floating Flyout */}
+                    {isPopoverOpen && (
+                      <div
+                        className="absolute left-12 top-0 z-50 ml-2 w-56 rounded-xl border border-stone-200/90 bg-white p-1.5 shadow-xl animate-in fade-in zoom-in-95 duration-100"
+                        onMouseEnter={() => setPopoverCategory(category)}
+                        onMouseLeave={() => setPopoverCategory(null)}
+                      >
+                        <div className="flex items-center justify-between px-2.5 py-1.5 pb-1 border-b border-stone-100 mb-1">
+                          <span className="text-xs font-semibold text-stone-800">
+                            {config.label}
+                          </span>
+                          <span className="text-[10px] font-mono text-stone-400 bg-stone-100 px-1.5 py-0.5 rounded">
+                            {categoryTools.length}
+                          </span>
+                        </div>
+
+                        <div className="space-y-0.5">
+                          {categoryTools.map(tool => {
+                            const isActive = activeView === tool.id;
+                            return (
+                              <button
+                                key={tool.id}
+                                type="button"
+                                onClick={() => {
+                                  onSelectView(tool.id);
+                                  setPopoverCategory(null);
+                                }}
+                                className={`flex w-full items-center justify-between px-2.5 py-1.5 rounded-lg text-xs font-medium transition-colors ${
+                                  isActive
+                                    ? 'bg-stone-900 text-white shadow-2xs font-semibold'
+                                    : 'text-stone-600 hover:bg-stone-100 hover:text-stone-900'
+                                }`}
+                              >
+                                <div className="flex items-center gap-2 truncate">
+                                  <span
+                                    className={`shrink-0 ${
+                                      isActive ? 'text-white' : 'text-stone-400'
+                                    }`}
+                                  >
+                                    {getToolIcon(tool.id)}
+                                  </span>
+                                  <span className="truncate">{tool.name}</span>
+                                </div>
+                                {isActive && (
+                                  <ChevronRight className="h-3 w-3 text-stone-400 shrink-0" />
+                                )}
+                              </button>
+                            );
+                          })}
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                );
+              })}
+            </div>
+          ) : (
+            /* Normal Mode: Category Accordions */
+            <div className="space-y-1 pt-1 border-t border-stone-200/50">
+              {categories.map(category => {
+                const categoryTools = tools.filter(t => t.category === category);
+                if (categoryTools.length === 0) return null;
+
+                const isOpen = openCategories.has(category);
+                const isCategoryActive = activeTool?.category === category;
+                const config = CATEGORY_CONFIG[category];
+                const CategoryIcon = config.icon;
+
+                return (
+                  <div key={category} className="rounded-xl overflow-hidden">
+                    {/* Accordion Header */}
+                    <button
+                      type="button"
+                      onClick={() => toggleCategory(category)}
+                      className={`flex w-full items-center justify-between px-2.5 py-1.5 rounded-lg text-xs font-semibold transition-colors ${
+                        isCategoryActive
+                          ? 'text-stone-900 bg-stone-200/40'
+                          : 'text-stone-600 hover:bg-stone-200/30 hover:text-stone-900'
                       }`}
                     >
                       <div className="flex items-center gap-2 truncate">
-                        <span className={`shrink-0 ${isActive ? 'text-white' : 'text-stone-400'}`}>
-                          {getToolIcon(tool.id)}
-                        </span>
-                        {!isCollapsed && <span className="truncate">{tool.name}</span>}
+                        <CategoryIcon
+                          className={`h-3.5 w-3.5 shrink-0 ${
+                            isCategoryActive ? 'text-stone-900' : 'text-stone-400'
+                          }`}
+                        />
+                        <span className="truncate">{config.label}</span>
                       </div>
-                      {!isCollapsed && isActive && (
-                        <ChevronRight className="h-3 w-3 text-stone-400 shrink-0" />
-                      )}
+
+                      <div className="flex items-center gap-1.5 shrink-0">
+                        <span className="text-[10px] font-mono text-stone-400 bg-stone-100 px-1.5 py-0.5 rounded">
+                          {categoryTools.length}
+                        </span>
+                        <ChevronDown
+                          className={`h-3.5 w-3.5 text-stone-400 transition-transform duration-200 ${
+                            isOpen ? 'rotate-0' : '-rotate-90'
+                          }`}
+                        />
+                      </div>
                     </button>
-                  );
-                })}
-              </div>
-            );
-          })}
+
+                    {/* Accordion Body: Tools in this Category */}
+                    {isOpen && (
+                      <div className="mt-0.5 mb-1 pl-3 space-y-0.5 border-l border-stone-200/70 ml-3.5">
+                        {categoryTools.map(tool => {
+                          const isActive = activeView === tool.id;
+                          return (
+                            <button
+                              key={tool.id}
+                              type="button"
+                              onClick={() => {
+                                onSelectView(tool.id);
+                                onCloseMobile();
+                              }}
+                              className={`flex w-full items-center justify-between px-2 py-1.5 rounded-lg text-xs font-medium transition-colors ${
+                                isActive
+                                  ? 'bg-stone-900 text-white shadow-xs font-semibold'
+                                  : 'text-stone-600 hover:bg-stone-200/50 hover:text-stone-900'
+                              }`}
+                            >
+                              <div className="flex items-center gap-2 truncate">
+                                <span
+                                  className={`shrink-0 ${
+                                    isActive ? 'text-white' : 'text-stone-400'
+                                  }`}
+                                >
+                                  {getToolIcon(tool.id)}
+                                </span>
+                                <span className="truncate">{tool.name}</span>
+                              </div>
+                              {isActive && (
+                                <ChevronRight className="h-3 w-3 text-stone-400 shrink-0" />
+                              )}
+                            </button>
+                          );
+                        })}
+                      </div>
+                    )}
+                  </div>
+                );
+              })}
+            </div>
+          )}
         </div>
 
         {/* Sidebar Footer */}

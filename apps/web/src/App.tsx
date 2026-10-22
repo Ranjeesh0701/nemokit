@@ -28,6 +28,8 @@ import {
   bgRemoverTool,
   imageRedactorTool,
   imageConverterTool,
+  imageToSvgTool,
+  faviconTool,
 } from '@nemokit/core';
 import type { ToolMetadata } from '@nemokit/core';
 import { LandingPage } from './components/landing/LandingPage.js';
@@ -121,6 +123,12 @@ const ImageRedactorView = lazy(() =>
 const ImageConverterView = lazy(() =>
   import('./components/views/ImageConverterView.js').then(m => ({ default: m.ImageConverterView }))
 );
+const ImageToSvgView = lazy(() =>
+  import('./components/views/ImageToSvgView.js').then(m => ({ default: m.ImageToSvgView }))
+);
+const FaviconGeneratorView = lazy(() =>
+  import('./components/views/FaviconGeneratorView.js').then(m => ({ default: m.FaviconGeneratorView }))
+);
 
 function ViewSkeleton() {
   return (
@@ -172,6 +180,8 @@ export default function App() {
     reg.register(bgRemoverTool);
     reg.register(imageRedactorTool);
     reg.register(imageConverterTool);
+    reg.register(imageToSvgTool);
+    reg.register(faviconTool);
     return reg;
   }, []);
 
@@ -337,7 +347,7 @@ export default function App() {
 
         {/* Scrollable View Area with Suspense Lazy Boundaries */}
         <main className="flex-1 overflow-y-auto overflow-x-hidden p-4 sm:p-6 lg:p-8">
-          <div className="w-full max-w-7xl mx-auto">
+          <div className="w-full">
             <Suspense fallback={<ViewSkeleton />}>
               {activeToolId === 'dashboard' && (
                 <HomeLandingView
@@ -375,6 +385,8 @@ export default function App() {
               {activeToolId === 'bg-remover' && <BgRemoverView />}
               {activeToolId === 'image-redactor' && <ImageRedactorView />}
               {activeToolId === 'image-converter' && <ImageConverterView />}
+              {activeToolId === 'image-to-svg' && <ImageToSvgView />}
+              {activeToolId === 'favicon-generator' && <FaviconGeneratorView />}
             </Suspense>
           </div>
         </main>

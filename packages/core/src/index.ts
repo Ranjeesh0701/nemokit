@@ -28,3 +28,5 @@ export * from './tools/http-ref-tool.js';
 export * from './tools/bg-remover-tool.js';
 export * from './tools/image-redactor-tool.js';
 export * from './tools/image-converter-tool.js';
+export * from './tools/image-to-svg-tool.js';
+export * from './tools/favicon-tool.js';

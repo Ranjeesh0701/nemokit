@@ -37,6 +37,7 @@ import {
   Image as ImageIcon,
   EyeOff,
   Scale,
+  Sparkles,
 } from 'lucide-react';
 
 interface AppSidebarProps {
@@ -206,6 +207,10 @@ export function AppSidebar({
         return <EyeOff className="h-4 w-4" />;
       case 'image-converter':
         return <Scale className="h-4 w-4" />;
+      case 'image-to-svg':
+        return <Sparkles className="h-4 w-4" />;
+      case 'favicon-generator':
+        return <Globe className="h-4 w-4" />;
       default:
         return <Layers className="h-4 w-4" />;
     }

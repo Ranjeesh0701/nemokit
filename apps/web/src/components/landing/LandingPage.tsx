@@ -138,6 +138,10 @@ export function LandingPage({ tools, onLaunchApp, canInstall, onInstallApp }: La
         return <EyeOff className="h-5 w-5 text-rose-600" />;
       case 'image-converter':
         return <Scale className="h-5 w-5 text-indigo-600" />;
+      case 'image-to-svg':
+        return <Sparkles className="h-5 w-5 text-amber-600" />;
+      case 'favicon-generator':
+        return <Globe className="h-5 w-5 text-teal-600" />;
       default:
         return <Layers className="h-5 w-5 text-stone-600" />;
     }

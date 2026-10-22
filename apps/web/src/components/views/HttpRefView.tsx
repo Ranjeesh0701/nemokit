@@ -100,9 +100,9 @@ export function HttpRefView() {
   ];
 
   return (
-    <div className="flex flex-col gap-6 w-full">
+    <div className="flex flex-col gap-6 w-full flex-1 min-h-0">
       {/* Header Bar */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between pb-4 border-b border-stone-200/80 gap-3">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between pb-6 border-b border-stone-200/80 gap-4 shrink-0">
         <div className="flex items-center gap-3">
           <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-cyan-500/10 text-cyan-700">
             <Globe className="h-5 w-5" />
@@ -139,7 +139,7 @@ export function HttpRefView() {
       </div>
 
       {/* Filter and Search Bar */}
-      <div className="flex flex-col md:flex-row items-stretch md:items-center gap-3">
+      <div className="flex flex-col md:flex-row items-stretch md:items-center gap-3 shrink-0">
         <div className="relative flex-1">
           <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-stone-400" />
           <input
@@ -180,11 +180,11 @@ export function HttpRefView() {
       </div>
 
       {/* Results Directory */}
-      <div className="flex flex-col gap-6">
+      <div className="flex flex-col gap-6 flex-1 min-h-0 overflow-y-auto pr-1">
         {/* Status Codes Section */}
         {output && output.statusCodes.length > 0 && (
           <div className="flex flex-col gap-3">
-            <div className="flex items-center justify-between text-xs font-semibold text-stone-700 uppercase tracking-wider px-1">
+            <div className="flex items-center justify-between text-xs font-semibold text-stone-700 uppercase tracking-wider">
               <span>Status Codes ({output.statusCodes.length})</span>
             </div>
 
@@ -253,7 +253,7 @@ export function HttpRefView() {
         {/* HTTP Headers Section */}
         {output && output.headers.length > 0 && (
           <div className="flex flex-col gap-3">
-            <div className="flex items-center justify-between text-xs font-semibold text-stone-700 uppercase tracking-wider px-1">
+            <div className="flex items-center justify-between text-xs font-semibold text-stone-700 uppercase tracking-wider">
               <span>Standard HTTP Headers ({output.headers.length})</span>
             </div>
 

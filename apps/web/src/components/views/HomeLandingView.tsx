@@ -37,6 +37,7 @@ import {
   Shapes,
   FileCheck2,
   Grid,
+  Bot,
 } from 'lucide-react';
 
 interface HomeLandingViewProps {
@@ -231,6 +232,37 @@ export function HomeLandingView({
             </div>
           </div>
         </div>
+
+        {/* MCP Spotlight Banner */}
+        <div className="mt-2 w-full rounded-2xl border border-indigo-200/90 bg-gradient-to-r from-indigo-50/80 via-purple-50/50 to-white p-4 sm:p-5 shadow-xs flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+          <div className="flex items-start gap-3.5">
+            <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-indigo-600 text-white shadow-xs">
+              <Bot className="h-5 w-5" />
+            </span>
+            <div>
+              <div className="flex items-center gap-2">
+                <span className="text-[10px] font-bold uppercase tracking-wider text-indigo-700 bg-indigo-100 px-2 py-0.5 rounded">
+                  NEW • Protocol v1.0
+                </span>
+                <span className="text-xs font-semibold text-stone-900">
+                  Model Context Protocol (MCP) Server
+                </span>
+              </div>
+              <p className="text-xs text-stone-600 mt-1 max-w-xl">
+                All 26 Nemokit developer tools can now be used as local stdio tools directly inside
+                Claude Desktop, Cursor, Zed, and Cline.
+              </p>
+            </div>
+          </div>
+          <button
+            type="button"
+            onClick={() => onSelectTool('mcp-server')}
+            className="flex items-center justify-center gap-2 rounded-xl bg-indigo-600 px-4 py-2 text-xs font-semibold text-white shadow-xs hover:bg-indigo-700 transition-colors shrink-0"
+          >
+            <span>Explore MCP Studio</span>
+            <ArrowRight className="h-3.5 w-3.5" />
+          </button>
+        </div>
       </div>
 
       {/* Categorized Tools Directory */}
@@ -322,6 +354,9 @@ export function HomeLandingView({
           </div>
         </div>
       </div>
+
+      {/* Guaranteed Bottom Spacing Spacer matching other screens */}
+      <div className="h-12 sm:h-16 shrink-0 w-full" aria-hidden="true" />
     </div>
   );
 }

@@ -161,6 +161,11 @@ const RandomSvgView = lazy(() =>
     default: m.RandomSvgView,
   }))
 );
+const McpServerView = lazy(() =>
+  import('./components/views/McpServerView.js').then(m => ({
+    default: m.McpServerView,
+  }))
+);
 
 function ViewSkeleton() {
   return (
@@ -429,6 +434,7 @@ export default function App() {
               {activeToolId === 'logo-builder' && <LogoBuilderView />}
               {activeToolId === 'pattern-generator' && <PatternGeneratorView />}
               {activeToolId === 'random-svg' && <RandomSvgView />}
+              {activeToolId === 'mcp-server' && <McpServerView />}
             </Suspense>
           </div>
         </main>

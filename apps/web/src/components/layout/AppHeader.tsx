@@ -1,5 +1,5 @@
 import type { ToolMetadata } from '@nemokit/core';
-import { Menu, Search, Home, Star, Download } from 'lucide-react';
+import { Menu, Search, Home, Star, Download, Bot } from 'lucide-react';
 
 interface AppHeaderProps {
   readonly activeView: string;
@@ -36,7 +36,16 @@ export function AppHeader({
           <Menu className="h-4 w-4" />
         </button>
 
-        {activeView === 'home' || !activeTool ? (
+        {activeView === 'mcp-server' ? (
+          <div className="flex items-center gap-2">
+            <span className="flex h-6 w-6 items-center justify-center rounded-md bg-indigo-600 text-white shadow-xs">
+              <Bot className="h-3.5 w-3.5" />
+            </span>
+            <span className="text-sm font-bold text-stone-900 tracking-tight">
+              MCP Server Studio
+            </span>
+          </div>
+        ) : activeView === 'home' || !activeTool ? (
           <div className="flex items-center gap-2">
             <span className="flex h-6 w-6 items-center justify-center rounded-md bg-stone-900 text-white">
               <Home className="h-3.5 w-3.5" />

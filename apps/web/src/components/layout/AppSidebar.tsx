@@ -41,6 +41,7 @@ import {
   Shapes,
   FileCheck2,
   Grid,
+  Bot,
 } from 'lucide-react';
 
 interface AppSidebarProps {
@@ -298,8 +299,8 @@ export function AppSidebar({
             isCollapsed ? 'px-2 overflow-visible' : 'px-2.5 overflow-y-auto'
           }`}
         >
-          {/* Main Dashboard Link */}
-          <div>
+          {/* Main Dashboard & MCP Studio Links */}
+          <div className="space-y-1">
             <button
               type="button"
               title={isCollapsed ? 'Overview & Dashboard' : undefined}
@@ -318,6 +319,43 @@ export function AppSidebar({
             >
               <Home className="h-4 w-4 shrink-0" />
               {!isCollapsed && <span>Dashboard</span>}
+            </button>
+
+            <button
+              type="button"
+              title={isCollapsed ? 'Model Context Protocol (MCP) Server' : undefined}
+              onClick={() => {
+                onSelectView('mcp-server');
+                onCloseMobile();
+                setPopoverCategory(null);
+              }}
+              className={`flex w-full items-center rounded-xl text-xs font-medium transition-colors ${
+                isCollapsed ? 'justify-center h-10 px-0' : 'gap-2 px-2.5 py-1.5'
+              } ${
+                activeView === 'mcp-server'
+                  ? 'bg-indigo-600 text-white shadow-xs font-semibold'
+                  : 'text-stone-600 hover:bg-indigo-50/70 hover:text-indigo-700'
+              }`}
+            >
+              <Bot
+                className={`h-4 w-4 shrink-0 ${
+                  activeView === 'mcp-server' ? 'text-white' : 'text-indigo-600'
+                }`}
+              />
+              {!isCollapsed && (
+                <div className="flex items-center justify-between w-full min-w-0">
+                  <span className="truncate">MCP Server</span>
+                  <span
+                    className={`rounded px-1.5 py-0.5 text-[9px] font-bold ${
+                      activeView === 'mcp-server'
+                        ? 'bg-indigo-700 text-white'
+                        : 'bg-indigo-100 text-indigo-700'
+                    }`}
+                  >
+                    26 tools
+                  </span>
+                </div>
+              )}
             </button>
           </div>
 

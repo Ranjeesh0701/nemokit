@@ -1,0 +1,26 @@
+{
+  "name": "@nemokit/mcp",
+  "version": "0.1.0",
+  "description": "Model Context Protocol (MCP) server exposing Nemokit developer tools to LLMs and AI assistants",
+  "type": "module",
+  "bin": {
+    "nemokit-mcp": "./dist/cli.js"
+  },
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "scripts": {
+    "build": "tsc",
+    "typecheck": "tsc --noEmit",
+    "start": "node ./dist/cli.js",
+    "test": "vitest run"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.6.0",
+    "@nemokit/core": "*",
+    "zod": "^3.24.2"
+  },
+  "devDependencies": {
+    "@types/node": "^22.13.10",
+    "typescript": "^7.0.2"
+  }
+}

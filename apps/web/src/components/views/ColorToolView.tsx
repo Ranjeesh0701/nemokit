@@ -136,38 +136,53 @@ export function ColorToolView() {
   return (
     <div className="flex flex-col gap-6 w-full flex-1">
       {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 border-b border-stone-200/80 shrink-0">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 border-b border-stone-200/80 pb-6 shrink-0">
         <div>
           <div className="flex items-center gap-2.5">
-            <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-stone-900 text-white shadow-xs">
-              <Palette className="h-4 w-4" />
+            <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-stone-900 text-white shadow-xs">
+              <Palette className="h-4.5 w-4.5" />
             </span>
-            <h1 className="text-xl font-semibold tracking-tight text-stone-900">
-              Color Studio & Contrast
-            </h1>
+            <div className="flex items-center gap-2">
+              <h1 className="text-xl font-bold tracking-tight text-stone-900">
+                Color Studio & Contrast
+              </h1>
+              <span className="rounded-md bg-stone-100 px-2 py-0.5 text-[10px] font-semibold text-stone-600 uppercase tracking-wider hidden sm:inline">
+                Converters
+              </span>
+            </div>
           </div>
-          <p className="mt-1 text-sm text-stone-500">
+          <p className="mt-1 text-sm text-stone-500 max-w-2xl">
             Convert color values across formats, generate harmonious palettes, inspect WCAG 2.1
             accessibility, and build CSS gradients.
           </p>
         </div>
 
-        {/* Preset chips */}
-        <div className="flex flex-wrap items-center gap-1.5">
-          {PRESET_COLORS.map(p => (
-            <button
-              key={p.name}
-              type="button"
-              onClick={() => {
-                setColorInput(p.hex);
-                setContrastBg(p.hex);
+        {/* Clean Single-Row Preset selector */}
+        <div className="flex items-center gap-2.5 shrink-0">
+          <div className="relative">
+            <select
+              aria-label="Preset color swatch"
+              value=""
+              onChange={e => {
+                const p = PRESET_COLORS.find(c => c.name === e.target.value);
+                if (p) {
+                  setColorInput(p.hex);
+                  setContrastBg(p.hex);
+                }
               }}
-              className="flex items-center gap-1.5 rounded-lg border border-stone-200 bg-white px-2.5 py-1 text-xs font-medium text-stone-700 shadow-xs hover:bg-stone-50 transition-colors"
+              className="appearance-none flex items-center rounded-lg border border-stone-200 bg-white pl-3 pr-8 py-2 text-xs font-medium text-stone-700 shadow-2xs hover:bg-stone-50 hover:border-stone-300 transition-colors cursor-pointer focus:outline-hidden focus:ring-2 focus:ring-stone-400"
             >
-              <span className="h-2.5 w-2.5 rounded-full" style={{ backgroundColor: p.hex }} />
-              {p.name}
-            </button>
-          ))}
+              <option value="" disabled>
+                Preset Swatches...
+              </option>
+              {PRESET_COLORS.map(p => (
+                <option key={p.name} value={p.name}>
+                  {p.name} ({p.hex})
+                </option>
+              ))}
+            </select>
+            <Palette className="pointer-events-none absolute right-2.5 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-stone-400" />
+          </div>
         </div>
       </div>
 

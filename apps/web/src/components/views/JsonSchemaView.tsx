@@ -183,37 +183,53 @@ export function JsonSchemaView() {
   return (
     <div className="flex flex-col gap-6 w-full flex-1">
       {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 border-b border-stone-200/80 shrink-0">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 border-b border-stone-200/80 pb-6 shrink-0">
         <div>
           <div className="flex items-center gap-2.5">
-            <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-indigo-600 text-white shadow-xs">
-              <FileCheck2 className="h-4 w-4" />
+            <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-indigo-600 text-white shadow-xs">
+              <FileCheck2 className="h-4.5 w-4.5" />
             </span>
-            <h1 className="text-xl font-semibold tracking-tight text-stone-900">
-              JSON Schema Validator & Mock Studio
-            </h1>
+            <div className="flex items-center gap-2">
+              <h1 className="text-xl font-bold tracking-tight text-stone-900">
+                JSON Schema Validator & Mock Studio
+              </h1>
+              <span className="rounded-md bg-stone-100 px-2 py-0.5 text-[10px] font-semibold text-stone-600 uppercase tracking-wider hidden sm:inline">
+                Draft-07
+              </span>
+            </div>
           </div>
-          <p className="mt-1 text-sm text-stone-500">
+          <p className="mt-1 text-sm text-stone-500 max-w-2xl">
             Validate JSON objects against JSON Schema Draft-07, generate synthetic mock fixtures,
             and reverse-engineer schemas.
           </p>
         </div>
 
-        {/* Preset schema chips */}
-        <div className="flex flex-wrap items-center gap-2">
-          {PRESET_SCHEMAS.map(p => (
-            <button
-              key={p.name}
-              type="button"
-              onClick={() => {
-                setSchemaText(JSON.stringify(p.schema, null, 2));
-                setDataText(JSON.stringify(p.sampleData, null, 2));
+        {/* Clean Single-Row Actions */}
+        <div className="flex items-center gap-2.5 shrink-0">
+          <div className="relative">
+            <select
+              aria-label="Load Schema Template"
+              value=""
+              onChange={e => {
+                const p = PRESET_SCHEMAS.find(s => s.name === e.target.value);
+                if (p) {
+                  setSchemaText(JSON.stringify(p.schema, null, 2));
+                  setDataText(JSON.stringify(p.sampleData, null, 2));
+                }
               }}
-              className="rounded-lg border border-stone-200 bg-white px-2.5 py-1.5 text-xs font-medium text-stone-700 shadow-xs hover:bg-stone-50 transition-colors"
+              className="appearance-none flex items-center rounded-lg border border-stone-200 bg-white pl-3 pr-8 py-2 text-xs font-medium text-stone-700 shadow-2xs hover:bg-stone-50 hover:border-stone-300 transition-colors cursor-pointer focus:outline-hidden focus:ring-2 focus:ring-stone-400"
             >
-              {p.name}
-            </button>
-          ))}
+              <option value="" disabled>
+                Load Schema Template...
+              </option>
+              {PRESET_SCHEMAS.map(p => (
+                <option key={p.name} value={p.name}>
+                  {p.name}
+                </option>
+              ))}
+            </select>
+            <Code2 className="pointer-events-none absolute right-2.5 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-stone-400" />
+          </div>
         </div>
       </div>
 

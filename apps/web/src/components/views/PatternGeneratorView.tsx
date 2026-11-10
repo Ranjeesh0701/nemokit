@@ -1,7 +1,7 @@
 import { useState, useMemo } from 'react';
 import { patternGeneratorTool, PATTERN_PRESETS, DEFAULT_PATTERN_CONFIG } from '@nemokit/core';
 import type { PatternInput, PatternType } from '@nemokit/core';
-import { Download, Copy, Check, Shuffle, Grid } from 'lucide-react';
+import { Download, Copy, Check, Shuffle, Grid, Palette } from 'lucide-react';
 
 const PATTERN_TYPES: Array<{ id: PatternType; label: string }> = [
   { id: 'dots', label: 'Polka Dots' },
@@ -137,45 +137,65 @@ export function PatternGeneratorView() {
   return (
     <div className="flex flex-col gap-6 w-full flex-1">
       {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 border-b border-stone-200/80 shrink-0">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 border-b border-stone-200/80 pb-6 shrink-0">
         <div>
           <div className="flex items-center gap-2.5">
-            <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-purple-600 text-white shadow-xs">
-              <Grid className="h-4 w-4" />
+            <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-purple-600 text-white shadow-xs">
+              <Grid className="h-4.5 w-4.5" />
             </span>
-            <h1 className="text-xl font-semibold tracking-tight text-stone-900">
-              Background & Pattern Studio
-            </h1>
+            <div className="flex items-center gap-2">
+              <h1 className="text-xl font-bold tracking-tight text-stone-900">
+                Background & Pattern Studio
+              </h1>
+              <span className="rounded-md bg-stone-100 px-2 py-0.5 text-[10px] font-semibold text-stone-600 uppercase tracking-wider hidden sm:inline">
+                Vector Studio
+              </span>
+            </div>
           </div>
-          <p className="mt-1 text-sm text-stone-500">
+          <p className="mt-1 text-sm text-stone-500 max-w-2xl">
             Generate seamless repeating vector textures, procedural SVG backgrounds, and CSS data
             URIs.
           </p>
         </div>
 
-        {/* Action presets & Randomizer */}
-        <div className="flex flex-wrap items-center gap-2">
+        {/* Clean Single-Row Header Actions */}
+        <div className="flex items-center gap-2.5 shrink-0">
+          <div className="relative">
+            <select
+              aria-label="Preset patterns"
+              value=""
+              onChange={e => {
+                const preset = PATTERN_PRESETS.find(p => p.name === e.target.value);
+                if (preset) {
+                  setConfig(preset.config);
+                  setIsTransparentBg(false);
+                }
+              }}
+              className="appearance-none flex items-center rounded-lg border border-stone-200 bg-white pl-3 pr-8 py-2 text-xs font-medium text-stone-700 shadow-2xs hover:bg-stone-50 hover:border-stone-300 transition-colors cursor-pointer focus:outline-hidden focus:ring-2 focus:ring-stone-400"
+            >
+              <option value="" disabled>
+                Pattern Presets...
+              </option>
+              {PATTERN_PRESETS.map(preset => (
+                <option key={preset.name} value={preset.name}>
+                  {preset.name}
+                </option>
+              ))}
+            </select>
+            <Palette className="pointer-events-none absolute right-2.5 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-stone-400" />
+          </div>
+
           <button
             type="button"
             onClick={handleRandomize}
-            className="flex items-center gap-1.5 rounded-lg border border-purple-200 bg-purple-50/80 px-3 py-1.5 text-xs font-semibold text-purple-700 shadow-xs hover:bg-purple-100 transition-colors"
+            className="inline-flex items-center gap-2 rounded-lg bg-stone-900 px-3.5 py-2 text-xs font-semibold text-white shadow-2xs hover:bg-stone-800 active:scale-[0.98] transition-all"
           >
-            <Shuffle className="h-3.5 w-3.5 text-purple-600" />
+            <Shuffle className="h-3.5 w-3.5 text-stone-300" />
             <span>Random Pattern</span>
+            <span className="hidden sm:inline text-[10px] text-stone-400 font-mono font-normal bg-stone-800 px-1.5 py-0.5 rounded">
+              ⌘↵
+            </span>
           </button>
-          {PATTERN_PRESETS.map(preset => (
-            <button
-              key={preset.name}
-              type="button"
-              onClick={() => {
-                setConfig(preset.config);
-                setIsTransparentBg(false);
-              }}
-              className="rounded-lg border border-stone-200 bg-white px-2.5 py-1.5 text-xs font-medium text-stone-700 shadow-xs hover:bg-stone-50 transition-colors"
-            >
-              {preset.name}
-            </button>
-          ))}
         </div>
       </div>
 

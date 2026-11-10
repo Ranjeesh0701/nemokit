@@ -13,6 +13,7 @@ import {
   Code2,
   FileCode,
   Sliders,
+  Palette,
 } from 'lucide-react';
 
 const SVG_TYPES: Array<{ id: RandomSvgType; label: string; desc: string }> = [
@@ -115,56 +116,70 @@ export function RandomSvgView() {
   return (
     <div className="flex flex-col gap-6 w-full flex-1">
       {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 border-b border-stone-200/80 shrink-0">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 border-b border-stone-200/80 pb-6 shrink-0">
         <div>
           <div className="flex items-center gap-2.5">
-            <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-pink-600 text-white shadow-xs">
-              <Sparkles className="h-4 w-4" />
+            <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-pink-600 text-white shadow-xs">
+              <Sparkles className="h-4.5 w-4.5" />
             </span>
-            <h1 className="text-xl font-semibold tracking-tight text-stone-900">
-              Random SVG Generator
-            </h1>
+            <div className="flex items-center gap-2">
+              <h1 className="text-xl font-bold tracking-tight text-stone-900">
+                Random SVG Generator
+              </h1>
+              <span className="rounded-md bg-stone-100 px-2 py-0.5 text-[10px] font-semibold text-stone-600 uppercase tracking-wider hidden sm:inline">
+                Vector Studio
+              </span>
+            </div>
           </div>
-          <p className="mt-1 text-sm text-stone-500">
+          <p className="mt-1 text-sm text-stone-500 max-w-2xl">
             Procedurally generate organic vector blobs, layered flowing waves, symmetrical
             identicons, and cyber circuits.
           </p>
         </div>
 
-        {/* Action presets & Randomizer */}
-        <div className="flex flex-wrap items-center gap-2">
+        {/* Clean Single-Row Header Actions */}
+        <div className="flex items-center gap-2.5 shrink-0">
+          <div className="relative">
+            <select
+              aria-label="Preset color palette"
+              value=""
+              onChange={e => {
+                const p = RANDOM_SVG_PALETTES.find(pal => pal.name === e.target.value);
+                if (p) {
+                  setConfig(prev => ({
+                    ...prev,
+                    color1: p.color1,
+                    color2: p.color2,
+                    color3: p.color3,
+                    background: p.bg,
+                  }));
+                }
+              }}
+              className="appearance-none flex items-center rounded-lg border border-stone-200 bg-white pl-3 pr-8 py-2 text-xs font-medium text-stone-700 shadow-2xs hover:bg-stone-50 hover:border-stone-300 transition-colors cursor-pointer focus:outline-hidden focus:ring-2 focus:ring-stone-400"
+            >
+              <option value="" disabled>
+                Palette Presets...
+              </option>
+              {RANDOM_SVG_PALETTES.map(p => (
+                <option key={p.name} value={p.name}>
+                  {p.name}
+                </option>
+              ))}
+            </select>
+            <Palette className="pointer-events-none absolute right-2.5 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-stone-400" />
+          </div>
+
           <button
             type="button"
             onClick={handleRandomize}
-            className="flex items-center gap-1.5 rounded-lg border border-pink-200 bg-pink-50/80 px-3 py-1.5 text-xs font-semibold text-pink-700 shadow-xs hover:bg-pink-100 transition-colors"
+            className="inline-flex items-center gap-2 rounded-lg bg-stone-900 px-3.5 py-2 text-xs font-semibold text-white shadow-2xs hover:bg-stone-800 active:scale-[0.98] transition-all"
           >
-            <Shuffle className="h-3.5 w-3.5 text-pink-600" />
-            <span>Random SVG</span>
+            <Shuffle className="h-3.5 w-3.5 text-stone-300" />
+            <span>Randomize</span>
+            <span className="hidden sm:inline text-[10px] text-stone-400 font-mono font-normal bg-stone-800 px-1.5 py-0.5 rounded">
+              ⌘↵
+            </span>
           </button>
-          {RANDOM_SVG_PALETTES.map(p => (
-            <button
-              key={p.name}
-              type="button"
-              onClick={() =>
-                setConfig(prev => ({
-                  ...prev,
-                  color1: p.color1,
-                  color2: p.color2,
-                  color3: p.color3,
-                  background: p.bg,
-                }))
-              }
-              className="flex items-center gap-1.5 rounded-lg border border-stone-200 bg-white px-2.5 py-1.5 text-xs font-medium text-stone-700 shadow-xs hover:bg-stone-50 transition-colors"
-            >
-              <span
-                className="h-2.5 w-2.5 rounded-full"
-                style={{
-                  background: `linear-gradient(135deg, ${p.color1}, ${p.color2})`,
-                }}
-              />
-              <span>{p.name}</span>
-            </button>
-          ))}
         </div>
       </div>
 
@@ -251,11 +266,42 @@ export function RandomSvgView() {
 
           {/* Section 3: Colors */}
           <div className="rounded-xl border border-stone-200/90 bg-white p-5 shadow-xs space-y-4">
-            <span className="text-xs font-semibold uppercase tracking-wider text-stone-500 block">
-              Color Palette
-            </span>
+            <div className="flex items-center justify-between">
+              <span className="text-xs font-semibold uppercase tracking-wider text-stone-500 block">
+                Color Palette
+              </span>
+              <span className="text-[11px] text-stone-400">Curated Themes</span>
+            </div>
 
-            <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
+            {/* Quick Palettes */}
+            <div className="flex flex-wrap gap-1.5">
+              {RANDOM_SVG_PALETTES.map(p => (
+                <button
+                  key={p.name}
+                  type="button"
+                  onClick={() =>
+                    setConfig(prev => ({
+                      ...prev,
+                      color1: p.color1,
+                      color2: p.color2,
+                      color3: p.color3,
+                      background: p.bg,
+                    }))
+                  }
+                  className="inline-flex items-center gap-1.5 rounded-md border border-stone-200/80 bg-stone-50/80 px-2.5 py-1 text-[11px] font-medium text-stone-700 shadow-2xs hover:bg-stone-100 hover:border-stone-300 transition-colors"
+                >
+                  <span
+                    className="h-2.5 w-2.5 rounded-full shrink-0 shadow-2xs"
+                    style={{
+                      background: `linear-gradient(135deg, ${p.color1}, ${p.color2})`,
+                    }}
+                  />
+                  <span>{p.name}</span>
+                </button>
+              ))}
+            </div>
+
+            <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 pt-1">
               <div>
                 <label className="text-xs font-medium text-stone-600 block mb-1">Color 1</label>
                 <div className="flex items-center gap-2">

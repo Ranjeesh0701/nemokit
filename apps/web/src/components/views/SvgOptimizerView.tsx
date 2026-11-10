@@ -122,39 +122,56 @@ export function SvgOptimizerView() {
   return (
     <div className="flex flex-col gap-6 w-full flex-1">
       {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 border-b border-stone-200/80 shrink-0">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 border-b border-stone-200/80 pb-6 shrink-0">
         <div>
           <div className="flex items-center gap-2.5">
-            <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-emerald-600 text-white shadow-xs">
-              <Sparkles className="h-4 w-4" />
+            <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-emerald-600 text-white shadow-xs">
+              <Sparkles className="h-4.5 w-4.5" />
             </span>
-            <h1 className="text-xl font-semibold tracking-tight text-stone-900">
-              SVG Optimizer & Cleaner
-            </h1>
+            <div className="flex items-center gap-2">
+              <h1 className="text-xl font-bold tracking-tight text-stone-900">
+                SVG Optimizer & Cleaner
+              </h1>
+              <span className="rounded-md bg-stone-100 px-2 py-0.5 text-[10px] font-semibold text-stone-600 uppercase tracking-wider hidden sm:inline">
+                Vector Studio
+              </span>
+            </div>
           </div>
-          <p className="mt-1 text-sm text-stone-500">
+          <p className="mt-1 text-sm text-stone-500 max-w-2xl">
             Minify vector bloat, round decimal coordinates, strip editor junk (Inkscape, Sketch),
             and export production-ready React JSX.
           </p>
         </div>
 
-        {/* Action presets & upload */}
-        <div className="flex flex-wrap items-center gap-2">
-          {SAMPLE_SVGS.map(sample => (
-            <button
-              key={sample.name}
-              type="button"
-              onClick={() => setSvgInput(sample.svg)}
-              className="rounded-lg border border-stone-200 bg-white px-2.5 py-1.5 text-xs font-medium text-stone-700 shadow-xs hover:bg-stone-50 transition-colors"
+        {/* Clean Single-Row Actions */}
+        <div className="flex items-center gap-2.5 shrink-0">
+          <div className="relative">
+            <select
+              aria-label="Load Sample SVG"
+              value=""
+              onChange={e => {
+                const sample = SAMPLE_SVGS.find(s => s.name === e.target.value);
+                if (sample) setSvgInput(sample.svg);
+              }}
+              className="appearance-none flex items-center rounded-lg border border-stone-200 bg-white pl-3 pr-8 py-2 text-xs font-medium text-stone-700 shadow-2xs hover:bg-stone-50 hover:border-stone-300 transition-colors cursor-pointer focus:outline-hidden focus:ring-2 focus:ring-stone-400"
             >
-              {sample.name}
-            </button>
-          ))}
+              <option value="" disabled>
+                Load Sample SVG...
+              </option>
+              {SAMPLE_SVGS.map(sample => (
+                <option key={sample.name} value={sample.name}>
+                  {sample.name}
+                </option>
+              ))}
+            </select>
+            <Code2 className="pointer-events-none absolute right-2.5 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-stone-400" />
+          </div>
+
           <label
             htmlFor={uploadInputId}
-            className="flex items-center gap-1.5 rounded-lg border border-stone-300 bg-white px-3 py-1.5 text-xs font-medium text-stone-700 shadow-xs hover:bg-stone-50 cursor-pointer transition-colors"
+            className="inline-flex items-center gap-2 rounded-lg bg-stone-900 px-3.5 py-2 text-xs font-semibold text-white shadow-2xs hover:bg-stone-800 cursor-pointer active:scale-[0.98] transition-all"
           >
-            <Upload className="h-3.5 w-3.5 text-stone-500" />
+            <Upload className="h-3.5 w-3.5 text-stone-300" />
             <span>Upload SVG</span>
             <input
               id={uploadInputId}

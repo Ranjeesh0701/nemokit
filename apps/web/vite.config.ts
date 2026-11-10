@@ -52,6 +52,11 @@ export default defineConfig(({ mode }) => {
         },
         workbox: {
           globPatterns: ['**/*.{js,css,html,svg,png,woff2}'],
+          navigateFallbackDenylist: [
+            /^\/sitemap\.xml/,
+            /^\/robots\.txt/,
+            /^\/google[a-zA-Z0-9_-]+\.html/,
+          ],
         },
       }),
     ],

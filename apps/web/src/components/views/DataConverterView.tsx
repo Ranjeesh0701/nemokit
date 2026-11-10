@@ -54,9 +54,9 @@ export function DataConverterView() {
   };
 
   return (
-    <div className="flex flex-col gap-6 w-full flex-1 min-h-0">
+    <div className="flex flex-col gap-6 w-full flex-1">
       {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 border-b border-stone-200/80 pb-6">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 border-b border-stone-200/80">
         <div>
           <div className="flex items-center gap-2.5">
             <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-stone-900 text-white shadow-xs">
@@ -184,7 +184,7 @@ export function DataConverterView() {
             value={content}
             onChange={e => setContent(e.target.value)}
             placeholder={`Paste your ${fromFormat.toUpperCase()} content here...`}
-            className="w-full flex-1 min-h-[200px] rounded-xl border border-stone-200 bg-white p-3.5 font-mono text-xs text-stone-800 shadow-xs placeholder:text-stone-400 focus:border-stone-900 focus:outline-none focus:ring-1 focus:ring-stone-900 resize-y"
+            className="w-full flex-1 min-h-50 rounded-xl border border-stone-200 bg-white p-3.5 font-mono text-xs text-stone-800 shadow-xs placeholder:text-stone-400 focus:border-stone-900 focus:outline-none focus:ring-1 focus:ring-stone-900 resize-y"
             spellCheck={false}
           />
         </div>
@@ -204,7 +204,7 @@ export function DataConverterView() {
             readOnly
             value={output ? output.converted : ''}
             placeholder="Awaiting converted output..."
-            className="w-full flex-1 min-h-[200px] rounded-xl border border-stone-200 bg-stone-50/50 p-3.5 font-mono text-xs text-stone-800 shadow-xs placeholder:text-stone-400 focus:outline-none resize-y"
+            className="w-full flex-1 min-h-50 rounded-xl border border-stone-200 bg-stone-50/50 p-3.5 font-mono text-xs text-stone-800 shadow-xs placeholder:text-stone-400 focus:outline-none resize-y"
             spellCheck={false}
           />
         </div>

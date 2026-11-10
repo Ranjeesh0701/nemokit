@@ -134,9 +134,9 @@ export function ColorToolView() {
   }, [gradientType, gradientAngle, gradientStops]);
 
   return (
-    <div className="flex flex-col gap-6 w-full flex-1 pb-12 min-h-0">
+    <div className="flex flex-col gap-6 w-full flex-1">
       {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 border-b border-stone-200/80 pb-6 shrink-0">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 border-b border-stone-200/80 shrink-0">
         <div>
           <div className="flex items-center gap-2.5">
             <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-stone-900 text-white shadow-xs">

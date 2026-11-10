@@ -73,9 +73,9 @@ export function DiffToolView() {
   };
 
   return (
-    <div className="flex flex-col gap-6 w-full flex-1 min-h-0">
+    <div className="flex flex-col gap-6 w-full flex-1">
       {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 border-b border-stone-200/80 pb-6 shrink-0">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 border-b border-stone-200/80 shrink-0">
         <div>
           <div className="flex items-center gap-2.5">
             <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-stone-900 text-white shadow-xs">
@@ -134,7 +134,7 @@ export function DiffToolView() {
             value={original}
             onChange={e => setOriginal(e.target.value)}
             placeholder="Paste original text or code..."
-            className="w-full min-h-[120px] h-32 sm:h-36 rounded-xl border border-stone-200 bg-white p-3.5 font-mono text-xs text-stone-800 shadow-xs placeholder:text-stone-400 focus:border-stone-900 focus:outline-none focus:ring-1 focus:ring-stone-900 resize-y"
+            className="w-full min-h-30 h-32 sm:h-36 rounded-xl border border-stone-200 bg-white p-3.5 font-mono text-xs text-stone-800 shadow-xs placeholder:text-stone-400 focus:border-stone-900 focus:outline-none focus:ring-1 focus:ring-stone-900 resize-y"
             spellCheck={false}
           />
         </div>
@@ -152,7 +152,7 @@ export function DiffToolView() {
             value={modified}
             onChange={e => setModified(e.target.value)}
             placeholder="Paste modified text or code..."
-            className="w-full min-h-[120px] h-32 sm:h-36 rounded-xl border border-stone-200 bg-white p-3.5 font-mono text-xs text-stone-800 shadow-xs placeholder:text-stone-400 focus:border-stone-900 focus:outline-none focus:ring-1 focus:ring-stone-900 resize-y"
+            className="w-full min-h-30 h-32 sm:h-36 rounded-xl border border-stone-200 bg-white p-3.5 font-mono text-xs text-stone-800 shadow-xs placeholder:text-stone-400 focus:border-stone-900 focus:outline-none focus:ring-1 focus:ring-stone-900 resize-y"
             spellCheck={false}
           />
         </div>
@@ -216,7 +216,7 @@ export function DiffToolView() {
             </span>
           </div>
 
-          <div className="w-full overflow-x-auto rounded-xl border border-stone-200 bg-white shadow-xs font-mono text-xs flex-1 min-h-[180px] overflow-y-auto">
+          <div className="w-full overflow-x-auto rounded-xl border border-stone-200 bg-white shadow-xs font-mono text-xs flex-1 min-h-45 overflow-y-auto">
             {diffResult.lines.length === 0 ? (
               <div className="p-8 text-center text-stone-400">
                 Both texts are completely empty. Paste text above to calculate diff.

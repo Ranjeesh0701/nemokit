@@ -135,9 +135,9 @@ export function PatternGeneratorView() {
   };
 
   return (
-    <div className="flex flex-col gap-6 w-full flex-1 pb-12 min-h-0">
+    <div className="flex flex-col gap-6 w-full flex-1">
       {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 border-b border-stone-200/80 pb-6 shrink-0">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 border-b border-stone-200/80 shrink-0">
         <div>
           <div className="flex items-center gap-2.5">
             <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-purple-600 text-white shadow-xs">
@@ -180,7 +180,7 @@ export function PatternGeneratorView() {
       </div>
 
       {/* Main Workspace: Left Controls + Right Live Canvas */}
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start flex-1 min-h-[460px] pb-8">
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start flex-1 min-h-115 pb-8">
         {/* Left Control Panel (6 cols) */}
         <div className="lg:col-span-6 flex flex-col gap-5 min-w-0">
           {/* Pattern Type Picker */}
@@ -336,7 +336,7 @@ export function PatternGeneratorView() {
         {/* Right Live Preview Canvas & Export Cards (6 cols) */}
         <div className="lg:col-span-6 flex flex-col gap-4 lg:sticky lg:top-4 self-start">
           {/* Full-bleed repeating canvas */}
-          <div className="rounded-2xl border border-stone-200 bg-white p-5 shadow-xs flex flex-col flex-1 min-h-[300px]">
+          <div className="rounded-2xl border border-stone-200 bg-white p-5 shadow-xs flex flex-col flex-1 min-h-75">
             <div className="flex items-center justify-between mb-3">
               <span className="text-xs font-semibold text-stone-500 uppercase tracking-wider">
                 Seamless Repeating Wallpaper Preview
@@ -347,9 +347,9 @@ export function PatternGeneratorView() {
             </div>
 
             <div
-              className={`flex-1 w-full min-h-[240px] rounded-xl shadow-inner transition-all border border-stone-200/80 ${
+              className={`flex-1 w-full min-h-60 rounded-xl shadow-inner transition-all border border-stone-200/80 ${
                 isTransparentBg
-                  ? 'bg-[radial-gradient(#d1d5db_1px,transparent_1px)] [background-size:16px_16px]'
+                  ? 'bg-[radial-gradient(#d1d5db_1px,transparent_1px)] bg-size[16px_16px]'
                   : ''
               }`}
               style={{

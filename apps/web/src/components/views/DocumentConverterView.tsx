@@ -106,7 +106,7 @@ export function DocumentConverterView() {
       <iframe ref={printFrameRef} title="Print Frame" className="hidden" />
 
       {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 border-b border-stone-200/80 pb-6">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 border-b border-stone-200/80">
         <div>
           <div className="flex items-center gap-2.5">
             <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-stone-900 text-white shadow-xs">
@@ -236,7 +236,7 @@ export function DocumentConverterView() {
           </div>
 
           {/* Formatted Render */}
-          <div className="relative mt-3 h-[396px] overflow-auto rounded-xl border border-stone-200/60 bg-white p-6 shadow-2xs">
+          <div className="relative mt-3 h-99 overflow-auto rounded-xl border border-stone-200/60 bg-white p-6 shadow-2xs">
             {output ? (
               <div
                 className="prose prose-stone prose-sm max-w-none font-sans"

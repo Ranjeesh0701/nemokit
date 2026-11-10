@@ -544,7 +544,7 @@ export function McpServerView() {
   }, [searchQuery, selectedCategory]);
 
   return (
-    <div className="flex flex-col gap-6 w-full flex-1 pb-12 min-h-0">
+    <div className="flex flex-col gap-6 w-full flex-1">
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 border-b border-stone-200/80 pb-6 shrink-0">
         <div>
@@ -897,9 +897,6 @@ export function McpServerView() {
           </div>
         ))}
       </div>
-
-      {/* Guaranteed Bottom Spacing Spacer matching other screens */}
-      <div className="h-12 sm:h-16 shrink-0 w-full" aria-hidden="true" />
     </div>
   );
 }

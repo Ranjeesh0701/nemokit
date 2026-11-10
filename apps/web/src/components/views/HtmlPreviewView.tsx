@@ -85,7 +85,7 @@ export function HtmlPreviewView() {
   }, [code, activeTab]);
 
   return (
-    <div className="flex flex-col gap-6 w-full flex-1 min-h-0">
+    <div className="flex flex-col gap-6 w-full flex-1">
       {/* Header Bar */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between pb-4 border-b border-stone-200/80 gap-3">
         <div className="flex items-center gap-3">
@@ -144,7 +144,7 @@ export function HtmlPreviewView() {
       {/* Editor & Preview Split Workspace */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 items-stretch flex-1 min-h-0">
         {/* Left Column: Code Editor */}
-        <div className="flex flex-col rounded-2xl border border-stone-200/80 bg-white shadow-xs overflow-hidden flex-1 min-h-[300px]">
+        <div className="flex flex-col rounded-2xl border border-stone-200/80 bg-white shadow-xs overflow-hidden flex-1 min-h-75">
           <div className="px-4 py-3 border-b border-stone-200/80 bg-stone-50/70 flex items-center justify-between">
             <span className="text-xs font-semibold text-stone-800 uppercase tracking-wider">
               Source Markup
@@ -189,7 +189,7 @@ export function HtmlPreviewView() {
         </div>
 
         {/* Right Column: Sandboxed Preview & Tools */}
-        <div className="flex flex-col rounded-2xl border border-stone-200/80 bg-white shadow-xs overflow-hidden flex-1 min-h-[300px]">
+        <div className="flex flex-col rounded-2xl border border-stone-200/80 bg-white shadow-xs overflow-hidden flex-1 min-h-75">
           {/* Output Mode Tabs */}
           <div className="px-4 py-2 border-b border-stone-200/80 bg-stone-50/70 flex items-center justify-between">
             <div className="flex items-center gap-1">

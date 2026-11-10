@@ -120,9 +120,9 @@ export function SvgOptimizerView() {
   };
 
   return (
-    <div className="flex flex-col gap-6 w-full flex-1 pb-12 min-h-0">
+    <div className="flex flex-col gap-6 w-full flex-1">
       {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 border-b border-stone-200/80 pb-6 shrink-0">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 border-b border-stone-200/80 shrink-0">
         <div>
           <div className="flex items-center gap-2.5">
             <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-emerald-600 text-white shadow-xs">
@@ -201,7 +201,7 @@ export function SvgOptimizerView() {
       )}
 
       {/* Main Workspace Split (Input / Output) */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 flex-1 min-h-[460px]">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 flex-1 min-h-115">
         {/* Left Column: Input + Optimization Settings */}
         <div className="flex flex-col gap-4 min-h-0">
           <div className="flex items-center justify-between">
@@ -225,7 +225,7 @@ export function SvgOptimizerView() {
             value={svgInput}
             onChange={e => setSvgInput(e.target.value)}
             placeholder="Paste your raw <svg> markup here..."
-            className="flex-1 w-full rounded-xl border border-stone-200 bg-white p-4 font-mono text-xs text-stone-800 shadow-xs focus:border-stone-900 focus:outline-hidden resize-none min-h-[220px]"
+            className="flex-1 w-full rounded-xl border border-stone-200 bg-white p-4 font-mono text-xs text-stone-800 shadow-xs focus:border-stone-900 focus:outline-hidden resize-none min-h-55"
             spellCheck={false}
           />
 
@@ -389,7 +389,7 @@ export function SvgOptimizerView() {
           </div>
 
           {/* Tab Content Panes */}
-          <div className="flex-1 min-h-[300px] flex flex-col">
+          <div className="flex-1 min-h-75 flex flex-col">
             {activeTab === 'code' && (
               <textarea
                 readOnly
@@ -409,7 +409,7 @@ export function SvgOptimizerView() {
             )}
 
             {activeTab === 'preview' && (
-              <div className="flex-1 w-full rounded-xl border border-stone-200 bg-[radial-gradient(#e5e7eb_1px,transparent_1px)] [background-size:16px_16px] bg-white p-8 flex items-center justify-center shadow-xs overflow-auto">
+              <div className="flex-1 w-full rounded-xl border border-stone-200 bg-[radial-gradient(#e5e7eb_1px,transparent_1px)] bg-size-[16px_16px] bg-white p-8 flex items-center justify-center shadow-xs overflow-auto">
                 {result?.optimized ? (
                   <div
                     className="max-h-72 max-w-72 flex items-center justify-center drop-shadow-sm"

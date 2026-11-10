@@ -181,9 +181,9 @@ export function JsonSchemaView() {
   };
 
   return (
-    <div className="flex flex-col gap-6 w-full flex-1 pb-12 min-h-0">
+    <div className="flex flex-col gap-6 w-full flex-1">
       {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 border-b border-stone-200/80 pb-6 shrink-0">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 border-b border-stone-200/80 shrink-0">
         <div>
           <div className="flex items-center gap-2.5">
             <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-indigo-600 text-white shadow-xs">
@@ -290,7 +290,7 @@ export function JsonSchemaView() {
 
       {/* Mode 1: Validation Screen */}
       {activeMode === 'validate' && (
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 flex-1 min-h-[460px]">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 flex-1 min-h-115">
           {/* Left: JSON Schema */}
           <div className="flex flex-col gap-3 min-h-0">
             <div className="flex items-center justify-between">
@@ -315,7 +315,7 @@ export function JsonSchemaView() {
               value={schemaText}
               onChange={e => setSchemaText(e.target.value)}
               placeholder="Paste JSON Schema here..."
-              className="flex-1 w-full rounded-xl border border-stone-200 bg-white p-4 font-mono text-xs text-stone-800 shadow-xs focus:border-stone-900 focus:outline-hidden resize-none min-h-[300px]"
+              className="flex-1 w-full rounded-xl border border-stone-200 bg-white p-4 font-mono text-xs text-stone-800 shadow-xs focus:border-stone-900 focus:outline-hidden resize-none min-h-75"
               spellCheck={false}
             />
           </div>
@@ -344,7 +344,7 @@ export function JsonSchemaView() {
               value={dataText}
               onChange={e => setDataText(e.target.value)}
               placeholder="Paste sample JSON payload to validate..."
-              className="flex-1 w-full rounded-xl border border-stone-200 bg-white p-4 font-mono text-xs text-stone-800 shadow-xs focus:border-stone-900 focus:outline-hidden resize-none min-h-[220px]"
+              className="flex-1 w-full rounded-xl border border-stone-200 bg-white p-4 font-mono text-xs text-stone-800 shadow-xs focus:border-stone-900 focus:outline-hidden resize-none min-h-55"
               spellCheck={false}
             />
 
@@ -377,7 +377,7 @@ export function JsonSchemaView() {
 
       {/* Mode 2: Mock Data Generator */}
       {activeMode === 'mock' && (
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 flex-1 min-h-[460px]">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 flex-1 min-h-115">
           {/* Left: Schema Source */}
           <div className="flex flex-col gap-3 min-h-0">
             <div className="flex items-center justify-between">
@@ -396,7 +396,7 @@ export function JsonSchemaView() {
             <textarea
               value={schemaText}
               onChange={e => setSchemaText(e.target.value)}
-              className="flex-1 w-full rounded-xl border border-stone-200 bg-white p-4 font-mono text-xs text-stone-800 shadow-xs focus:border-stone-900 focus:outline-hidden resize-none min-h-[300px]"
+              className="flex-1 w-full rounded-xl border border-stone-200 bg-white p-4 font-mono text-xs text-stone-800 shadow-xs focus:border-stone-900 focus:outline-hidden resize-none min-h-75"
               spellCheck={false}
             />
           </div>
@@ -434,7 +434,7 @@ export function JsonSchemaView() {
               readOnly
               value={mockOutput}
               placeholder="Click 'Regenerate Fixture' to create synthetic mock JSON..."
-              className="flex-1 w-full rounded-xl border border-stone-200 bg-stone-50/70 p-4 font-mono text-xs text-stone-800 shadow-xs focus:outline-hidden resize-none min-h-[300px]"
+              className="flex-1 w-full rounded-xl border border-stone-200 bg-stone-50/70 p-4 font-mono text-xs text-stone-800 shadow-xs focus:outline-hidden resize-none min-h-75"
             />
           </div>
         </div>
@@ -442,7 +442,7 @@ export function JsonSchemaView() {
 
       {/* Mode 3: Infer Schema from JSON */}
       {activeMode === 'infer' && (
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 flex-1 min-h-[460px]">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 flex-1 min-h-115">
           {/* Left: Raw JSON Sample */}
           <div className="flex flex-col gap-3 min-h-0">
             <div className="flex items-center justify-between">
@@ -462,7 +462,7 @@ export function JsonSchemaView() {
               value={dataText}
               onChange={e => setDataText(e.target.value)}
               placeholder="Paste any sample JSON object or array..."
-              className="flex-1 w-full rounded-xl border border-stone-200 bg-white p-4 font-mono text-xs text-stone-800 shadow-xs focus:border-stone-900 focus:outline-hidden resize-none min-h-[300px]"
+              className="flex-1 w-full rounded-xl border border-stone-200 bg-white p-4 font-mono text-xs text-stone-800 shadow-xs focus:border-stone-900 focus:outline-hidden resize-none min-h-75"
               spellCheck={false}
             />
           </div>
@@ -500,7 +500,7 @@ export function JsonSchemaView() {
               readOnly
               value={inferredOutput}
               placeholder="Click 'Infer Schema' to produce schema specifications..."
-              className="flex-1 w-full rounded-xl border border-stone-200 bg-stone-50/70 p-4 font-mono text-xs text-stone-800 shadow-xs focus:outline-hidden resize-none min-h-[300px]"
+              className="flex-1 w-full rounded-xl border border-stone-200 bg-stone-50/70 p-4 font-mono text-xs text-stone-800 shadow-xs focus:outline-hidden resize-none min-h-75"
             />
           </div>
         </div>

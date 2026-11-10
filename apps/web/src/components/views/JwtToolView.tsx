@@ -40,7 +40,7 @@ export function JwtToolView() {
   return (
     <div className="flex flex-col gap-6 w-full">
       {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 border-b border-stone-200/80 pb-6">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 border-b border-stone-200/80">
         <div>
           <div className="flex items-center gap-2.5">
             <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-stone-900 text-white shadow-xs">
@@ -180,7 +180,7 @@ export function JwtToolView() {
                 </button>
               </div>
 
-              <pre className="mt-3 flex-1 min-h-[220px] lg:min-h-[calc(100vh-28rem)] overflow-auto rounded-xl border border-stone-200/60 bg-[#fbfbf9] p-3.5 font-mono text-xs text-stone-900 leading-relaxed">
+              <pre className="mt-3 flex-1 min-h-55 lg:min-h-[calc(100vh-28rem)] overflow-auto rounded-xl border border-stone-200/60 bg-[#fbfbf9] p-3.5 font-mono text-xs text-stone-900 leading-relaxed">
                 {JSON.stringify(output.header, null, 2)}
               </pre>
             </div>
@@ -205,7 +205,7 @@ export function JwtToolView() {
                 </button>
               </div>
 
-              <pre className="mt-3 flex-1 min-h-[220px] lg:min-h-[calc(100vh-28rem)] overflow-auto rounded-xl border border-stone-200/60 bg-[#fbfbf9] p-3.5 font-mono text-xs text-stone-900 leading-relaxed">
+              <pre className="mt-3 flex-1 min-h-55 lg:min-h-[calc(100vh-28rem)] overflow-auto rounded-xl border border-stone-200/60 bg-[#fbfbf9] p-3.5 font-mono text-xs text-stone-900 leading-relaxed">
                 {JSON.stringify(output.payload, null, 2)}
               </pre>
             </div>

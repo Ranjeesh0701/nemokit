@@ -234,7 +234,7 @@ export function HomeLandingView({
         </div>
 
         {/* MCP Spotlight Banner */}
-        <div className="mt-2 w-full rounded-2xl border border-indigo-200/90 bg-gradient-to-r from-indigo-50/80 via-purple-50/50 to-white p-4 sm:p-5 shadow-xs flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <div className="mt-2 w-full rounded-2xl border border-indigo-200/90 bg-linear-to-r from-indigo-50/80 via-purple-50/50 to-white p-4 sm:p-5 shadow-xs flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div className="flex items-start gap-3.5">
             <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-indigo-600 text-white shadow-xs">
               <Bot className="h-5 w-5" />
@@ -354,9 +354,6 @@ export function HomeLandingView({
           </div>
         </div>
       </div>
-
-      {/* Guaranteed Bottom Spacing Spacer matching other screens */}
-      <div className="h-12 sm:h-16 shrink-0 w-full" aria-hidden="true" />
     </div>
   );
 }

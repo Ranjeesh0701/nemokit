@@ -113,9 +113,9 @@ export function RandomSvgView() {
   };
 
   return (
-    <div className="flex flex-col gap-6 w-full flex-1 pb-16 min-h-0">
+    <div className="flex flex-col gap-6 w-full flex-1">
       {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 border-b border-stone-200/80 pb-6 shrink-0">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 border-b border-stone-200/80 shrink-0">
         <div>
           <div className="flex items-center gap-2.5">
             <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-pink-600 text-white shadow-xs">
@@ -169,7 +169,7 @@ export function RandomSvgView() {
       </div>
 
       {/* Main Workspace: Left Controls + Right Live Canvas */}
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start flex-1 min-h-[460px] pb-8">
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start flex-1">
         {/* Left Control Panel (6 cols) */}
         <div className="lg:col-span-6 flex flex-col gap-6 min-w-0">
           {/* Section 1: Type Selection */}
@@ -368,9 +368,9 @@ export function RandomSvgView() {
 
             {/* Rendered SVG Preview */}
             <div
-              className={`w-full aspect-square max-w-[360px] rounded-2xl flex items-center justify-center p-6 transition-colors ${
+              className={`w-full aspect-square max-w-90 rounded-2xl flex items-center justify-center p-6 transition-colors ${
                 previewBg === 'checker'
-                  ? 'bg-[radial-gradient(#d1d5db_1px,transparent_1px)] [background-size:16px_16px] bg-stone-50'
+                  ? 'bg-[radial-gradient(#d1d5db_1px,transparent_1px)] bg-size-[16px_16px] bg-stone-50'
                   : previewBg === 'dark'
                     ? 'bg-stone-950'
                     : 'bg-white border border-stone-100'
@@ -479,9 +479,6 @@ export function RandomSvgView() {
           )}
         </div>
       </div>
-
-      {/* Guaranteed Bottom Spacing Spacer matching other screens */}
-      <div className="h-12 sm:h-16 shrink-0 w-full" aria-hidden="true" />
     </div>
   );
 }

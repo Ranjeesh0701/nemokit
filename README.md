@@ -240,7 +240,7 @@ In Cloudflare Dashboard:
 
 To have your application indexed and rank on Google with the default `*.pages.dev` domain:
 
-1. **Add Property**: Open [Google Search Console](https://search.google.com/search-console) and choose **URL prefix** (e.g. `https://nemokit.pages.dev/`).
+1. **Add Property**: Open [Google Search Console](https://search.google.com/search-console) and choose **URL prefix** (e.g. `https://nemokit.ranjeesh.workers.dev/` or `https://nemokit.pages.dev/`).
 2. **Verify Ownership**: Insert your verification code into `<meta name="google-site-verification" content="..." />` in `apps/web/index.html` (or drop the verification `.html` file into `apps/web/public/`).
 3. **Submit Sitemap**: Submit `https://<project-name>.pages.dev/sitemap.xml`.
 4. **Request Crawl**: Use the URL Inspection tool for `https://<project-name>.pages.dev/` and click **Request Indexing**.

@@ -229,32 +229,46 @@ export default function App() {
 
   const tools: ReadonlyArray<ToolMetadata> = useMemo(() => registry.getAll(), [registry]);
 
-  const parseRouteFromHash = (): RouteState => {
+  const parseCurrentRoute = (): RouteState => {
     const hash = window.location.hash;
-    if (!hash || hash === '#' || hash === '#/') {
-      return { mode: 'landing' };
+    if (hash && hash !== '#' && hash !== '#/') {
+      if (hash.startsWith('#/app/')) {
+        const raw = hash.replace('#/app/', '').trim();
+        const toolId = raw.split('?')[0] ?? '';
+        return { mode: 'app', activeToolId: toolId || 'dashboard' };
+      }
+
+      if (hash === '#/app') {
+        return { mode: 'app', activeToolId: 'dashboard' };
+      }
+
+      if (hash.startsWith('#/tools/')) {
+        const raw = hash.replace('#/tools/', '').trim();
+        const toolId = raw.split('?')[0] ?? '';
+        return { mode: 'app', activeToolId: toolId || 'dashboard' };
+      }
     }
 
-    if (hash.startsWith('#/app/')) {
-      const raw = hash.replace('#/app/', '').trim();
-      const toolId = raw.split('?')[0];
-      return { mode: 'app', activeToolId: toolId || 'dashboard' };
+    // Pathname fallback (enables direct search engine links e.g. /tools/json-formatter)
+    const pathname = window.location.pathname;
+    if (pathname.startsWith('/tools/')) {
+      const seg = pathname.replace('/tools/', '').split('/')[0] ?? '';
+      const toolId = seg.split('?')[0]?.trim();
+      if (toolId) return { mode: 'app', activeToolId: toolId };
     }
-
-    if (hash === '#/app') {
+    if (pathname.startsWith('/app/')) {
+      const seg = pathname.replace('/app/', '').split('/')[0] ?? '';
+      const toolId = seg.split('?')[0]?.trim();
+      if (toolId) return { mode: 'app', activeToolId: toolId };
+    }
+    if (pathname === '/app') {
       return { mode: 'app', activeToolId: 'dashboard' };
-    }
-
-    if (hash.startsWith('#/tools/')) {
-      const raw = hash.replace('#/tools/', '').trim();
-      const toolId = raw.split('?')[0];
-      return { mode: 'app', activeToolId: toolId || 'dashboard' };
     }
 
     return { mode: 'landing' };
   };
 
-  const [route, setRoute] = useState<RouteState>(() => parseRouteFromHash());
+  const [route, setRoute] = useState<RouteState>(() => parseCurrentRoute());
   const [isMobileSidebarOpen, setIsMobileSidebarOpen] = useState<boolean>(false);
   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState<boolean>(false);
   const [isCommandPaletteOpen, setIsCommandPaletteOpen] = useState<boolean>(false);
@@ -271,14 +285,46 @@ export default function App() {
     }, 2800);
   };
 
-  // Sync hash changes (browser back/forward navigation)
+  // Sync hash and pathname changes (browser back/forward navigation)
   useEffect(() => {
-    const handleHashChange = () => {
-      setRoute(parseRouteFromHash());
+    const handleRouteChange = () => {
+      setRoute(parseCurrentRoute());
     };
-    window.addEventListener('hashchange', handleHashChange);
-    return () => window.removeEventListener('hashchange', handleHashChange);
+    window.addEventListener('hashchange', handleRouteChange);
+    window.addEventListener('popstate', handleRouteChange);
+    return () => {
+      window.removeEventListener('hashchange', handleRouteChange);
+      window.removeEventListener('popstate', handleRouteChange);
+    };
   }, []);
+
+  // Update document title and meta description dynamically for search engine bots and browser tabs
+  useEffect(() => {
+    if (route.mode === 'landing') {
+      document.title = 'Nemokit — Private Developer Utilities & Vector Studio';
+      const metaDesc = document.querySelector('meta[name="description"]');
+      if (metaDesc) {
+        metaDesc.setAttribute(
+          'content',
+          '30+ private, zero-latency developer utilities and vector design studio. 100% client-side execution, offline PWA, JSON formatter, SQL beautifier, diff comparator, UUID generator, and MCP server.'
+        );
+      }
+    } else if (activeToolId === 'dashboard' || !activeToolId) {
+      document.title = 'Workspace Dashboard — Nemokit';
+    } else {
+      const tool = tools.find(t => t.id === activeToolId);
+      if (tool) {
+        document.title = `${tool.name} — Nemokit Private Developer Tools`;
+        const metaDesc = document.querySelector('meta[name="description"]');
+        if (metaDesc) {
+          metaDesc.setAttribute(
+            'content',
+            `${tool.name}: ${tool.description} 100% private in-browser.`
+          );
+        }
+      }
+    }
+  }, [route.mode, activeToolId, tools]);
 
   // Global hotkeys: ⌘K, ⌘↵, Esc
   useEffect(() => {
@@ -301,7 +347,7 @@ export default function App() {
       // Esc: Return to Dashboard if inside a tool
       if (e.key === 'Escape') {
         if (!isCommandPaletteOpen && activeToolId && activeToolId !== 'dashboard') {
-          window.location.hash = '#/app/dashboard';
+          handleSelectView('dashboard');
         }
       }
     };
@@ -312,14 +358,21 @@ export default function App() {
 
   const handleLaunchApp = (toolId?: string) => {
     const targetTool = toolId ?? 'json-formatter';
-    window.location.hash = `#/app/${targetTool}`;
+    if (window.location.pathname !== '/') {
+      window.history.pushState(null, '', `/#/app/${targetTool}`);
+      setRoute({ mode: 'app', activeToolId: targetTool });
+    } else {
+      window.location.hash = `#/app/${targetTool}`;
+    }
   };
 
   const handleSelectView = (viewId: string) => {
-    if (viewId === 'home' || viewId === 'dashboard') {
-      window.location.hash = '#/app/dashboard';
+    const target = viewId === 'home' || viewId === 'dashboard' ? 'dashboard' : viewId;
+    if (window.location.pathname !== '/') {
+      window.history.pushState(null, '', `/#/app/${target}`);
+      setRoute({ mode: 'app', activeToolId: target });
     } else {
-      window.location.hash = `#/app/${viewId}`;
+      window.location.hash = `#/app/${target}`;
     }
   };
 

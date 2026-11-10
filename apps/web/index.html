@@ -3,25 +3,388 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <!-- Primary Page Metadata -->
+    <title>Nemokit — Private Developer Utilities &amp; Vector Studio</title>
+    <meta
+      name="description"
+      content="30+ private, zero-latency developer utilities and vector design studio. 100% client-side execution, offline PWA, JSON formatter, SQL beautifier, diff comparator, UUID generator, and MCP server."
+    />
+    <meta
+      name="keywords"
+      content="developer tools, client-side tools, json formatter, sql formatter, regex tester, text diff, base64 encoder, jwt decoder, uuid generator, cron explainer, pwa developer utilities, nemokit, private developer tools, offline developer tools, svg optimizer, mcp server"
+    />
+    <meta name="author" content="Nemokit" />
+    <meta name="application-name" content="Nemokit" />
+    <meta name="apple-mobile-web-app-title" content="Nemokit" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+    <meta name="theme-color" content="#faf9f6" />
+
+    <!-- Search Engine Indexing Directives -->
+    <meta
+      name="robots"
+      content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1"
+    />
+    <meta
+      name="googlebot"
+      content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1"
+    />
+    <meta
+      name="bingbot"
+      content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1"
+    />
+
+    <!-- Canonical URL (Configured for Cloudflare Pages default domain) -->
+    <link rel="canonical" href="https://nemokit.pages.dev/" />
+
+    <!-- Google Search Console Verification (Injected automatically via VITE_GSC_VERIFICATION_TOKEN build env var, or placed here directly) -->
+    <!-- %GSC_VERIFICATION% -->
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Nemokit" />
+    <meta property="og:url" content="https://nemokit.pages.dev/" />
+    <meta property="og:title" content="Nemokit — Private Developer Utilities &amp; Vector Studio" />
+    <meta
+      property="og:description"
+      content="30+ browser-first developer utilities executing 100% in-device memory. Zero telemetry. Offline PWA and MCP Server included."
+    />
+    <meta property="og:image" content="https://nemokit.pages.dev/og-image.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="Nemokit Developer Suite Preview" />
+
+    <!-- Twitter Cards -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:url" content="https://nemokit.pages.dev/" />
+    <meta
+      name="twitter:title"
+      content="Nemokit — Private Developer Utilities &amp; Vector Studio"
+    />
+    <meta
+      name="twitter:description"
+      content="30+ browser-first developer utilities executing 100% in-device memory. Zero telemetry. Offline PWA and MCP Server included."
+    />
+    <meta name="twitter:image" content="https://nemokit.pages.dev/og-image.png" />
+
+    <!-- Favicon & Icons -->
     <link
       rel="icon"
       type="image/svg+xml"
       href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%230f172a' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><rect width='7' height='7' x='3' y='3' rx='1'/><rect width='7' height='7' x='14' y='3' rx='1'/><rect width='7' height='7' x='14' y='14' rx='1'/><rect width='7' height='7' x='3' y='14' rx='1'/></svg>"
     />
-    <title>Nemokit — Your tools. One place. No clutter.</title>
-    <meta
-      name="description"
-      content="A premium, modern utility platform with a browser-first tool engine."
-    />
+    <link rel="apple-touch-icon" href="/pwa-icon.svg" />
+
+    <!-- Fonts & Performance -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
       href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap"
       rel="stylesheet"
     />
+
+    <!-- Structured Data (JSON-LD Schema) for Google Search Rich Results -->
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": "WebSite",
+            "@id": "https://nemokit.pages.dev/#website",
+            "url": "https://nemokit.pages.dev/",
+            "name": "Nemokit",
+            "description": "Private, zero-latency developer utilities and vector design studio — 100% in-browser, offline-ready, and MCP-enabled.",
+            "inLanguage": "en-US"
+          },
+          {
+            "@type": "WebApplication",
+            "@id": "https://nemokit.pages.dev/#application",
+            "name": "Nemokit",
+            "url": "https://nemokit.pages.dev/",
+            "applicationCategory": "DeveloperApplication",
+            "operatingSystem": "All",
+            "browserRequirements": "Requires JavaScript. Requires HTML5.",
+            "offers": {
+              "@type": "Offer",
+              "price": "0",
+              "priceCurrency": "USD"
+            },
+            "description": "Private, zero-latency developer utilities and vector design studio executing 100% in-device memory.",
+            "featureList": [
+              "JSON Formatter & Minifier",
+              "SQL Formatter & Beautifier",
+              "Line-by-line Myers Diff Comparator",
+              "RegEx Matcher & Explainer",
+              "Base64 Encoder & Decoder",
+              "UUIDv4 & UUIDv7 Generator",
+              "JWT Claims & Token Inspector",
+              "Cryptographic Hash Generator (SHA-256, SHA-512)",
+              "Unix Permissions (chmod) Calculator",
+              "QR Code Vector Studio",
+              "Client-Side PDF Splitter & Merger",
+              "Image Background Remover & Privacy Redactor",
+              "Vector SVG Optimizer & Generator",
+              "Model Context Protocol (MCP) Server"
+            ]
+          }
+        ]
+      }
+    </script>
   </head>
   <body class="bg-[#faf9f6] text-stone-800 antialiased selection:bg-stone-200">
-    <div id="root"></div>
+    <div id="root">
+      <!-- Semantic Crawler Skeleton: Immediately indexable by Googlebot prior to React hydration -->
+      <div
+        style="
+          font-family:
+            system-ui,
+            -apple-system,
+            sans-serif;
+          max-width: 1000px;
+          margin: 40px auto;
+          padding: 0 20px;
+          color: #1c1917;
+        "
+      >
+        <header style="margin-bottom: 32px; border-bottom: 1px solid #e7e5e4; padding-bottom: 24px">
+          <h1 style="font-size: 32px; font-weight: 700; margin: 0 0 12px 0; color: #0c0a09">
+            Nemokit — Private Developer Utilities &amp; Vector Studio
+          </h1>
+          <p style="font-size: 18px; color: #57534e; margin: 0; line-height: 1.6">
+            Your tools. One place. No clutter. 30+ browser-first utilities executing 100%
+            client-side with zero latency, zero telemetry, and offline PWA capability.
+          </p>
+        </header>
+
+        <section
+          style="
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 24px;
+            margin-bottom: 40px;
+          "
+        >
+          <div
+            style="
+              background: #ffffff;
+              border: 1px solid #e7e5e4;
+              border-radius: 12px;
+              padding: 20px;
+            "
+          >
+            <h2 style="font-size: 18px; font-weight: 600; margin-top: 0; color: #1c1917">
+              Formatters &amp; Diff
+            </h2>
+            <ul style="padding-left: 20px; line-height: 1.8; color: #44403c">
+              <li>
+                <a
+                  href="/tools/json-formatter"
+                  style="color: #0284c7; text-decoration: none; font-weight: 500"
+                  >JSON Formatter &amp; Minifier</a
+                >
+                — Clean and minify JSON.
+              </li>
+              <li>
+                <a
+                  href="/tools/sql-formatter"
+                  style="color: #0284c7; text-decoration: none; font-weight: 500"
+                  >SQL Beautifier</a
+                >
+                — PostgreSQL, MySQL, and SQLite formatting.
+              </li>
+              <li>
+                <a
+                  href="/tools/diff-tool"
+                  style="color: #0284c7; text-decoration: none; font-weight: 500"
+                  >Text Diff Comparator</a
+                >
+                — Line-by-line Myers algorithm.
+              </li>
+              <li>
+                <a
+                  href="/tools/regex-tester"
+                  style="color: #0284c7; text-decoration: none; font-weight: 500"
+                  >RegEx Tester</a
+                >
+                — Real-time regex match and replacement.
+              </li>
+              <li>
+                <a
+                  href="/tools/text-splitter"
+                  style="color: #0284c7; text-decoration: none; font-weight: 500"
+                  >Text Splitter</a
+                >
+                — Split payloads by words, characters, or lines.
+              </li>
+              <li>
+                <a
+                  href="/tools/markdown-preview"
+                  style="color: #0284c7; text-decoration: none; font-weight: 500"
+                  >Markdown Studio</a
+                >
+                — Live GFM preview and stats.
+              </li>
+            </ul>
+          </div>
+
+          <div
+            style="
+              background: #ffffff;
+              border: 1px solid #e7e5e4;
+              border-radius: 12px;
+              padding: 20px;
+            "
+          >
+            <h2 style="font-size: 18px; font-weight: 600; margin-top: 0; color: #1c1917">
+              Converters &amp; Security
+            </h2>
+            <ul style="padding-left: 20px; line-height: 1.8; color: #44403c">
+              <li>
+                <a
+                  href="/tools/base64-tool"
+                  style="color: #0284c7; text-decoration: none; font-weight: 500"
+                  >Base64 Encoder/Decoder</a
+                >
+                — UTF-8 and URL-safe conversions.
+              </li>
+              <li>
+                <a
+                  href="/tools/jwt-tool"
+                  style="color: #0284c7; text-decoration: none; font-weight: 500"
+                  >JWT Inspector</a
+                >
+                — Header and claims analysis.
+              </li>
+              <li>
+                <a
+                  href="/tools/uuid-tool"
+                  style="color: #0284c7; text-decoration: none; font-weight: 500"
+                  >UUID &amp; NanoID Generator</a
+                >
+                — UUIDv4, UUIDv7, and NanoIDs.
+              </li>
+              <li>
+                <a
+                  href="/tools/hash-tool"
+                  style="color: #0284c7; text-decoration: none; font-weight: 500"
+                  >Cryptographic Hash</a
+                >
+                — SHA-256, SHA-512, MD5 hashes.
+              </li>
+              <li>
+                <a
+                  href="/tools/password-tool"
+                  style="color: #0284c7; text-decoration: none; font-weight: 500"
+                  >Password Generator</a
+                >
+                — High-entropy passwords.
+              </li>
+              <li>
+                <a
+                  href="/tools/timestamp-tool"
+                  style="color: #0284c7; text-decoration: none; font-weight: 500"
+                  >Timestamp Converter</a
+                >
+                — Epoch to ISO-8601 translator.
+              </li>
+            </ul>
+          </div>
+
+          <div
+            style="
+              background: #ffffff;
+              border: 1px solid #e7e5e4;
+              border-radius: 12px;
+              padding: 20px;
+            "
+          >
+            <h2 style="font-size: 18px; font-weight: 600; margin-top: 0; color: #1c1917">
+              Vector &amp; Graphics Studio
+            </h2>
+            <ul style="padding-left: 20px; line-height: 1.8; color: #44403c">
+              <li>
+                <a
+                  href="/tools/svg-optimizer"
+                  style="color: #0284c7; text-decoration: none; font-weight: 500"
+                  >SVG Optimizer</a
+                >
+                — Clean XML bloat and export JSX icons.
+              </li>
+              <li>
+                <a
+                  href="/tools/logo-builder"
+                  style="color: #0284c7; text-decoration: none; font-weight: 500"
+                  >Logo &amp; Brand Badge Studio</a
+                >
+                — Procedural app icons.
+              </li>
+              <li>
+                <a
+                  href="/tools/favicon-generator"
+                  style="color: #0284c7; text-decoration: none; font-weight: 500"
+                  >Favicon Studio</a
+                >
+                — Multi-resolution browser favicons.
+              </li>
+              <li>
+                <a
+                  href="/tools/pattern-generator"
+                  style="color: #0284c7; text-decoration: none; font-weight: 500"
+                  >Pattern Studio</a
+                >
+                — Repeating CSS and SVG textures.
+              </li>
+              <li>
+                <a
+                  href="/tools/bg-remover"
+                  style="color: #0284c7; text-decoration: none; font-weight: 500"
+                  >Image Background Remover</a
+                >
+                — Transparent keying.
+              </li>
+              <li>
+                <a
+                  href="/tools/qr-tool"
+                  style="color: #0284c7; text-decoration: none; font-weight: 500"
+                  >QR Code Generator</a
+                >
+                — High-density SVG/PNG QR codes.
+              </li>
+            </ul>
+          </div>
+        </section>
+
+        <footer
+          style="border-top: 1px solid #e7e5e4; padding-top: 20px; font-size: 14px; color: #78716c"
+        >
+          <p>
+            Nemokit is 100% open, private, and runs entirely in your browser. Also available as a
+            local Model Context Protocol (MCP) server.
+          </p>
+        </footer>
+      </div>
+    </div>
+
+    <noscript>
+      <div
+        style="
+          max-width: 600px;
+          margin: 40px auto;
+          padding: 20px;
+          background: #fee2e2;
+          border: 1px solid #ef4444;
+          border-radius: 8px;
+          color: #991b1b;
+          font-family: sans-serif;
+        "
+      >
+        <strong>JavaScript Required:</strong> Nemokit is a client-side developer suite that executes
+        all computations inside your device browser. Please enable JavaScript to access all
+        interactive tools.
+      </div>
+    </noscript>
+
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>

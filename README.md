@@ -207,13 +207,37 @@ Run the Vitest test suite across all packages:
 npm test
 ```
 
-### Production Build
+### Production Build & Deployment
 
 Compile all packages and build the optimized production web assets:
 
 ```bash
 npm run build
 ```
+
+Deploy directly to Cloudflare Pages on the default `*.pages.dev` domain:
+
+```bash
+# Authenticate with Cloudflare (first time only)
+npx wrangler login
+
+# Build and deploy to Cloudflare Pages
+npm run deploy
+```
+
+Alternatively, connect your repository in Cloudflare Pages dashboard:
+
+- **Build command**: `npm run build`
+- **Build output directory**: `apps/web/dist`
+
+### Google Search Console & SEO on `*.pages.dev`
+
+To have your application indexed and rank on Google with the default `*.pages.dev` domain:
+
+1. **Add Property**: Open [Google Search Console](https://search.google.com/search-console) and choose **URL prefix** (e.g. `https://nemokit.pages.dev/`).
+2. **Verify Ownership**: Insert your verification code into `<meta name="google-site-verification" content="..." />` in `apps/web/index.html` (or drop the verification `.html` file into `apps/web/public/`).
+3. **Submit Sitemap**: Submit `https://<project-name>.pages.dev/sitemap.xml`.
+4. **Request Crawl**: Use the URL Inspection tool for `https://<project-name>.pages.dev/` and click **Request Indexing**.
 
 ### Code Formatting
 

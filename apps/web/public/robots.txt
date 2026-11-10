@@ -1,0 +1,6 @@
+# Robots.txt for Nemokit (Cloudflare Pages default domain)
+User-agent: *
+Allow: /
+
+# Sitemap declaration for search engines
+Sitemap: https://nemokit.pages.dev/sitemap.xml

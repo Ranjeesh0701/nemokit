@@ -207,7 +207,7 @@ Run the Vitest test suite across all packages:
 npm test
 ```
 
-### Production Build & Deployment
+### Production Build
 
 Compile all packages and build the optimized production web assets:
 
@@ -215,35 +215,13 @@ Compile all packages and build the optimized production web assets:
 npm run build
 ```
 
-Deploy directly to Cloudflare on the default domain:
+### Deployment
+
+Deploy to Cloudflare:
 
 ```bash
-# Authenticate with Cloudflare (first time only)
-npx wrangler login
-
-# Build and deploy to Cloudflare Pages
 npm run deploy
 ```
-
-#### Cloudflare Dashboard Git Integration
-
-In Cloudflare Dashboard:
-
-- If using **Workers (Workers Builds)**:
-  - **Build command**: `npm run build`
-  - **Deploy command**: `npx wrangler deploy`
-- If using **Pages**:
-  - **Build command**: `npm run build`
-  - **Build output directory**: `apps/web/dist`
-
-### Google Search Console & SEO on `*.pages.dev`
-
-To have your application indexed and rank on Google with the default `*.pages.dev` domain:
-
-1. **Add Property**: Open [Google Search Console](https://search.google.com/search-console) and choose **URL prefix** (e.g. `https://nemokit.ranjeesh.workers.dev/` or `https://nemokit.pages.dev/`).
-2. **Verify Ownership**: Insert your verification code into `<meta name="google-site-verification" content="..." />` in `apps/web/index.html` (or drop the verification `.html` file into `apps/web/public/`).
-3. **Submit Sitemap**: Submit `https://<project-name>.pages.dev/sitemap.xml`.
-4. **Request Crawl**: Use the URL Inspection tool for `https://<project-name>.pages.dev/` and click **Request Indexing**.
 
 ### Code Formatting
 

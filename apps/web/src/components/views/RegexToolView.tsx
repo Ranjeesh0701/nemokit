@@ -92,30 +92,30 @@ export function RegexToolView() {
   return (
     <div className="flex flex-col gap-6 w-full flex-1">
       {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 border-b border-stone-200/80 pb-6">
-        <div>
-          <div className="flex items-center gap-2.5">
-            <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-stone-900 text-white shadow-xs">
-              <Search className="h-4 w-4" />
-            </span>
-            <h1 className="text-xl font-semibold tracking-tight text-stone-900">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 border-b border-stone-200/80 pb-5 sm:pb-6">
+        <div className="flex items-start sm:items-center gap-3 min-w-0">
+          <span className="flex h-8 w-8 shrink-0 aspect-square items-center justify-center rounded-lg bg-stone-900 text-white shadow-xs mt-0.5 sm:mt-0">
+            <Search className="h-4 w-4" />
+          </span>
+          <div className="min-w-0 flex-1">
+            <h1 className="text-lg sm:text-xl font-semibold tracking-tight text-stone-900 leading-snug">
               Regex Tester & Explainer
             </h1>
+            <p className="mt-1 text-xs text-stone-500 leading-relaxed max-w-2xl">
+              Real-time regular expression tester with capture groups inspection, substitution
+              preview, and common presets.
+            </p>
           </div>
-          <p className="mt-1 text-sm text-stone-500">
-            Real-time regular expression tester with capture groups inspection, substitution
-            preview, and common presets.
-          </p>
         </div>
 
         {/* Preset chips */}
-        <div className="flex flex-wrap items-center gap-1.5">
+        <div className="flex items-center gap-1.5 overflow-x-auto max-w-full no-scrollbar pb-1 sm:pb-0">
           {REGEX_PRESETS.map(p => (
             <button
               key={p.name}
               type="button"
               onClick={() => applyPreset(p)}
-              className="rounded-lg border border-stone-200 bg-white px-2.5 py-1 text-xs font-medium text-stone-700 shadow-xs hover:bg-stone-50 transition-colors"
+              className="rounded-lg border border-stone-200 bg-white px-2.5 py-1 text-xs font-medium text-stone-700 shadow-xs hover:bg-stone-50 transition-colors whitespace-nowrap shrink-0"
             >
               {p.name}
             </button>
@@ -124,7 +124,7 @@ export function RegexToolView() {
       </div>
 
       {/* Pattern Input & Flags Bar */}
-      <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-4 rounded-2xl border border-stone-200/90 bg-white p-5 shadow-xs">
+      <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 sm:gap-4 rounded-2xl border border-stone-200/90 bg-white p-3.5 sm:p-5 shadow-xs">
         <div className="flex-1 flex items-center min-w-0">
           <span className="text-stone-400 font-mono text-lg font-bold px-1 select-none">/</span>
           <input
@@ -132,14 +132,14 @@ export function RegexToolView() {
             value={pattern}
             onChange={e => setPattern(e.target.value)}
             placeholder="Type regex pattern..."
-            className="flex-1 bg-transparent px-2 py-1 font-mono text-sm sm:text-base font-semibold text-stone-900 placeholder:text-stone-400 focus:outline-none"
+            className="flex-1 bg-transparent px-2 py-1 font-mono text-sm sm:text-base font-semibold text-stone-900 placeholder:text-stone-400 focus:outline-none min-w-0"
             spellCheck={false}
           />
           <span className="text-stone-400 font-mono text-lg font-bold px-1 select-none">/</span>
         </div>
 
         {/* Flag toggles */}
-        <div className="flex items-center gap-1 sm:pl-4 sm:border-l border-stone-100 shrink-0">
+        <div className="flex items-center justify-end sm:justify-start gap-1 sm:pl-4 sm:border-l border-stone-100 shrink-0">
           {['g', 'i', 'm', 's'].map(f => {
             const isActive = flags.includes(f);
             return (
@@ -195,7 +195,7 @@ export function RegexToolView() {
               <ArrowRightLeft className="h-3.5 w-3.5 text-stone-500" />
               Substitution / Replacement
             </span>
-            <div className="flex items-center gap-2">
+            <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2">
               <input
                 type="text"
                 value={replacement}
@@ -207,7 +207,7 @@ export function RegexToolView() {
                 <button
                   type="button"
                   onClick={() => handleCopy(output.substituted ?? '', 'sub')}
-                  className="inline-flex items-center gap-1.5 rounded-lg border border-stone-200 bg-white px-3 py-1.5 text-xs font-medium text-stone-700 shadow-xs hover:bg-stone-50 transition-colors"
+                  className="w-full sm:w-auto inline-flex items-center justify-center gap-1.5 rounded-lg border border-stone-200 bg-white px-3 py-1.5 text-xs font-medium text-stone-700 shadow-xs hover:bg-stone-50 transition-colors shrink-0"
                 >
                   {copiedKey === 'sub' ? (
                     <Check className="h-3.5 w-3.5 text-emerald-600" />

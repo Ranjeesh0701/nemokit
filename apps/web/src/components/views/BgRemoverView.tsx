@@ -130,31 +130,31 @@ export function BgRemoverView() {
   return (
     <div className="flex flex-col gap-6 w-full flex-1">
       {/* Header Bar */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between border-b border-stone-200/80 gap-3 pb-6">
-        <div className="flex items-center gap-3">
-          <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-violet-500/10 text-violet-700">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between border-b border-stone-200/80 gap-3.5 sm:gap-4 pb-5 sm:pb-6">
+        <div className="flex items-start sm:items-center gap-3 min-w-0">
+          <span className="flex h-10 w-10 shrink-0 aspect-square items-center justify-center rounded-xl bg-violet-500/10 text-violet-700 mt-0.5 sm:mt-0 shadow-2xs">
             <ImageIcon className="h-5 w-5" />
           </span>
-          <div>
-            <div className="flex items-center gap-2">
-              <h1 className="text-xl font-bold tracking-tight text-stone-900">
+          <div className="min-w-0 flex-1">
+            <div className="flex flex-wrap items-center gap-x-2.5 gap-y-1">
+              <h1 className="text-lg sm:text-xl font-bold tracking-tight text-stone-900 leading-snug">
                 Image Background Remover
               </h1>
-              <span className="rounded-md bg-stone-100 px-2 py-0.5 text-[10px] font-bold text-stone-600 uppercase">
+              <span className="rounded-md bg-stone-100 px-2 py-0.5 text-[10px] font-bold text-stone-600 uppercase tracking-wider shrink-0 whitespace-nowrap">
                 100% Client-Side
               </span>
             </div>
-            <p className="text-xs text-stone-500">
+            <p className="mt-1 text-xs text-stone-500 leading-relaxed max-w-2xl">
               Chroma keying and solid background removal directly on your browser canvas.
             </p>
           </div>
         </div>
 
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-2 w-full sm:w-auto shrink-0">
           <button
             type="button"
             onClick={handleReset}
-            className="inline-flex items-center gap-1.5 rounded-lg border border-stone-200 bg-white px-3 py-1.5 text-xs font-medium text-stone-700 hover:bg-stone-50 transition-colors shadow-2xs"
+            className="flex-1 sm:flex-initial inline-flex items-center justify-center gap-1.5 rounded-lg border border-stone-200 bg-white px-3 py-1.5 text-xs font-medium text-stone-700 hover:bg-stone-50 transition-colors shadow-2xs"
             title="Reset to original image"
           >
             <RotateCcw className="h-3.5 w-3.5 text-stone-500" />
@@ -164,7 +164,7 @@ export function BgRemoverView() {
           <button
             type="button"
             onClick={handleDownload}
-            className="inline-flex items-center gap-1.5 rounded-lg bg-stone-900 px-3.5 py-1.5 text-xs font-semibold text-white hover:bg-stone-800 transition-colors shadow-xs"
+            className="flex-1 sm:flex-initial inline-flex items-center justify-center gap-1.5 rounded-lg bg-stone-900 px-3.5 py-1.5 text-xs font-semibold text-white hover:bg-stone-800 transition-colors shadow-xs"
           >
             {downloadSuccess ? (
               <>
@@ -331,22 +331,22 @@ export function BgRemoverView() {
         </div>
 
         {/* Right Column: Interactive Canvas Viewport */}
-        <div className="lg:col-span-8 flex flex-col rounded-2xl border border-stone-200/80 bg-white shadow-xs overflow-hidden flex-1 min-h-75">
-          <div className="px-4 py-3 border-b border-stone-200/80 bg-stone-50/70 flex items-center justify-between">
+        <div className="lg:col-span-8 flex flex-col rounded-2xl border border-stone-200/80 bg-white shadow-xs overflow-hidden flex-1 min-h-60 sm:min-h-75">
+          <div className="px-3 sm:px-4 py-2.5 sm:py-3 border-b border-stone-200/80 bg-stone-50/70 flex flex-wrap items-center justify-between gap-2">
             <span className="text-xs font-semibold text-stone-800 uppercase tracking-wider flex items-center gap-1.5">
               <Layers className="h-3.5 w-3.5 text-stone-500" />
               <span>Canvas Result</span>
             </span>
             {isEyedropperActive && (
-              <span className="text-xs font-semibold text-violet-700 animate-pulse">
-                Click anywhere on canvas to pick background color
+              <span className="text-[11px] sm:text-xs font-semibold text-violet-700 animate-pulse">
+                Tap anywhere on canvas to pick background color
               </span>
             )}
           </div>
 
           {/* Checkerboard Transparent Pattern Canvas Container */}
           <div
-            className={`p-6 flex-1 flex items-center justify-center min-h-115 overflow-auto ${
+            className={`p-3 sm:p-6 flex-1 flex items-center justify-center min-h-60 sm:min-h-115 overflow-auto ${
               backdropMode === 'white'
                 ? 'bg-white'
                 : backdropMode === 'dark'

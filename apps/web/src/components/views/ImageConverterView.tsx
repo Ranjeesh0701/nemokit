@@ -113,32 +113,31 @@ export function ImageConverterView() {
   return (
     <div className="flex flex-col gap-6 w-full flex-1">
       {/* Header Bar */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between border-b border-stone-200/80 gap-3 pb-6">
-        <div className="flex items-center gap-3">
-          <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-indigo-500/10 text-indigo-700">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between border-b border-stone-200/80 gap-3.5 sm:gap-4 pb-5 sm:pb-6">
+        <div className="flex items-start sm:items-center gap-3 min-w-0">
+          <span className="flex h-10 w-10 shrink-0 aspect-square items-center justify-center rounded-xl bg-indigo-500/10 text-indigo-700 mt-0.5 sm:mt-0 shadow-2xs">
             <Scale className="h-5 w-5" />
           </span>
-          <div>
-            <div className="flex items-center gap-2">
-              <h1 className="text-xl font-bold tracking-tight text-stone-900">
+          <div className="min-w-0 flex-1">
+            <div className="flex flex-wrap items-center gap-x-2.5 gap-y-1">
+              <h1 className="text-lg sm:text-xl font-bold tracking-tight text-stone-900 leading-snug">
                 Image Compressor & Converter
               </h1>
-              <span className="rounded-md bg-stone-100 px-2 py-0.5 text-[10px] font-bold text-stone-600 uppercase">
+              <span className="rounded-md bg-stone-100 px-2 py-0.5 text-[10px] font-bold text-stone-600 uppercase tracking-wider shrink-0 whitespace-nowrap">
                 100% Client-Side
               </span>
             </div>
-            <p className="text-xs text-stone-500">
-              Convert between WebP, JPEG, and PNG, downscale resolutions, and optimize file
-              payloads.
+            <p className="mt-1 text-xs text-stone-500 leading-relaxed max-w-2xl">
+              Convert between WebP, JPEG, and PNG, downscale resolutions, and optimize file payloads.
             </p>
           </div>
         </div>
 
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-2 w-full sm:w-auto shrink-0">
           <button
             type="button"
             onClick={handleDownload}
-            className="inline-flex items-center gap-1.5 rounded-lg bg-stone-900 px-3.5 py-1.5 text-xs font-semibold text-white hover:bg-stone-800 transition-colors shadow-xs"
+            className="w-full sm:w-auto inline-flex items-center justify-center gap-1.5 rounded-lg bg-stone-900 px-3.5 py-1.5 text-xs font-semibold text-white hover:bg-stone-800 transition-colors shadow-xs"
           >
             {downloadSuccess ? (
               <>
@@ -198,7 +197,7 @@ export function ImageConverterView() {
             {/* Target Format */}
             <div className="flex flex-col gap-1.5">
               <span className="text-xs font-medium text-stone-600">Target Format:</span>
-              <div className="grid grid-cols-3 gap-2 text-xs">
+              <div className="grid grid-cols-3 gap-2 text-[11px] sm:text-xs">
                 {[
                   { id: 'image/webp' as const, label: 'WebP (Best)' },
                   { id: 'image/jpeg' as const, label: 'JPEG' },
@@ -208,7 +207,7 @@ export function ImageConverterView() {
                     key={fmt.id}
                     type="button"
                     onClick={() => setTargetFormat(fmt.id)}
-                    className={`py-1.5 rounded-lg border font-medium text-center transition-all ${
+                    className={`py-1.5 px-1 rounded-lg border font-medium text-center transition-all truncate ${
                       targetFormat === fmt.id
                         ? 'border-stone-900 bg-stone-900 text-white'
                         : 'border-stone-200 bg-white text-stone-700 hover:bg-stone-50'
@@ -287,18 +286,18 @@ export function ImageConverterView() {
         </div>
 
         {/* Right Column: Preview Canvas */}
-        <div className="lg:col-span-8 flex flex-col rounded-2xl border border-stone-200/80 bg-white shadow-xs overflow-hidden flex-1 min-h-75">
-          <div className="px-4 py-3 border-b border-stone-200/80 bg-stone-50/70 flex items-center justify-between text-xs">
+        <div className="lg:col-span-8 flex flex-col rounded-2xl border border-stone-200/80 bg-white shadow-xs overflow-hidden flex-1 min-h-60 sm:min-h-75">
+          <div className="px-3 sm:px-4 py-2.5 sm:py-3 border-b border-stone-200/80 bg-stone-50/70 flex flex-wrap items-center justify-between gap-2 text-xs">
             <span className="font-semibold text-stone-800 uppercase tracking-wider">
               Preview Canvas
             </span>
-            <span className="font-mono text-stone-500">
+            <span className="font-mono text-stone-500 text-[11px] sm:text-xs">
               {originalDimensions.w}×{originalDimensions.h} → {targetDimensions.w}×
               {targetDimensions.h} px
             </span>
           </div>
 
-          <div className="p-6 flex-1 flex items-center justify-center min-h-65 bg-stone-100/50 overflow-auto">
+          <div className="p-3 sm:p-6 flex-1 flex items-center justify-center min-h-50 sm:min-h-65 bg-stone-100/50 overflow-auto">
             <canvas
               ref={canvasRef}
               className="max-w-full max-h-[calc(100vh-20rem)] object-contain rounded-lg shadow-sm border border-stone-200"

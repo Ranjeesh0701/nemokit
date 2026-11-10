@@ -70,30 +70,30 @@ export function QrToolView() {
   return (
     <div className="flex flex-col gap-6 w-full">
       {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 border-b border-stone-200/80 pb-6">
-        <div>
-          <div className="flex items-center gap-2.5">
-            <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-stone-900 text-white shadow-xs">
-              <QrCode className="h-4 w-4" />
-            </span>
-            <h1 className="text-xl font-semibold tracking-tight text-stone-900">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 border-b border-stone-200/80 pb-5 sm:pb-6">
+        <div className="flex items-start sm:items-center gap-3 min-w-0">
+          <span className="flex h-8 w-8 shrink-0 aspect-square items-center justify-center rounded-lg bg-stone-900 text-white shadow-xs mt-0.5 sm:mt-0">
+            <QrCode className="h-4 w-4" />
+          </span>
+          <div className="min-w-0 flex-1">
+            <h1 className="text-lg sm:text-xl font-semibold tracking-tight text-stone-900 leading-snug">
               QR Code Generator & Exporter
             </h1>
+            <p className="mt-1 text-xs text-stone-500 leading-relaxed max-w-2xl">
+              Generate customizable QR codes for links, text, and Wi-Fi networks with high-res SVG &
+              PNG exports.
+            </p>
           </div>
-          <p className="mt-1 text-sm text-stone-500">
-            Generate customizable QR codes for links, text, and Wi-Fi networks with high-res SVG &
-            PNG exports.
-          </p>
         </div>
 
         {/* Preset chips */}
-        <div className="flex flex-wrap items-center gap-1.5">
+        <div className="flex items-center gap-1.5 overflow-x-auto max-w-full no-scrollbar pb-1 sm:pb-0">
           {QR_PRESETS.map(p => (
             <button
               key={p.label}
               type="button"
               onClick={() => setText(p.text)}
-              className="rounded-lg border border-stone-200 bg-white px-2.5 py-1 text-xs font-medium text-stone-700 shadow-xs hover:bg-stone-50 transition-colors"
+              className="rounded-lg border border-stone-200 bg-white px-2.5 py-1 text-xs font-medium text-stone-700 shadow-xs hover:bg-stone-50 transition-colors whitespace-nowrap shrink-0"
             >
               {p.label}
             </button>
@@ -106,7 +106,7 @@ export function QrToolView() {
         {/* Controls Column */}
         <div className="lg:col-span-7 flex flex-col gap-4">
           {/* Input text / URL */}
-          <div className="flex flex-col gap-2 rounded-2xl border border-stone-200/90 bg-white p-5 shadow-xs">
+          <div className="flex flex-col gap-2 rounded-2xl border border-stone-200/90 bg-white p-4 sm:p-5 shadow-xs">
             <label className="text-xs font-semibold uppercase tracking-wider text-stone-500">
               QR Content (Text or URL)
             </label>
@@ -120,7 +120,7 @@ export function QrToolView() {
           </div>
 
           {/* Configuration Options */}
-          <div className="flex flex-col gap-4 rounded-2xl border border-stone-200/90 bg-white p-5 shadow-xs">
+          <div className="flex flex-col gap-4 rounded-2xl border border-stone-200/90 bg-white p-4 sm:p-5 shadow-xs">
             <span className="flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-stone-500 pb-2 border-b border-stone-100">
               <Sliders className="h-3.5 w-3.5" />
               Styling & Error Correction
@@ -129,7 +129,7 @@ export function QrToolView() {
             {/* Error correction levels */}
             <div className="flex flex-col gap-2">
               <span className="text-xs font-medium text-stone-700">Error Correction Level</span>
-              <div className="grid grid-cols-4 gap-2">
+              <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
                 {(['L', 'M', 'Q', 'H'] as QrErrorCorrectionLevel[]).map(lvl => {
                   const labels: Record<QrErrorCorrectionLevel, string> = {
                     L: '7% (Low)',
@@ -157,7 +157,7 @@ export function QrToolView() {
             </div>
 
             {/* Color Swatches */}
-            <div className="grid grid-cols-2 gap-4 pt-2">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2">
               {/* Foreground Color */}
               <div className="flex flex-col gap-1.5">
                 <label className="text-xs font-medium text-stone-700">Dark Color (Dots)</label>
@@ -213,7 +213,7 @@ export function QrToolView() {
               <img
                 src={output.dataUrl}
                 alt="Generated QR Code"
-                className="w-64 h-64 object-contain rounded-lg"
+                className="w-56 h-56 sm:w-64 sm:h-64 max-w-[70vw] max-h-[70vw] object-contain rounded-lg"
               />
             </div>
           ) : (

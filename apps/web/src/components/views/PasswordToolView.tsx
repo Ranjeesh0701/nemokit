@@ -151,45 +151,45 @@ export function PasswordToolView() {
   return (
     <div className="flex flex-col gap-6 w-full">
       {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 border-b border-stone-200/80 pb-6">
-        <div>
-          <div className="flex items-center gap-2.5">
-            <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-stone-900 text-white shadow-xs">
-              <Lock className="h-4 w-4" />
-            </span>
-            <h1 className="text-xl font-semibold tracking-tight text-stone-900">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 border-b border-stone-200/80 pb-5 sm:pb-6">
+        <div className="flex items-start sm:items-center gap-3 min-w-0">
+          <span className="flex h-8 w-8 shrink-0 aspect-square items-center justify-center rounded-lg bg-stone-900 text-white shadow-xs mt-0.5 sm:mt-0">
+            <Lock className="h-4 w-4" />
+          </span>
+          <div className="min-w-0 flex-1">
+            <h1 className="text-lg sm:text-xl font-semibold tracking-tight text-stone-900 leading-snug">
               Password & Token Generator
             </h1>
+            <p className="mt-1 text-xs text-stone-500 leading-relaxed max-w-2xl">
+              Generate cryptographically secure random passwords and secrets with entropy bit ratings.
+            </p>
           </div>
-          <p className="mt-1 text-sm text-stone-500">
-            Generate cryptographically secure random passwords and secrets with entropy bit ratings.
-          </p>
         </div>
 
-        <div className="flex items-center gap-2">
+        <div className="flex flex-wrap items-center gap-2 w-full sm:w-auto">
           <button
             type="button"
             onClick={generatePasswords}
-            className="inline-flex items-center gap-1.5 rounded-lg border border-stone-200 bg-white px-3 py-1.5 text-xs font-medium text-stone-700 shadow-xs hover:bg-stone-50 transition-colors"
+            className="flex-1 sm:flex-initial inline-flex items-center justify-center gap-1.5 rounded-lg border border-stone-200 bg-white px-3 py-1.5 text-xs font-medium text-stone-700 shadow-xs hover:bg-stone-50 transition-colors"
           >
             <RefreshCw className="h-3.5 w-3.5 text-stone-500" />
-            Regenerate
+            <span>Regenerate</span>
           </button>
           <button
             type="button"
             onClick={handleCopyAll}
             disabled={!output}
-            className="inline-flex items-center gap-1.5 rounded-lg bg-stone-900 px-3.5 py-1.5 text-xs font-medium text-white shadow-xs hover:bg-stone-800 disabled:opacity-50 transition-colors"
+            className="flex-1 sm:flex-initial inline-flex items-center justify-center gap-1.5 rounded-lg bg-stone-900 px-3.5 py-1.5 text-xs font-medium text-white shadow-xs hover:bg-stone-800 disabled:opacity-50 transition-colors"
           >
             {copiedAll ? (
               <>
                 <Check className="h-3.5 w-3.5 text-emerald-400" />
-                Copied All
+                <span>Copied All</span>
               </>
             ) : (
               <>
                 <Copy className="h-3.5 w-3.5" />
-                Copy All
+                <span>Copy All</span>
               </>
             )}
           </button>
@@ -200,12 +200,12 @@ export function PasswordToolView() {
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
         {/* Controls Column */}
         <div className="lg:col-span-5 flex flex-col gap-5 rounded-2xl border border-stone-200/80 bg-white p-5 shadow-xs">
-          <div className="flex items-center justify-between pb-3 border-b border-stone-100">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pb-3 border-b border-stone-100">
             <span className="flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-stone-500">
               <Sliders className="h-3.5 w-3.5" />
               Generator Options
             </span>
-            <div className="flex items-center gap-1">
+            <div className="flex flex-wrap items-center gap-1">
               <button
                 type="button"
                 onClick={() => applyPreset('strong')}

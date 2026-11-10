@@ -87,34 +87,34 @@ export function HtmlPreviewView() {
   return (
     <div className="flex flex-col gap-6 w-full flex-1">
       {/* Header Bar */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between pb-4 border-b border-stone-200/80 gap-3">
-        <div className="flex items-center gap-3">
-          <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-orange-500/10 text-orange-700">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between pb-5 sm:pb-6 border-b border-stone-200/80 gap-3.5 sm:gap-4">
+        <div className="flex items-start sm:items-center gap-3 min-w-0">
+          <span className="flex h-10 w-10 shrink-0 aspect-square items-center justify-center rounded-xl bg-orange-500/10 text-orange-700 mt-0.5 sm:mt-0 shadow-2xs">
             <Code2 className="h-5 w-5" />
           </span>
-          <div>
-            <div className="flex items-center gap-2">
-              <h1 className="text-xl font-bold tracking-tight text-stone-900">
+          <div className="min-w-0 flex-1">
+            <div className="flex flex-wrap items-center gap-x-2.5 gap-y-1">
+              <h1 className="text-lg sm:text-xl font-bold tracking-tight text-stone-900 leading-snug">
                 HTML & SVG Live Previewer
               </h1>
               {output && (
-                <span className="rounded-md bg-stone-100 px-2 py-0.5 text-[10px] font-bold text-stone-600 uppercase">
+                <span className="rounded-md bg-stone-100 px-2 py-0.5 text-[10px] font-bold text-stone-600 uppercase tracking-wider shrink-0 whitespace-nowrap">
                   {output.type}
                 </span>
               )}
             </div>
-            <p className="text-xs text-stone-500">
+            <p className="mt-1 text-xs text-stone-500 leading-relaxed max-w-2xl">
               Sandboxed live rendering, code minification, and clean formatting for web markup.
             </p>
           </div>
         </div>
 
         {/* Global Action Buttons */}
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-2 w-full sm:w-auto shrink-0">
           <button
             type="button"
             onClick={handleShareLink}
-            className="inline-flex items-center gap-1.5 rounded-lg border border-stone-200 bg-white px-3 py-1.5 text-xs font-medium text-stone-700 hover:bg-stone-50 transition-colors shadow-2xs"
+            className="flex-1 sm:flex-initial inline-flex items-center justify-center gap-1.5 rounded-lg border border-stone-200 bg-white px-3 py-1.5 text-xs font-medium text-stone-700 hover:bg-stone-50 transition-colors shadow-2xs"
           >
             {shareSuccess ? (
               <>
@@ -132,7 +132,7 @@ export function HtmlPreviewView() {
           <button
             type="button"
             onClick={handleDownload}
-            className="inline-flex items-center gap-1.5 rounded-lg border border-stone-200 bg-white px-3 py-1.5 text-xs font-medium text-stone-700 hover:bg-stone-50 transition-colors shadow-2xs"
+            className="flex-1 sm:flex-initial inline-flex items-center justify-center gap-1.5 rounded-lg border border-stone-200 bg-white px-3 py-1.5 text-xs font-medium text-stone-700 hover:bg-stone-50 transition-colors shadow-2xs"
             title="Download file"
           >
             <Download className="h-3.5 w-3.5 text-stone-500" />
@@ -189,14 +189,14 @@ export function HtmlPreviewView() {
         </div>
 
         {/* Right Column: Sandboxed Preview & Tools */}
-        <div className="flex flex-col rounded-2xl border border-stone-200/80 bg-white shadow-xs overflow-hidden flex-1 min-h-75">
+        <div className="flex flex-col rounded-2xl border border-stone-200/80 bg-white shadow-xs overflow-hidden flex-1 min-h-60 sm:min-h-75">
           {/* Output Mode Tabs */}
-          <div className="px-4 py-2 border-b border-stone-200/80 bg-stone-50/70 flex items-center justify-between">
-            <div className="flex items-center gap-1">
+          <div className="px-3 sm:px-4 py-2 border-b border-stone-200/80 bg-stone-50/70 flex flex-wrap items-center justify-between gap-2">
+            <div className="flex items-center gap-1 overflow-x-auto no-scrollbar">
               <button
                 type="button"
                 onClick={() => setActiveTab('preview')}
-                className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold transition-all ${
+                className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold whitespace-nowrap transition-all ${
                   activeTab === 'preview'
                     ? 'bg-white text-stone-900 shadow-2xs border border-stone-200'
                     : 'text-stone-600 hover:text-stone-900'
@@ -209,7 +209,7 @@ export function HtmlPreviewView() {
               <button
                 type="button"
                 onClick={() => setActiveTab('minified')}
-                className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold transition-all ${
+                className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold whitespace-nowrap transition-all ${
                   activeTab === 'minified'
                     ? 'bg-white text-stone-900 shadow-2xs border border-stone-200'
                     : 'text-stone-600 hover:text-stone-900'
@@ -222,7 +222,7 @@ export function HtmlPreviewView() {
               <button
                 type="button"
                 onClick={() => setActiveTab('beautified')}
-                className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold transition-all ${
+                className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold whitespace-nowrap transition-all ${
                   activeTab === 'beautified'
                     ? 'bg-white text-stone-900 shadow-2xs border border-stone-200'
                     : 'text-stone-600 hover:text-stone-900'

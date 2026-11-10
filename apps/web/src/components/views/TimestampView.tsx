@@ -54,24 +54,24 @@ export function TimestampView() {
   return (
     <div className="flex flex-col gap-6 w-full">
       {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 border-b border-stone-200/80 pb-6">
-        <div>
-          <div className="flex items-center gap-2.5">
-            <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-stone-900 text-white shadow-xs">
-              <Clock className="h-4 w-4" />
-            </span>
-            <h1 className="text-xl font-semibold tracking-tight text-stone-900">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 border-b border-stone-200/80 pb-5 sm:pb-6">
+        <div className="flex items-start sm:items-center gap-3 min-w-0">
+          <span className="flex h-8 w-8 shrink-0 aspect-square items-center justify-center rounded-lg bg-stone-900 text-white shadow-xs mt-0.5 sm:mt-0">
+            <Clock className="h-4 w-4" />
+          </span>
+          <div className="min-w-0 flex-1">
+            <h1 className="text-lg sm:text-xl font-semibold tracking-tight text-stone-900 leading-snug">
               Unix Timestamp Converter
             </h1>
+            <p className="mt-1 text-xs text-stone-500 leading-relaxed max-w-2xl">
+              Convert between Unix epoch timestamps (seconds/milliseconds) and human-readable
+              UTC/local dates.
+            </p>
           </div>
-          <p className="mt-1 text-sm text-stone-500">
-            Convert between Unix epoch timestamps (seconds/milliseconds) and human-readable
-            UTC/local dates.
-          </p>
         </div>
 
         {/* Live Ticker Card */}
-        <div className="flex items-center gap-3 rounded-xl border border-stone-200 bg-white px-3.5 py-2 shadow-2xs">
+        <div className="flex items-center justify-between sm:justify-start gap-3 rounded-xl border border-stone-200 bg-white px-3.5 py-2 shadow-2xs w-full sm:w-auto">
           <div className="flex flex-col">
             <span className="text-[10px] uppercase font-semibold text-stone-400">
               Current Epoch
@@ -90,7 +90,7 @@ export function TimestampView() {
       </div>
 
       {/* Input Section */}
-      <div className="rounded-2xl border border-stone-200/80 bg-white p-5 shadow-xs flex flex-col gap-3">
+      <div className="rounded-2xl border border-stone-200/80 bg-white p-4 sm:p-5 shadow-xs flex flex-col gap-3">
         <div className="flex items-center justify-between">
           <label className="text-xs font-semibold uppercase tracking-wider text-stone-500">
             Timestamp or Date String

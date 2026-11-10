@@ -54,31 +54,31 @@ export function HashToolView() {
   return (
     <div className="flex flex-col gap-6">
       {/* Tool Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 border-b border-stone-200/80 pb-6">
-        <div>
-          <div className="flex items-center gap-2.5">
-            <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-stone-900 text-white shadow-xs">
-              <KeyRound className="h-4 w-4" />
-            </span>
-            <h1 className="text-xl font-semibold tracking-tight text-stone-900">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 border-b border-stone-200/80 pb-5 sm:pb-6">
+        <div className="flex items-start sm:items-center gap-3 min-w-0">
+          <span className="flex h-8 w-8 shrink-0 aspect-square items-center justify-center rounded-lg bg-stone-900 text-white shadow-xs mt-0.5 sm:mt-0">
+            <KeyRound className="h-4 w-4" />
+          </span>
+          <div className="min-w-0 flex-1">
+            <h1 className="text-lg sm:text-xl font-semibold tracking-tight text-stone-900 leading-snug">
               Cryptographic Hash Generator
             </h1>
+            <p className="mt-1 text-xs text-stone-500 leading-relaxed max-w-2xl">
+              Compute SHA-1, SHA-256, SHA-384, and SHA-512 hashes using the browser's
+              hardware-accelerated Web Crypto API.
+            </p>
           </div>
-          <p className="mt-1 text-sm text-stone-500">
-            Compute SHA-1, SHA-256, SHA-384, and SHA-512 hashes using the browser's
-            hardware-accelerated Web Crypto API.
-          </p>
         </div>
 
         {/* Global actions */}
-        <div className="flex items-center gap-2">
+        <div className="flex flex-wrap items-center gap-2 w-full sm:w-auto">
           <button
             type="button"
             onClick={() => {
               setText(SAMPLE_TEXT);
               void computeHash(SAMPLE_TEXT, algorithm);
             }}
-            className="inline-flex items-center gap-1.5 rounded-lg border border-stone-200 bg-white px-3 py-1.5 text-xs font-medium text-stone-700 shadow-xs hover:bg-stone-50 transition-colors"
+            className="flex-1 sm:flex-initial inline-flex items-center justify-center gap-1.5 rounded-lg border border-stone-200 bg-white px-3 py-1.5 text-xs font-medium text-stone-700 shadow-xs hover:bg-stone-50 transition-colors"
           >
             Sample
           </button>
@@ -89,7 +89,7 @@ export function HashToolView() {
               setOutput(null);
               setErrorMessage(null);
             }}
-            className="inline-flex items-center gap-1.5 rounded-lg border border-stone-200 bg-white px-3 py-1.5 text-xs font-medium text-stone-700 shadow-xs hover:bg-stone-50 transition-colors"
+            className="inline-flex items-center justify-center gap-1.5 rounded-lg border border-stone-200 bg-white px-3 py-1.5 text-xs font-medium text-stone-700 shadow-xs hover:bg-stone-50 transition-colors"
           >
             <Trash2 className="h-3.5 w-3.5 text-stone-400" />
             Clear
@@ -137,8 +137,8 @@ export function HashToolView() {
 
         <div className="mt-4 flex flex-wrap items-center justify-between gap-3 pt-3 border-t border-stone-100">
           {/* Algorithm selector pills */}
-          <div className="flex flex-wrap items-center gap-2">
-            <div className="inline-flex rounded-lg border border-stone-200 bg-stone-50/80 p-0.5">
+          <div className="flex flex-wrap items-center gap-2 w-full sm:w-auto">
+            <div className="inline-flex rounded-lg border border-stone-200 bg-stone-50/80 p-0.5 overflow-x-auto max-w-full no-scrollbar">
               {(['SHA-1', 'SHA-256', 'SHA-384', 'SHA-512'] as const).map(algo => (
                 <button
                   key={algo}
@@ -147,7 +147,7 @@ export function HashToolView() {
                     setAlgorithm(algo);
                     handleExecute(algo);
                   }}
-                  className={`rounded-md px-3 py-1 text-xs font-medium transition-all ${
+                  className={`rounded-md px-3 py-1 text-xs font-medium whitespace-nowrap shrink-0 transition-all ${
                     algorithm === algo
                       ? 'bg-white text-stone-900 shadow-xs'
                       : 'text-stone-500 hover:text-stone-800'
@@ -158,7 +158,7 @@ export function HashToolView() {
               ))}
             </div>
 
-            <label className="flex items-center gap-1.5 text-xs text-stone-600 cursor-pointer select-none ml-2">
+            <label className="flex items-center gap-1.5 text-xs text-stone-600 cursor-pointer select-none">
               <input
                 type="checkbox"
                 checked={uppercase}
@@ -172,7 +172,7 @@ export function HashToolView() {
           <button
             type="button"
             onClick={() => handleExecute()}
-            className="rounded-lg bg-stone-900 px-3.5 py-1.5 text-xs font-medium text-white shadow-xs hover:bg-stone-800 transition-colors"
+            className="w-full sm:w-auto inline-flex items-center justify-center rounded-lg bg-stone-900 px-3.5 py-1.5 text-xs font-medium text-white shadow-xs hover:bg-stone-800 transition-colors"
           >
             Compute Hash <span className="opacity-60 text-[10px] ml-1">⌘↵</span>
           </button>
@@ -219,7 +219,7 @@ export function HashToolView() {
             type="button"
             disabled={!output}
             onClick={handleCopy}
-            className="inline-flex items-center gap-1.5 rounded-lg bg-stone-900 px-3.5 py-1.5 text-xs font-medium text-white shadow-xs hover:bg-stone-800 disabled:opacity-40 disabled:pointer-events-none transition-colors"
+            className="w-full sm:w-auto inline-flex items-center justify-center gap-1.5 rounded-lg bg-stone-900 px-3.5 py-1.5 text-xs font-medium text-white shadow-xs hover:bg-stone-800 disabled:opacity-40 disabled:pointer-events-none transition-colors"
           >
             {copied ? (
               <>

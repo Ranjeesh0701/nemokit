@@ -85,23 +85,23 @@ export function PdfSplitView() {
   return (
     <div className="flex flex-col gap-6 w-full">
       {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 border-b border-stone-200/80 pb-6">
-        <div>
-          <div className="flex items-center gap-2.5">
-            <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-stone-900 text-white shadow-xs">
-              <Scissors className="h-4 w-4" />
-            </span>
-            <h1 className="text-xl font-semibold tracking-tight text-stone-900">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 border-b border-stone-200/80 pb-5 sm:pb-6">
+        <div className="flex items-start sm:items-center gap-3 min-w-0">
+          <span className="flex h-8 w-8 shrink-0 aspect-square items-center justify-center rounded-lg bg-stone-900 text-white shadow-xs mt-0.5 sm:mt-0">
+            <Scissors className="h-4 w-4" />
+          </span>
+          <div className="min-w-0 flex-1">
+            <h1 className="text-lg sm:text-xl font-semibold tracking-tight text-stone-900 leading-snug">
               PDF Splitter & Extractor
             </h1>
+            <p className="mt-1 text-xs text-stone-500 leading-relaxed max-w-2xl">
+              Split PDF documents by page ranges or extract individual pages directly in your browser.
+            </p>
           </div>
-          <p className="mt-1 text-sm text-stone-500">
-            Split PDF documents by page ranges or extract individual pages directly in your browser.
-          </p>
         </div>
 
-        <div className="flex items-center gap-2">
-          <label className="inline-flex items-center gap-1.5 rounded-lg bg-stone-900 px-3.5 py-2 text-xs font-medium text-white shadow-xs hover:bg-stone-800 cursor-pointer transition-colors">
+        <div className="flex items-center gap-2 w-full sm:w-auto">
+          <label className="w-full sm:w-auto inline-flex items-center justify-center gap-1.5 rounded-lg bg-stone-900 px-3.5 py-2 text-xs font-medium text-white shadow-xs hover:bg-stone-800 cursor-pointer transition-colors">
             <FileUp className="h-3.5 w-3.5" />
             <span>{file ? 'Change PDF' : 'Select PDF'}</span>
             <input
@@ -132,10 +132,10 @@ export function PdfSplitView() {
             <span className="text-xs font-semibold uppercase tracking-wider text-stone-500">
               Loaded Document
             </span>
-            <div className="mt-1 flex items-center gap-2 text-sm font-semibold text-stone-900">
+            <div className="mt-1 flex flex-wrap items-center gap-2 text-sm font-semibold text-stone-900">
               {file ? (
                 <>
-                  <span>{file.name}</span>
+                  <span className="break-all">{file.name}</span>
                   <span className="text-xs font-normal text-stone-400">
                     ({(file.size / 1024 / 1024).toFixed(2)} MB)
                   </span>
@@ -147,7 +147,7 @@ export function PdfSplitView() {
           </div>
 
           {/* Mode Selector */}
-          <div className="inline-flex rounded-lg border border-stone-200 bg-stone-50/80 p-0.5">
+          <div className="inline-flex rounded-lg border border-stone-200 bg-stone-50/80 p-0.5 overflow-x-auto no-scrollbar">
             {[
               { id: 'ranges', label: 'Page Ranges' },
               { id: 'single-pages', label: 'Extract Every Page' },
@@ -156,7 +156,7 @@ export function PdfSplitView() {
                 key={tab.id}
                 type="button"
                 onClick={() => setMode(tab.id as typeof mode)}
-                className={`rounded-md px-3 py-1.5 text-xs font-medium transition-all ${
+                className={`rounded-md px-3 py-1.5 text-xs font-medium whitespace-nowrap transition-all ${
                   mode === tab.id
                     ? 'bg-white text-stone-900 shadow-xs'
                     : 'text-stone-500 hover:text-stone-800'
@@ -186,9 +186,9 @@ export function PdfSplitView() {
         )}
 
         {/* Action Button */}
-        <div className="flex items-center justify-between pt-2">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pt-2">
           <div className="text-xs text-stone-500 flex items-center gap-1.5">
-            <Sparkles className="h-3.5 w-3.5 text-amber-500" />
+            <Sparkles className="h-3.5 w-3.5 text-amber-500 shrink-0" />
             <span>Runs locally • Zero document upload to servers</span>
           </div>
 
@@ -196,7 +196,7 @@ export function PdfSplitView() {
             type="button"
             disabled={!file || isProcessing}
             onClick={handleSplit}
-            className="inline-flex items-center gap-1.5 rounded-lg bg-stone-900 px-4 py-2 text-xs font-medium text-white shadow-xs hover:bg-stone-800 disabled:opacity-40 disabled:pointer-events-none transition-colors"
+            className="w-full sm:w-auto inline-flex items-center justify-center gap-1.5 rounded-lg bg-stone-900 px-4 py-2 text-xs font-medium text-white shadow-xs hover:bg-stone-800 disabled:opacity-40 disabled:pointer-events-none transition-colors"
           >
             {isProcessing ? 'Processing PDF...' : 'Split & Extract'}
           </button>
@@ -206,8 +206,8 @@ export function PdfSplitView() {
       {/* Output / Split Files List */}
       {output && (
         <div className="rounded-2xl border border-stone-200/80 bg-white shadow-xs overflow-hidden">
-          <div className="flex items-center justify-between px-5 py-3.5 border-b border-stone-100 bg-[#fbfbf9]">
-            <div className="flex items-center gap-2">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between px-4 sm:px-5 py-3.5 border-b border-stone-100 bg-[#fbfbf9] gap-2">
+            <div className="flex flex-wrap items-center gap-2">
               <span className="text-xs font-semibold uppercase tracking-wider text-stone-500">
                 Split Results ({output.splitFiles.length} files generated)
               </span>
@@ -216,7 +216,7 @@ export function PdfSplitView() {
               </span>
             </div>
 
-            <div className="flex items-center gap-3">
+            <div className="flex items-center gap-3 w-full sm:w-auto justify-between sm:justify-end">
               {duration !== null && (
                 <span className="text-xs font-mono text-emerald-700">{duration.toFixed(2)} ms</span>
               )}
@@ -237,17 +237,17 @@ export function PdfSplitView() {
             {output.splitFiles.map((splitFile, idx) => (
               <div
                 key={`${splitFile.name}-${idx}`}
-                className="flex items-center justify-between px-5 py-3.5 hover:bg-stone-50/70 transition-colors"
+                className="flex items-center justify-between px-3 sm:px-5 py-3.5 hover:bg-stone-50/70 transition-colors gap-2"
               >
-                <div className="flex items-center gap-3 truncate pr-4">
+                <div className="flex items-center gap-2.5 sm:gap-3 min-w-0 pr-2">
                   <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-stone-100 text-stone-700">
                     <FileDown className="h-4 w-4" />
                   </div>
-                  <div className="flex flex-col truncate">
+                  <div className="flex flex-col min-w-0">
                     <span className="text-xs font-semibold text-stone-900 truncate">
                       {splitFile.name}
                     </span>
-                    <span className="text-[11px] text-stone-400">
+                    <span className="text-[11px] text-stone-400 truncate">
                       {splitFile.pageRange} • {(splitFile.bytes.length / 1024).toFixed(1)} KB
                     </span>
                   </div>
@@ -261,12 +261,12 @@ export function PdfSplitView() {
                   {downloadedIndex === idx ? (
                     <>
                       <Check className="h-3.5 w-3.5 text-emerald-400" />
-                      Downloaded
+                      <span>Downloaded</span>
                     </>
                   ) : (
                     <>
                       <Download className="h-3.5 w-3.5" />
-                      Download
+                      <span>Download</span>
                     </>
                   )}
                 </button>

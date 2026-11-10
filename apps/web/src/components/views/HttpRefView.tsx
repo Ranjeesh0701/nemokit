@@ -93,26 +93,26 @@ export function HttpRefView() {
   return (
     <div className="flex flex-col gap-6 w-full flex-1">
       {/* Header Bar */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between border-b border-stone-200/80 gap-4 shrink-0 pb-6">
-        <div className="flex items-center gap-3">
-          <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-cyan-500/10 text-cyan-700">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between border-b border-stone-200/80 gap-3.5 sm:gap-4 shrink-0 pb-5 sm:pb-6">
+        <div className="flex items-start sm:items-center gap-3 min-w-0">
+          <span className="flex h-10 w-10 shrink-0 aspect-square items-center justify-center rounded-xl bg-cyan-500/10 text-cyan-700 mt-0.5 sm:mt-0 shadow-2xs">
             <Globe className="h-5 w-5" />
           </span>
-          <div>
-            <h1 className="text-xl font-bold tracking-tight text-stone-900">
+          <div className="min-w-0 flex-1">
+            <h1 className="text-lg sm:text-xl font-bold tracking-tight text-stone-900 leading-snug">
               HTTP Status & Headers Reference
             </h1>
-            <p className="text-xs text-stone-500">
+            <p className="mt-1 text-xs text-stone-500 leading-relaxed max-w-2xl">
               Instant searchable reference for HTTP 1xx-5xx status codes and standard web headers.
             </p>
           </div>
         </div>
 
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-2 w-full sm:w-auto shrink-0">
           <button
             type="button"
             onClick={handleShareLink}
-            className="inline-flex items-center gap-1.5 rounded-lg border border-stone-200 bg-white px-3 py-1.5 text-xs font-medium text-stone-700 hover:bg-stone-50 transition-colors shadow-2xs"
+            className="flex-1 sm:flex-initial inline-flex items-center justify-center gap-1.5 rounded-lg border border-stone-200 bg-white px-3 py-1.5 text-xs font-medium text-stone-700 hover:bg-stone-50 transition-colors shadow-2xs"
           >
             {shareSuccess ? (
               <>
@@ -152,13 +152,13 @@ export function HttpRefView() {
         </div>
 
         {/* Group Selector Chips */}
-        <div className="flex flex-wrap items-center gap-1.5">
+        <div className="flex items-center gap-1.5 overflow-x-auto max-w-full no-scrollbar pb-1 md:pb-0">
           {groups.map(g => (
             <button
               key={g.id}
               type="button"
               onClick={() => setActiveGroup(g.id)}
-              className={`px-3 py-2 rounded-xl text-xs font-medium transition-all ${
+              className={`px-3 py-1.5 sm:py-2 rounded-xl text-xs font-medium whitespace-nowrap shrink-0 transition-all ${
                 activeGroup === g.id
                   ? 'bg-stone-900 text-white shadow-xs'
                   : 'bg-white text-stone-600 border border-stone-200 hover:bg-stone-50'
@@ -183,10 +183,10 @@ export function HttpRefView() {
               {output.statusCodes.map(codeItem => (
                 <div
                   key={codeItem.code}
-                  className="rounded-2xl border border-stone-200/80 bg-white p-5 shadow-xs flex flex-col justify-between hover:border-stone-300 transition-colors"
+                  className="rounded-2xl border border-stone-200/80 bg-white p-4 sm:p-5 shadow-xs flex flex-col justify-between hover:border-stone-300 transition-colors"
                 >
                   <div>
-                    <div className="flex items-center justify-between">
+                    <div className="flex flex-wrap items-center justify-between gap-2">
                       <div className="flex items-center gap-2.5">
                         <span
                           className={`font-mono text-base font-bold px-2.5 py-0.5 rounded-lg border ${getStatusBadge(
@@ -252,10 +252,10 @@ export function HttpRefView() {
               {output.headers.map(header => (
                 <div
                   key={header.name}
-                  className="rounded-2xl border border-stone-200/80 bg-white p-5 shadow-xs flex flex-col justify-between hover:border-stone-300 transition-colors"
+                  className="rounded-2xl border border-stone-200/80 bg-white p-4 sm:p-5 shadow-xs flex flex-col justify-between hover:border-stone-300 transition-colors"
                 >
                   <div>
-                    <div className="flex items-center justify-between">
+                    <div className="flex flex-wrap items-center justify-between gap-2">
                       <span className="font-mono text-sm font-bold text-stone-900">
                         {header.name}
                       </span>

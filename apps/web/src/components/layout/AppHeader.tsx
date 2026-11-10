@@ -25,47 +25,48 @@ export function AppHeader({
   onInstallApp,
 }: AppHeaderProps) {
   return (
-    <header className="sticky top-0 z-30 flex h-14 w-full items-center justify-between border-b border-stone-200/80 bg-white/90 px-4 sm:px-6 backdrop-blur-md select-none shrink-0">
+    <header className="sticky top-0 z-30 flex h-14 w-full items-center justify-between border-b border-stone-200/80 bg-white/90 px-3 sm:px-6 backdrop-blur-md select-none shrink-0 gap-2">
       {/* Left: Mobile hamburger & Active Tool Title */}
-      <div className="flex items-center gap-3 truncate">
+      <div className="flex items-center gap-2 sm:gap-3 truncate min-w-0">
         <button
           type="button"
           onClick={onOpenMobileSidebar}
-          className="flex h-8 w-8 items-center justify-center rounded-lg border border-stone-200 bg-white text-stone-600 shadow-2xs md:hidden"
+          aria-label="Open sidebar menu"
+          className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg border border-stone-200 bg-white text-stone-600 shadow-2xs hover:bg-stone-50 md:hidden"
         >
           <Menu className="h-4 w-4" />
         </button>
 
         {activeView === 'mcp-server' ? (
-          <div className="flex items-center gap-2">
-            <span className="flex h-6 w-6 items-center justify-center rounded-md bg-indigo-600 text-white shadow-xs">
+          <div className="flex items-center gap-2 truncate min-w-0">
+            <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-md bg-indigo-600 text-white shadow-xs">
               <Bot className="h-3.5 w-3.5" />
             </span>
-            <span className="text-sm font-bold text-stone-900 tracking-tight">
+            <span className="text-sm font-bold text-stone-900 tracking-tight truncate">
               MCP Server Studio
             </span>
           </div>
         ) : activeView === 'home' || !activeTool ? (
-          <div className="flex items-center gap-2">
-            <span className="flex h-6 w-6 items-center justify-center rounded-md bg-stone-900 text-white">
+          <div className="flex items-center gap-2 truncate min-w-0">
+            <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-md bg-stone-900 text-white">
               <Home className="h-3.5 w-3.5" />
             </span>
-            <span className="text-sm font-bold text-stone-900 tracking-tight">
+            <span className="text-sm font-bold text-stone-900 tracking-tight truncate">
               Overview & Dashboard
             </span>
           </div>
         ) : (
-          <div className="flex items-center gap-2.5 truncate">
+          <div className="flex items-center gap-2 sm:gap-2.5 truncate min-w-0">
             <button
               type="button"
               onClick={() => onSelectView('home')}
-              className="text-stone-400 hover:text-stone-700 transition-colors hidden sm:flex items-center"
+              className="text-stone-400 hover:text-stone-700 transition-colors hidden sm:flex items-center shrink-0"
               title="Return to Dashboard"
             >
               <Home className="h-4 w-4" />
             </button>
-            <span className="text-stone-300 hidden sm:inline">/</span>
-            <span className="rounded-md bg-stone-100 px-2 py-0.5 text-[10px] font-semibold text-stone-600 uppercase tracking-wider hidden sm:inline">
+            <span className="text-stone-300 hidden sm:inline shrink-0">/</span>
+            <span className="rounded-md bg-stone-100 px-2 py-0.5 text-[10px] font-semibold text-stone-600 uppercase tracking-wider hidden sm:inline shrink-0">
               {activeTool.category}
             </span>
             <h1 className="text-sm font-bold text-stone-900 tracking-tight truncate">
@@ -90,25 +91,25 @@ export function AppHeader({
       </div>
 
       {/* Center/Right: Install Button & Command Palette Launcher */}
-      <div className="flex items-center gap-2.5">
+      <div className="flex items-center gap-1.5 sm:gap-2.5 shrink-0">
         {canInstall && onInstallApp && (
           <button
             type="button"
             onClick={onInstallApp}
-            className="hidden sm:inline-flex items-center gap-1.5 rounded-xl border border-stone-200/90 bg-white px-2.5 py-1.5 text-xs font-medium text-stone-700 shadow-2xs hover:bg-stone-50 transition-colors"
-            title="Install Nemokit as a native desktop application"
+            className="inline-flex items-center gap-1.5 rounded-xl border border-stone-200/90 bg-white px-2 sm:px-2.5 py-1.5 text-xs font-medium text-stone-700 shadow-2xs hover:bg-stone-50 transition-colors"
+            title="Install Nemokit application"
           >
-            <Download className="h-3.5 w-3.5 text-stone-500" />
-            <span>Install App</span>
+            <Download className="h-3.5 w-3.5 text-stone-500 shrink-0" />
+            <span className="hidden sm:inline">Install</span>
           </button>
         )}
 
         <button
           type="button"
           onClick={onOpenCommandPalette}
-          className="inline-flex items-center gap-2.5 rounded-xl border border-stone-200/90 bg-[#faf9f6] px-3 py-1.5 text-xs text-stone-500 hover:border-stone-300 hover:bg-stone-100 transition-all shadow-2xs group"
+          className="inline-flex items-center gap-1.5 sm:gap-2.5 rounded-xl border border-stone-200/90 bg-[#faf9f6] px-2.5 sm:px-3 py-1.5 text-xs text-stone-500 hover:border-stone-300 hover:bg-stone-100 transition-all shadow-2xs group"
         >
-          <Search className="h-3.5 w-3.5 text-stone-400 group-hover:text-stone-700 transition-colors" />
+          <Search className="h-3.5 w-3.5 text-stone-400 group-hover:text-stone-700 transition-colors shrink-0" />
           <span className="hidden sm:inline">Jump to tool...</span>
           <kbd className="rounded border border-stone-200 bg-white px-1.5 py-0.5 font-mono text-[10px] text-stone-500 shadow-3xs">
             ⌘K

@@ -183,30 +183,30 @@ export function JsonSchemaView() {
   return (
     <div className="flex flex-col gap-6 w-full flex-1">
       {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 border-b border-stone-200/80 pb-6 shrink-0">
-        <div>
-          <div className="flex items-center gap-2.5">
-            <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-indigo-600 text-white shadow-xs">
-              <FileCheck2 className="h-4.5 w-4.5" />
-            </span>
-            <div className="flex items-center gap-2">
-              <h1 className="text-xl font-bold tracking-tight text-stone-900">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 border-b border-stone-200/80 pb-5 sm:pb-6 shrink-0">
+        <div className="flex items-start sm:items-center gap-3 min-w-0">
+          <span className="flex h-9 w-9 shrink-0 aspect-square items-center justify-center rounded-xl bg-indigo-600 text-white shadow-xs mt-0.5 sm:mt-0">
+            <FileCheck2 className="h-4.5 w-4.5" />
+          </span>
+          <div className="min-w-0 flex-1">
+            <div className="flex flex-wrap items-center gap-x-2.5 gap-y-1">
+              <h1 className="text-lg sm:text-xl font-bold tracking-tight text-stone-900 leading-snug">
                 JSON Schema Validator & Mock Studio
               </h1>
-              <span className="rounded-md bg-stone-100 px-2 py-0.5 text-[10px] font-semibold text-stone-600 uppercase tracking-wider hidden sm:inline">
+              <span className="rounded-md bg-stone-100 px-2 py-0.5 text-[10px] font-semibold text-stone-600 uppercase tracking-wider shrink-0 whitespace-nowrap">
                 Draft-07
               </span>
             </div>
+            <p className="mt-1 text-xs text-stone-500 leading-relaxed max-w-2xl">
+              Validate JSON objects against JSON Schema Draft-07, generate synthetic mock fixtures,
+              and reverse-engineer schemas.
+            </p>
           </div>
-          <p className="mt-1 text-sm text-stone-500 max-w-2xl">
-            Validate JSON objects against JSON Schema Draft-07, generate synthetic mock fixtures,
-            and reverse-engineer schemas.
-          </p>
         </div>
 
         {/* Clean Single-Row Actions */}
-        <div className="flex items-center gap-2.5 shrink-0">
-          <div className="relative">
+        <div className="flex items-center gap-2.5 w-full sm:w-auto shrink-0">
+          <div className="relative w-full sm:w-auto">
             <select
               aria-label="Load Schema Template"
               value=""
@@ -217,7 +217,7 @@ export function JsonSchemaView() {
                   setDataText(JSON.stringify(p.sampleData, null, 2));
                 }
               }}
-              className="appearance-none flex items-center rounded-lg border border-stone-200 bg-white pl-3 pr-8 py-2 text-xs font-medium text-stone-700 shadow-2xs hover:bg-stone-50 hover:border-stone-300 transition-colors cursor-pointer focus:outline-hidden focus:ring-2 focus:ring-stone-400"
+              className="w-full sm:w-auto appearance-none flex items-center rounded-lg border border-stone-200 bg-white pl-3 pr-8 py-2 text-xs font-medium text-stone-700 shadow-2xs hover:bg-stone-50 hover:border-stone-300 transition-colors cursor-pointer focus:outline-hidden focus:ring-2 focus:ring-stone-400"
             >
               <option value="" disabled>
                 Load Schema Template...
@@ -234,12 +234,12 @@ export function JsonSchemaView() {
       </div>
 
       {/* Mode Switcher Bar */}
-      <div className="flex items-center justify-between border-b border-stone-200 pb-3 shrink-0">
-        <div className="flex items-center gap-1.5 bg-stone-100 p-1 rounded-xl border border-stone-200">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between border-b border-stone-200 pb-3 gap-3 shrink-0">
+        <div className="flex items-center gap-1.5 bg-stone-100 p-1 rounded-xl border border-stone-200 overflow-x-auto no-scrollbar w-full sm:w-auto">
           <button
             type="button"
             onClick={() => setActiveMode('validate')}
-            className={`flex items-center gap-2 px-3 py-1.5 text-xs font-semibold rounded-lg transition-all ${
+            className={`flex items-center gap-2 px-3 py-1.5 text-xs font-semibold rounded-lg whitespace-nowrap shrink-0 transition-all ${
               activeMode === 'validate'
                 ? 'bg-white text-stone-900 shadow-xs'
                 : 'text-stone-600 hover:text-stone-900'
@@ -254,7 +254,7 @@ export function JsonSchemaView() {
               setActiveMode('mock');
               if (!mockOutput) handleGenerateMock();
             }}
-            className={`flex items-center gap-2 px-3 py-1.5 text-xs font-semibold rounded-lg transition-all ${
+            className={`flex items-center gap-2 px-3 py-1.5 text-xs font-semibold rounded-lg whitespace-nowrap shrink-0 transition-all ${
               activeMode === 'mock'
                 ? 'bg-white text-stone-900 shadow-xs'
                 : 'text-stone-600 hover:text-stone-900'
@@ -269,7 +269,7 @@ export function JsonSchemaView() {
               setActiveMode('infer');
               if (!inferredOutput) handleInferSchema();
             }}
-            className={`flex items-center gap-2 px-3 py-1.5 text-xs font-semibold rounded-lg transition-all ${
+            className={`flex items-center gap-2 px-3 py-1.5 text-xs font-semibold rounded-lg whitespace-nowrap shrink-0 transition-all ${
               activeMode === 'infer'
                 ? 'bg-white text-stone-900 shadow-xs'
                 : 'text-stone-600 hover:text-stone-900'
@@ -282,7 +282,7 @@ export function JsonSchemaView() {
 
         {/* Validation Status Indicator */}
         {activeMode === 'validate' && (
-          <div>
+          <div className="w-full sm:w-auto">
             {validationResult.parseError ? (
               <span className="flex items-center gap-1.5 rounded-lg bg-amber-50 px-2.5 py-1 text-xs font-medium text-amber-800 border border-amber-200">
                 <AlertCircle className="h-3.5 w-3.5 text-amber-600" />
@@ -306,7 +306,7 @@ export function JsonSchemaView() {
 
       {/* Mode 1: Validation Screen */}
       {activeMode === 'validate' && (
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 flex-1 min-h-115">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 flex-1 min-h-0 sm:min-h-115">
           {/* Left: JSON Schema */}
           <div className="flex flex-col gap-3 min-h-0">
             <div className="flex items-center justify-between">
@@ -393,7 +393,7 @@ export function JsonSchemaView() {
 
       {/* Mode 2: Mock Data Generator */}
       {activeMode === 'mock' && (
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 flex-1 min-h-115">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 flex-1 min-h-0 sm:min-h-115">
           {/* Left: Schema Source */}
           <div className="flex flex-col gap-3 min-h-0">
             <div className="flex items-center justify-between">
@@ -458,7 +458,7 @@ export function JsonSchemaView() {
 
       {/* Mode 3: Infer Schema from JSON */}
       {activeMode === 'infer' && (
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 flex-1 min-h-115">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 flex-1 min-h-0 sm:min-h-115">
           {/* Left: Raw JSON Sample */}
           <div className="flex flex-col gap-3 min-h-0">
             <div className="flex items-center justify-between">

@@ -117,36 +117,36 @@ export function PdfMergeView() {
   return (
     <div className="flex flex-col gap-6 w-full">
       {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 border-b border-stone-200/80 pb-6">
-        <div>
-          <div className="flex items-center gap-2.5">
-            <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-stone-900 text-white shadow-xs">
-              <FilePlus2 className="h-4 w-4" />
-            </span>
-            <h1 className="text-xl font-semibold tracking-tight text-stone-900">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 border-b border-stone-200/80 pb-5 sm:pb-6">
+        <div className="flex items-start sm:items-center gap-3 min-w-0">
+          <span className="flex h-8 w-8 shrink-0 aspect-square items-center justify-center rounded-lg bg-stone-900 text-white shadow-xs mt-0.5 sm:mt-0">
+            <FilePlus2 className="h-4 w-4" />
+          </span>
+          <div className="min-w-0 flex-1">
+            <h1 className="text-lg sm:text-xl font-semibold tracking-tight text-stone-900 leading-snug">
               PDF Merge & Combiner
             </h1>
+            <p className="mt-1 text-xs text-stone-500 leading-relaxed max-w-2xl">
+              Combine multiple PDF documents into a single document client-side without uploading your
+              files.
+            </p>
           </div>
-          <p className="mt-1 text-sm text-stone-500">
-            Combine multiple PDF documents into a single document client-side without uploading your
-            files.
-          </p>
         </div>
 
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-2 w-full sm:w-auto">
           {files.length > 0 && (
             <button
               type="button"
               onClick={handleClearAll}
-              className="rounded-lg border border-stone-200 bg-white px-3 py-1.5 text-xs font-medium text-stone-600 hover:bg-stone-50 transition-colors"
+              className="flex-1 sm:flex-initial inline-flex items-center justify-center rounded-lg border border-stone-200 bg-white px-3 py-1.5 text-xs font-medium text-stone-600 hover:bg-stone-50 transition-colors shadow-2xs"
             >
               Clear All
             </button>
           )}
 
-          <label className="inline-flex items-center gap-1.5 rounded-lg bg-stone-900 px-3.5 py-1.5 text-xs font-medium text-white shadow-xs hover:bg-stone-800 cursor-pointer transition-colors">
+          <label className="flex-1 sm:flex-initial inline-flex items-center justify-center gap-1.5 rounded-lg bg-stone-900 px-3.5 py-1.5 text-xs font-medium text-white shadow-xs hover:bg-stone-800 cursor-pointer transition-colors">
             <FilePlus2 className="h-3.5 w-3.5" />
-            Add PDFs
+            <span>Add PDFs</span>
             <input
               type="file"
               multiple
@@ -168,7 +168,7 @@ export function PdfMergeView() {
 
       {/* File List or Empty State */}
       {files.length === 0 ? (
-        <label className="flex flex-col items-center justify-center gap-3 rounded-2xl border-2 border-dashed border-stone-200 bg-white p-12 text-center cursor-pointer hover:border-stone-400 transition-colors">
+        <label className="flex flex-col items-center justify-center gap-3 rounded-2xl border-2 border-dashed border-stone-200 bg-white p-6 sm:p-12 text-center cursor-pointer hover:border-stone-400 transition-colors">
           <span className="flex h-12 w-12 items-center justify-center rounded-2xl bg-stone-100 text-stone-500">
             <FileText className="h-6 w-6" />
           </span>
@@ -245,7 +245,7 @@ export function PdfMergeView() {
           </div>
 
           {/* Merge Execution Bar */}
-          <div className="flex flex-wrap items-center justify-between gap-4 rounded-xl border border-stone-200/90 bg-stone-50/70 p-4 mt-2">
+          <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 sm:gap-4 rounded-xl border border-stone-200/90 bg-stone-50/70 p-4 mt-2">
             <span className="text-xs font-medium text-stone-600">
               Ready to merge {files.length} PDF files into one.
             </span>
@@ -254,7 +254,7 @@ export function PdfMergeView() {
               type="button"
               onClick={handleMerge}
               disabled={isMerging || files.length < 2}
-              className="inline-flex items-center gap-1.5 rounded-xl bg-stone-900 px-4 py-2 text-xs font-medium text-white shadow-xs hover:bg-stone-800 disabled:opacity-50 transition-colors"
+              className="inline-flex items-center justify-center gap-1.5 rounded-xl bg-stone-900 px-4 py-2 text-xs font-medium text-white shadow-xs hover:bg-stone-800 disabled:opacity-50 transition-colors w-full sm:w-auto"
             >
               {isMerging ? 'Merging PDF files...' : 'Combine & Generate PDF'}
             </button>
@@ -264,8 +264,8 @@ export function PdfMergeView() {
 
       {/* Success & Download Card */}
       {output && (
-        <div className="flex flex-col gap-4 rounded-2xl border border-emerald-200 bg-emerald-50/50 p-6 shadow-xs animate-in fade-in duration-200">
-          <div className="flex items-center justify-between">
+        <div className="flex flex-col gap-4 rounded-2xl border border-emerald-200 bg-emerald-50/50 p-4 sm:p-6 shadow-xs animate-in fade-in duration-200">
+          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
             <div className="flex items-center gap-2.5">
               <CheckCircle2 className="h-5 w-5 text-emerald-600 shrink-0" />
               <div>
@@ -281,10 +281,10 @@ export function PdfMergeView() {
             <button
               type="button"
               onClick={handleDownloadMerged}
-              className="inline-flex items-center gap-1.5 rounded-xl bg-emerald-700 px-4 py-2 text-xs font-medium text-white shadow-xs hover:bg-emerald-800 transition-colors"
+              className="w-full sm:w-auto inline-flex items-center justify-center gap-1.5 rounded-xl bg-emerald-700 px-4 py-2 text-xs font-medium text-white shadow-xs hover:bg-emerald-800 transition-colors"
             >
               <Download className="h-3.5 w-3.5" />
-              Download Merged PDF
+              <span>Download Merged PDF</span>
             </button>
           </div>
         </div>

@@ -62,29 +62,29 @@ export function CurlConverterView() {
   return (
     <div className="flex flex-col gap-6 w-full flex-1">
       {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 border-b border-stone-200/80 pb-6">
-        <div>
-          <div className="flex items-center gap-2.5">
-            <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-stone-900 text-white shadow-xs">
-              <Terminal className="h-4 w-4" />
-            </span>
-            <h1 className="text-xl font-semibold tracking-tight text-stone-900">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 border-b border-stone-200/80 pb-5 sm:pb-6">
+        <div className="flex items-start sm:items-center gap-3 min-w-0">
+          <span className="flex h-8 w-8 shrink-0 aspect-square items-center justify-center rounded-lg bg-stone-900 text-white shadow-xs mt-0.5 sm:mt-0">
+            <Terminal className="h-4 w-4" />
+          </span>
+          <div className="min-w-0 flex-1">
+            <h1 className="text-lg sm:text-xl font-semibold tracking-tight text-stone-900 leading-snug">
               cURL to Code Converter
             </h1>
+            <p className="mt-1 text-xs text-stone-500 leading-relaxed max-w-2xl">
+              Convert browser network cURL requests into production-grade fetch, Axios, Python, and Go
+              code.
+            </p>
           </div>
-          <p className="mt-1 text-sm text-stone-500">
-            Convert browser network cURL requests into production-grade fetch, Axios, Python, and Go
-            code.
-          </p>
         </div>
 
         <button
           type="button"
           onClick={() => setCurlCommand(SAMPLE_CURL)}
-          className="inline-flex items-center gap-1.5 rounded-lg border border-stone-200 bg-white px-3 py-1.5 text-xs font-medium text-stone-700 shadow-xs hover:bg-stone-50 transition-colors"
+          className="w-full sm:w-auto inline-flex items-center justify-center gap-1.5 rounded-lg border border-stone-200 bg-white px-3 py-1.5 text-xs font-medium text-stone-700 shadow-xs hover:bg-stone-50 transition-colors shrink-0"
         >
           <Sparkles className="h-3.5 w-3.5 text-stone-500" />
-          Load Sample cURL
+          <span>Load Sample cURL</span>
         </button>
       </div>
 
@@ -115,20 +115,26 @@ export function CurlConverterView() {
               <span className="text-[11px] font-semibold uppercase tracking-wider text-stone-400">
                 Parsed Request
               </span>
-              <div className="flex items-center gap-2">
+              <div className="flex items-center gap-2 min-w-0">
                 <span
-                  className={`rounded-md px-2 py-0.5 font-mono font-bold text-[11px] border ${getMethodBadge(
+                  className={`rounded-md px-2 py-0.5 font-mono font-bold text-[11px] border shrink-0 ${getMethodBadge(
                     result.data.parsed.method
                   )}`}
                 >
                   {result.data.parsed.method}
                 </span>
-                <span className="font-mono text-stone-700 truncate">{result.data.parsed.url}</span>
+                <span className="font-mono text-stone-700 truncate min-w-0">{result.data.parsed.url}</span>
               </div>
-              <div className="flex items-center gap-3 pt-2 border-t border-stone-100 text-stone-500 text-[11px]">
+              <div className="flex flex-wrap items-center gap-2 sm:gap-3 pt-2 border-t border-stone-100 text-stone-500 text-[11px]">
                 <span>{Object.keys(result.data.parsed.headers).length} headers</span>
+                <span>•</span>
                 <span>{result.data.parsed.body ? 'Payload attached' : 'No body'}</span>
-                {result.data.parsed.auth && <span>Auth credentials present</span>}
+                {result.data.parsed.auth && (
+                  <>
+                    <span>•</span>
+                    <span>Auth credentials</span>
+                  </>
+                )}
               </div>
             </div>
           )}
@@ -137,20 +143,20 @@ export function CurlConverterView() {
         {/* Code Output Column */}
         <div className="lg:col-span-7 flex flex-col gap-3 min-w-0 flex-1 min-h-0">
           {/* Language Tabs */}
-          <div className="flex items-center justify-between">
-            <div className="flex flex-wrap items-center gap-1">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+            <div className="flex items-center gap-1 overflow-x-auto max-w-full no-scrollbar pb-1 sm:pb-0">
               {[
-                { id: 'jsFetch', label: 'JavaScript (Fetch)' },
+                { id: 'jsFetch', label: 'JavaScript' },
                 { id: 'axios', label: 'Axios' },
-                { id: 'pythonRequests', label: 'Python (Requests)' },
+                { id: 'pythonRequests', label: 'Python' },
                 { id: 'nodeHttps', label: 'Node.js' },
-                { id: 'goNetHttp', label: 'Go (net/http)' },
+                { id: 'goNetHttp', label: 'Go' },
               ].map(tab => (
                 <button
                   key={tab.id}
                   type="button"
                   onClick={() => setSelectedLang(tab.id as SnippetLang)}
-                  className={`rounded-lg px-3 py-1.5 text-xs font-medium transition-colors ${
+                  className={`rounded-lg px-2.5 sm:px-3 py-1.5 text-xs font-medium whitespace-nowrap shrink-0 transition-colors ${
                     selectedLang === tab.id
                       ? 'bg-stone-900 text-white shadow-2xs font-semibold'
                       : 'bg-white border border-stone-200 text-stone-600 hover:bg-stone-50'
@@ -165,17 +171,17 @@ export function CurlConverterView() {
               type="button"
               onClick={() => handleCopy(currentCode)}
               disabled={!currentCode}
-              className="inline-flex items-center gap-1.5 rounded-lg border border-stone-200 bg-white px-3 py-1.5 text-xs font-medium text-stone-700 shadow-xs hover:bg-stone-50 disabled:opacity-50 transition-colors"
+              className="w-full sm:w-auto inline-flex items-center justify-center gap-1.5 rounded-lg border border-stone-200 bg-white px-3 py-1.5 text-xs font-medium text-stone-700 shadow-xs hover:bg-stone-50 disabled:opacity-50 transition-colors shrink-0"
             >
               {copied ? (
                 <>
                   <Check className="h-3.5 w-3.5 text-emerald-600" />
-                  Copied Code
+                  <span>Copied Code</span>
                 </>
               ) : (
                 <>
                   <Copy className="h-3.5 w-3.5 text-stone-500" />
-                  Copy Snippet
+                  <span>Copy Snippet</span>
                 </>
               )}
             </button>

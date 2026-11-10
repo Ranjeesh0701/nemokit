@@ -56,30 +56,30 @@ export function DataConverterView() {
   return (
     <div className="flex flex-col gap-6 w-full flex-1">
       {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 border-b border-stone-200/80 pb-6">
-        <div>
-          <div className="flex items-center gap-2.5">
-            <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-stone-900 text-white shadow-xs">
-              <RefreshCw className="h-4 w-4" />
-            </span>
-            <h1 className="text-xl font-semibold tracking-tight text-stone-900">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 border-b border-stone-200/80 pb-5 sm:pb-6">
+        <div className="flex items-start sm:items-center gap-3 min-w-0">
+          <span className="flex h-8 w-8 shrink-0 aspect-square items-center justify-center rounded-lg bg-stone-900 text-white shadow-xs mt-0.5 sm:mt-0">
+            <RefreshCw className="h-4 w-4" />
+          </span>
+          <div className="min-w-0 flex-1">
+            <h1 className="text-lg sm:text-xl font-semibold tracking-tight text-stone-900 leading-snug">
               JSON ⇄ YAML ⇄ CSV Converter
             </h1>
+            <p className="mt-1 text-xs text-stone-500 leading-relaxed max-w-2xl">
+              Convert structured data bidirectionally between JSON, YAML, and CSV with real-time
+              validation.
+            </p>
           </div>
-          <p className="mt-1 text-sm text-stone-500">
-            Convert structured data bidirectionally between JSON, YAML, and CSV with real-time
-            validation.
-          </p>
         </div>
 
-        <div className="flex items-center gap-2">
+        <div className="flex flex-wrap items-center gap-2 w-full sm:w-auto">
           <button
             type="button"
             onClick={handleSwap}
-            className="inline-flex items-center gap-1.5 rounded-lg border border-stone-200 bg-white px-3 py-1.5 text-xs font-medium text-stone-700 shadow-xs hover:bg-stone-50 transition-colors"
+            className="flex-1 sm:flex-initial inline-flex items-center justify-center gap-1.5 rounded-lg border border-stone-200 bg-white px-3 py-1.5 text-xs font-medium text-stone-700 shadow-xs hover:bg-stone-50 transition-colors"
           >
             <ArrowRightLeft className="h-3.5 w-3.5 text-stone-500" />
-            Swap Formats
+            <span>Swap Formats</span>
           </button>
           <button
             type="button"
@@ -88,19 +88,19 @@ export function DataConverterView() {
               setFromFormat('json');
               setToFormat('yaml');
             }}
-            className="inline-flex items-center gap-1.5 rounded-lg border border-stone-200 bg-white px-3 py-1.5 text-xs font-medium text-stone-700 shadow-xs hover:bg-stone-50 transition-colors"
+            className="flex-1 sm:flex-initial inline-flex items-center justify-center gap-1.5 rounded-lg border border-stone-200 bg-white px-3 py-1.5 text-xs font-medium text-stone-700 shadow-xs hover:bg-stone-50 transition-colors"
           >
             <Sparkles className="h-3.5 w-3.5 text-stone-500" />
-            Sample Data
+            <span>Sample Data</span>
           </button>
         </div>
       </div>
 
       {/* Format Selector Bar */}
-      <div className="flex flex-wrap items-center justify-between gap-4 rounded-xl border border-stone-200/90 bg-stone-50/70 p-3.5">
-        <div className="flex items-center gap-3">
+      <div className="flex flex-wrap items-center justify-between gap-3 sm:gap-4 rounded-xl border border-stone-200/90 bg-stone-50/70 p-3 sm:p-3.5">
+        <div className="flex flex-wrap items-center gap-2 sm:gap-3">
           {/* Source Format */}
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-1.5 sm:gap-2">
             <span className="text-xs font-medium text-stone-500">Source:</span>
             <div className="inline-flex rounded-lg border border-stone-200 bg-white p-0.5 shadow-2xs">
               {(['json', 'yaml', 'csv'] as DataFormat[]).map(f => (
@@ -108,7 +108,7 @@ export function DataConverterView() {
                   key={f}
                   type="button"
                   onClick={() => setFromFormat(f)}
-                  className={`px-2.5 py-1 text-xs font-semibold uppercase rounded-md transition-colors ${
+                  className={`px-2 sm:px-2.5 py-1 text-xs font-semibold uppercase rounded-md transition-colors ${
                     fromFormat === f
                       ? 'bg-stone-900 text-white'
                       : 'text-stone-600 hover:text-stone-900'
@@ -120,10 +120,10 @@ export function DataConverterView() {
             </div>
           </div>
 
-          <span className="text-stone-400 font-bold">→</span>
+          <span className="text-stone-400 font-bold hidden sm:inline">→</span>
 
           {/* Target Format */}
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-1.5 sm:gap-2">
             <span className="text-xs font-medium text-stone-500">Target:</span>
             <div className="inline-flex rounded-lg border border-stone-200 bg-white p-0.5 shadow-2xs">
               {(['json', 'yaml', 'csv'] as DataFormat[]).map(f => (
@@ -131,7 +131,7 @@ export function DataConverterView() {
                   key={f}
                   type="button"
                   onClick={() => setToFormat(f)}
-                  className={`px-2.5 py-1 text-xs font-semibold uppercase rounded-md transition-colors ${
+                  className={`px-2 sm:px-2.5 py-1 text-xs font-semibold uppercase rounded-md transition-colors ${
                     toFormat === f
                       ? 'bg-stone-900 text-white'
                       : 'text-stone-600 hover:text-stone-900'
@@ -148,7 +148,7 @@ export function DataConverterView() {
           type="button"
           onClick={handleCopy}
           disabled={!output}
-          className="inline-flex items-center gap-1.5 rounded-lg border border-stone-200 bg-white px-3 py-1.5 text-xs font-medium text-stone-700 shadow-xs hover:bg-stone-50 disabled:opacity-50 transition-colors"
+          className="w-full sm:w-auto inline-flex items-center justify-center gap-1.5 rounded-lg border border-stone-200 bg-white px-3 py-1.5 text-xs font-medium text-stone-700 shadow-xs hover:bg-stone-50 disabled:opacity-50 transition-colors"
         >
           {copied ? (
             <>

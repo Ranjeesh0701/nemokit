@@ -122,30 +122,30 @@ export function SvgOptimizerView() {
   return (
     <div className="flex flex-col gap-6 w-full flex-1">
       {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 border-b border-stone-200/80 pb-6 shrink-0">
-        <div>
-          <div className="flex items-center gap-2.5">
-            <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-emerald-600 text-white shadow-xs">
-              <Sparkles className="h-4.5 w-4.5" />
-            </span>
-            <div className="flex items-center gap-2">
-              <h1 className="text-xl font-bold tracking-tight text-stone-900">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 border-b border-stone-200/80 pb-5 sm:pb-6 shrink-0">
+        <div className="flex items-start sm:items-center gap-3 min-w-0">
+          <span className="flex h-9 w-9 shrink-0 aspect-square items-center justify-center rounded-xl bg-emerald-600 text-white shadow-xs mt-0.5 sm:mt-0">
+            <Sparkles className="h-4.5 w-4.5" />
+          </span>
+          <div className="min-w-0 flex-1">
+            <div className="flex flex-wrap items-center gap-x-2.5 gap-y-1">
+              <h1 className="text-lg sm:text-xl font-bold tracking-tight text-stone-900 leading-snug">
                 SVG Optimizer & Cleaner
               </h1>
-              <span className="rounded-md bg-stone-100 px-2 py-0.5 text-[10px] font-semibold text-stone-600 uppercase tracking-wider hidden sm:inline">
+              <span className="rounded-md bg-stone-100 px-2 py-0.5 text-[10px] font-semibold text-stone-600 uppercase tracking-wider shrink-0 whitespace-nowrap">
                 Vector Studio
               </span>
             </div>
+            <p className="mt-1 text-xs text-stone-500 leading-relaxed max-w-2xl">
+              Minify vector bloat, round decimal coordinates, strip editor junk (Inkscape, Sketch),
+              and export production-ready React JSX.
+            </p>
           </div>
-          <p className="mt-1 text-sm text-stone-500 max-w-2xl">
-            Minify vector bloat, round decimal coordinates, strip editor junk (Inkscape, Sketch),
-            and export production-ready React JSX.
-          </p>
         </div>
 
         {/* Clean Single-Row Actions */}
-        <div className="flex items-center gap-2.5 shrink-0">
-          <div className="relative">
+        <div className="flex flex-wrap items-center gap-2.5 w-full sm:w-auto">
+          <div className="relative flex-1 sm:flex-initial min-w-36">
             <select
               aria-label="Load Sample SVG"
               value=""
@@ -153,7 +153,7 @@ export function SvgOptimizerView() {
                 const sample = SAMPLE_SVGS.find(s => s.name === e.target.value);
                 if (sample) setSvgInput(sample.svg);
               }}
-              className="appearance-none flex items-center rounded-lg border border-stone-200 bg-white pl-3 pr-8 py-2 text-xs font-medium text-stone-700 shadow-2xs hover:bg-stone-50 hover:border-stone-300 transition-colors cursor-pointer focus:outline-hidden focus:ring-2 focus:ring-stone-400"
+              className="w-full appearance-none flex items-center rounded-lg border border-stone-200 bg-white pl-3 pr-8 py-2 text-xs font-medium text-stone-700 shadow-2xs hover:bg-stone-50 hover:border-stone-300 transition-colors cursor-pointer focus:outline-hidden focus:ring-2 focus:ring-stone-400"
             >
               <option value="" disabled>
                 Load Sample SVG...
@@ -169,7 +169,7 @@ export function SvgOptimizerView() {
 
           <label
             htmlFor={uploadInputId}
-            className="inline-flex items-center gap-2 rounded-lg bg-stone-900 px-3.5 py-2 text-xs font-semibold text-white shadow-2xs hover:bg-stone-800 cursor-pointer active:scale-[0.98] transition-all"
+            className="flex-1 sm:flex-initial inline-flex items-center justify-center gap-2 rounded-lg bg-stone-900 px-3.5 py-2 text-xs font-semibold text-white shadow-2xs hover:bg-stone-800 cursor-pointer active:scale-[0.98] transition-all"
           >
             <Upload className="h-3.5 w-3.5 text-stone-300" />
             <span>Upload SVG</span>
@@ -218,7 +218,7 @@ export function SvgOptimizerView() {
       )}
 
       {/* Main Workspace Split (Input / Output) */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 flex-1 min-h-115">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 flex-1 min-h-0 sm:min-h-115">
         {/* Left Column: Input + Optimization Settings */}
         <div className="flex flex-col gap-4 min-h-0">
           <div className="flex items-center justify-between">
@@ -331,12 +331,12 @@ export function SvgOptimizerView() {
 
         {/* Right Column: Output Tabs (SVG Code / React JSX / Live Preview) */}
         <div className="flex flex-col gap-4 min-h-0">
-          <div className="flex items-center justify-between border-b border-stone-200 pb-2">
-            <div className="flex items-center gap-1 bg-stone-100 p-0.5 rounded-lg border border-stone-200">
+          <div className="flex flex-wrap items-center justify-between border-b border-stone-200 pb-2 gap-2">
+            <div className="flex items-center gap-1 bg-stone-100 p-0.5 rounded-lg border border-stone-200 overflow-x-auto no-scrollbar">
               <button
                 type="button"
                 onClick={() => setActiveTab('code')}
-                className={`flex items-center gap-1.5 px-3 py-1 text-xs font-medium rounded-md transition-all ${
+                className={`flex items-center gap-1.5 px-3 py-1 text-xs font-medium rounded-md whitespace-nowrap transition-all ${
                   activeTab === 'code'
                     ? 'bg-white text-stone-900 shadow-xs'
                     : 'text-stone-600 hover:text-stone-900'
@@ -348,7 +348,7 @@ export function SvgOptimizerView() {
               <button
                 type="button"
                 onClick={() => setActiveTab('jsx')}
-                className={`flex items-center gap-1.5 px-3 py-1 text-xs font-medium rounded-md transition-all ${
+                className={`flex items-center gap-1.5 px-3 py-1 text-xs font-medium rounded-md whitespace-nowrap transition-all ${
                   activeTab === 'jsx'
                     ? 'bg-white text-stone-900 shadow-xs'
                     : 'text-stone-600 hover:text-stone-900'
@@ -360,7 +360,7 @@ export function SvgOptimizerView() {
               <button
                 type="button"
                 onClick={() => setActiveTab('preview')}
-                className={`flex items-center gap-1.5 px-3 py-1 text-xs font-medium rounded-md transition-all ${
+                className={`flex items-center gap-1.5 px-3 py-1 text-xs font-medium rounded-md whitespace-nowrap transition-all ${
                   activeTab === 'preview'
                     ? 'bg-white text-stone-900 shadow-xs'
                     : 'text-stone-600 hover:text-stone-900'
@@ -373,13 +373,13 @@ export function SvgOptimizerView() {
 
             {/* Action buttons */}
             {result && (
-              <div className="flex items-center gap-2">
+              <div className="flex items-center gap-2 w-full sm:w-auto">
                 <button
                   type="button"
                   onClick={() =>
                     handleCopy(activeTab === 'jsx' ? result.reactJsx : result.optimized, activeTab)
                   }
-                  className="flex items-center gap-1.5 rounded-lg border border-stone-200 bg-white px-2.5 py-1 text-xs font-medium text-stone-700 shadow-xs hover:bg-stone-50 transition-colors"
+                  className="flex-1 sm:flex-initial flex items-center justify-center gap-1.5 rounded-lg border border-stone-200 bg-white px-2.5 py-1 text-xs font-medium text-stone-700 shadow-xs hover:bg-stone-50 transition-colors"
                 >
                   {copiedKey === activeTab ? (
                     <>
@@ -396,7 +396,7 @@ export function SvgOptimizerView() {
                 <button
                   type="button"
                   onClick={handleDownload}
-                  className="flex items-center gap-1.5 rounded-lg bg-stone-900 px-3 py-1 text-xs font-medium text-white shadow-xs hover:bg-stone-800 transition-colors"
+                  className="flex-1 sm:flex-initial flex items-center justify-center gap-1.5 rounded-lg bg-stone-900 px-3 py-1 text-xs font-medium text-white shadow-xs hover:bg-stone-800 transition-colors"
                 >
                   <Download className="h-3.5 w-3.5" />
                   <span>Download</span>
@@ -406,7 +406,7 @@ export function SvgOptimizerView() {
           </div>
 
           {/* Tab Content Panes */}
-          <div className="flex-1 min-h-75 flex flex-col">
+          <div className="flex-1 min-h-55 sm:min-h-75 flex flex-col">
             {activeTab === 'code' && (
               <textarea
                 readOnly

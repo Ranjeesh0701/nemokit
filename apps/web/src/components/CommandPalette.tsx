@@ -231,13 +231,13 @@ export function CommandPalette({
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-start justify-center pt-20 px-4 bg-stone-900/30 backdrop-blur-xs animate-in fade-in duration-150">
+    <div className="fixed inset-0 z-50 flex items-start justify-center pt-6 sm:pt-20 px-3 sm:px-4 bg-stone-900/30 backdrop-blur-xs animate-in fade-in duration-150">
       <div
-        className="w-full max-w-xl rounded-2xl border border-stone-200/90 bg-white shadow-2xl overflow-hidden flex flex-col"
+        className="w-full max-w-xl max-h-[85vh] sm:max-h-[80vh] rounded-2xl border border-stone-200/90 bg-white shadow-2xl overflow-hidden flex flex-col"
         onClick={e => e.stopPropagation()}
       >
         {/* Search Input Bar */}
-        <div className="flex items-center gap-3 px-4 py-3.5 border-b border-stone-100">
+        <div className="flex items-center gap-2.5 sm:gap-3 px-3.5 sm:px-4 py-3 sm:py-3.5 border-b border-stone-100">
           <Search className="h-4 w-4 text-stone-400 shrink-0" />
           <input
             type="text"
@@ -250,14 +250,14 @@ export function CommandPalette({
           <button
             type="button"
             onClick={onClose}
-            className="rounded-md p-1 text-stone-400 hover:text-stone-600 hover:bg-stone-100 transition-colors"
+            className="rounded-md p-1.5 text-stone-400 hover:text-stone-600 hover:bg-stone-100 transition-colors"
           >
             <X className="h-4 w-4" />
           </button>
         </div>
 
         {/* Results List Grouped by Category */}
-        <div ref={listRef} className="max-h-84 overflow-y-auto p-2 space-y-3">
+        <div ref={listRef} className="max-h-[60vh] sm:max-h-84 overflow-y-auto p-2 space-y-3">
           {filtered.length > 0 ? (
             groupedSections.map(section => (
               <div key={section.category} className="space-y-1">
@@ -326,9 +326,9 @@ export function CommandPalette({
         </div>
 
         {/* Footer shortcuts */}
-        <div className="flex items-center justify-between px-4 py-2 border-t border-stone-100 bg-stone-50/60 text-[11px] text-stone-400 select-none">
-          <div className="flex items-center gap-3">
-            <span>
+        <div className="flex items-center justify-between px-3.5 sm:px-4 py-2 border-t border-stone-100 bg-stone-50/60 text-[10px] sm:text-[11px] text-stone-400 select-none">
+          <div className="flex items-center gap-2 sm:gap-3">
+            <span className="hidden sm:inline">
               <kbd className="rounded border border-stone-200 bg-white px-1 py-0.5 font-mono text-[10px] text-stone-600">
                 ↑
               </kbd>{' '}
@@ -341,7 +341,7 @@ export function CommandPalette({
               <kbd className="rounded border border-stone-200 bg-white px-1.5 py-0.5 font-mono text-[10px] text-stone-600">
                 ↵
               </kbd>{' '}
-              Open
+              Tap or Enter
             </span>
           </div>
           <span>

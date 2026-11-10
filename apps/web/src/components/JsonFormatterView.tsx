@@ -126,25 +126,27 @@ export function JsonFormatterView() {
   return (
     <div className="flex flex-col gap-6 flex-1 min-h-0">
       {/* Tool Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 border-b border-stone-200/80 pb-6">
-        <div>
-          <div className="flex items-center gap-2.5">
-            <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-stone-900 text-white shadow-xs">
-              <FileCode className="h-4 w-4" />
-            </span>
-            <h1 className="text-xl font-semibold tracking-tight text-stone-900">JSON Formatter</h1>
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 border-b border-stone-200/80 pb-5 sm:pb-6">
+        <div className="flex items-start sm:items-center gap-3 min-w-0">
+          <span className="flex h-8 w-8 shrink-0 aspect-square items-center justify-center rounded-lg bg-stone-900 text-white shadow-xs mt-0.5 sm:mt-0">
+            <FileCode className="h-4 w-4" />
+          </span>
+          <div className="min-w-0 flex-1">
+            <h1 className="text-lg sm:text-xl font-semibold tracking-tight text-stone-900 leading-snug">
+              JSON Formatter
+            </h1>
+            <p className="mt-1 text-xs text-stone-500 leading-relaxed max-w-2xl">
+              Validate, clean, and format raw JSON locally in your browser.
+            </p>
           </div>
-          <p className="mt-1 text-sm text-stone-500">
-            Validate, clean, and format raw JSON locally in your browser.
-          </p>
         </div>
 
         {/* Global actions */}
-        <div className="flex items-center gap-2">
+        <div className="flex flex-wrap items-center gap-2 w-full sm:w-auto">
           <button
             type="button"
             onClick={handleShareLink}
-            className="inline-flex items-center gap-1.5 rounded-lg border border-stone-200 bg-white px-3 py-1.5 text-xs font-medium text-stone-700 shadow-xs hover:bg-stone-50 transition-colors"
+            className="flex-1 sm:flex-initial inline-flex items-center justify-center gap-1.5 rounded-lg border border-stone-200 bg-white px-3 py-1.5 text-xs font-medium text-stone-700 shadow-xs hover:bg-stone-50 transition-colors"
           >
             {shareSuccess ? (
               <>
@@ -161,14 +163,14 @@ export function JsonFormatterView() {
           <button
             type="button"
             onClick={handleLoadSample}
-            className="inline-flex items-center gap-1.5 rounded-lg border border-stone-200 bg-white px-3 py-1.5 text-xs font-medium text-stone-700 shadow-xs hover:bg-stone-50 transition-colors"
+            className="inline-flex items-center justify-center gap-1.5 rounded-lg border border-stone-200 bg-white px-3 py-1.5 text-xs font-medium text-stone-700 shadow-xs hover:bg-stone-50 transition-colors"
           >
             Sample
           </button>
           <button
             type="button"
             onClick={handleClear}
-            className="inline-flex items-center gap-1.5 rounded-lg border border-stone-200 bg-white px-3 py-1.5 text-xs font-medium text-stone-700 shadow-xs hover:bg-stone-50 transition-colors"
+            className="inline-flex items-center justify-center gap-1.5 rounded-lg border border-stone-200 bg-white px-3 py-1.5 text-xs font-medium text-stone-700 shadow-xs hover:bg-stone-50 transition-colors"
           >
             <Trash2 className="h-3.5 w-3.5 text-stone-400" />
             Clear
@@ -255,18 +257,18 @@ export function JsonFormatterView() {
             </div>
 
             {/* Action buttons */}
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-2 w-full sm:w-auto justify-end">
               <button
                 type="button"
                 onClick={handleMinify}
-                className="rounded-lg border border-stone-200 bg-white px-3 py-1.5 text-xs font-medium text-stone-700 shadow-xs hover:bg-stone-50 transition-colors"
+                className="flex-1 sm:flex-initial inline-flex items-center justify-center rounded-lg border border-stone-200 bg-white px-3 py-1.5 text-xs font-medium text-stone-700 shadow-xs hover:bg-stone-50 transition-colors"
               >
                 Minify
               </button>
               <button
                 type="button"
                 onClick={() => handleFormat()}
-                className="rounded-lg bg-stone-900 px-3.5 py-1.5 text-xs font-medium text-white shadow-xs hover:bg-stone-800 transition-colors"
+                className="flex-1 sm:flex-initial inline-flex items-center justify-center rounded-lg bg-stone-900 px-3.5 py-1.5 text-xs font-medium text-white shadow-xs hover:bg-stone-800 transition-colors"
               >
                 Format <span className="opacity-60 text-[10px] ml-1">⌘↵</span>
               </button>
@@ -305,31 +307,31 @@ export function JsonFormatterView() {
             </pre>
           </div>
 
-          <div className="mt-4 flex items-center justify-end gap-2 pt-3 border-t border-stone-100">
+          <div className="mt-4 flex flex-wrap items-center justify-end gap-2 pt-3 border-t border-stone-100">
             <button
               type="button"
               disabled={!output}
               onClick={handleDownload}
-              className="inline-flex items-center gap-1.5 rounded-lg border border-stone-200 bg-white px-3 py-1.5 text-xs font-medium text-stone-700 shadow-xs hover:bg-stone-50 disabled:opacity-40 disabled:pointer-events-none transition-colors"
+              className="flex-1 sm:flex-initial inline-flex items-center justify-center gap-1.5 rounded-lg border border-stone-200 bg-white px-3 py-1.5 text-xs font-medium text-stone-700 shadow-xs hover:bg-stone-50 disabled:opacity-40 disabled:pointer-events-none transition-colors"
             >
               <ArrowDownToLine className="h-3.5 w-3.5 text-stone-500" />
-              Download .json
+              <span>Download .json</span>
             </button>
             <button
               type="button"
               disabled={!output}
               onClick={handleCopy}
-              className="inline-flex items-center gap-1.5 rounded-lg bg-stone-900 px-3.5 py-1.5 text-xs font-medium text-white shadow-xs hover:bg-stone-800 disabled:opacity-40 disabled:pointer-events-none transition-colors"
+              className="flex-1 sm:flex-initial inline-flex items-center justify-center gap-1.5 rounded-lg bg-stone-900 px-3.5 py-1.5 text-xs font-medium text-white shadow-xs hover:bg-stone-800 disabled:opacity-40 disabled:pointer-events-none transition-colors"
             >
               {copied ? (
                 <>
                   <Check className="h-3.5 w-3.5 text-emerald-400" />
-                  Copied!
+                  <span>Copied!</span>
                 </>
               ) : (
                 <>
                   <Copy className="h-3.5 w-3.5 text-stone-300" />
-                  Copy Output
+                  <span>Copy Output</span>
                 </>
               )}
             </button>

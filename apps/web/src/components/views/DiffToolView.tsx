@@ -75,46 +75,46 @@ export function DiffToolView() {
   return (
     <div className="flex flex-col gap-6 w-full flex-1">
       {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 border-b border-stone-200/80 pb-6 shrink-0">
-        <div>
-          <div className="flex items-center gap-2.5">
-            <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-stone-900 text-white shadow-xs">
-              <GitCompare className="h-4 w-4" />
-            </span>
-            <h1 className="text-xl font-semibold tracking-tight text-stone-900">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 border-b border-stone-200/80 pb-5 sm:pb-6 shrink-0">
+        <div className="flex items-start sm:items-center gap-3 min-w-0">
+          <span className="flex h-8 w-8 shrink-0 aspect-square items-center justify-center rounded-lg bg-stone-900 text-white shadow-xs mt-0.5 sm:mt-0">
+            <GitCompare className="h-4 w-4" />
+          </span>
+          <div className="min-w-0 flex-1">
+            <h1 className="text-lg sm:text-xl font-semibold tracking-tight text-stone-900 leading-snug">
               Text Diff & Comparator
             </h1>
+            <p className="mt-1 text-xs text-stone-500 leading-relaxed max-w-2xl">
+              Compare two code or text blocks line-by-line with LCS algorithm, highlighting additions
+              and deletions.
+            </p>
           </div>
-          <p className="mt-1 text-sm text-stone-500">
-            Compare two code or text blocks line-by-line with LCS algorithm, highlighting additions
-            and deletions.
-          </p>
         </div>
 
-        <div className="flex items-center gap-2">
+        <div className="flex flex-wrap items-center gap-2 w-full sm:w-auto">
           <button
             type="button"
             onClick={handleSwap}
-            className="inline-flex items-center gap-1.5 rounded-lg border border-stone-200 bg-white px-3 py-1.5 text-xs font-medium text-stone-700 shadow-xs hover:bg-stone-50 transition-colors"
+            className="flex-1 sm:flex-initial inline-flex items-center justify-center gap-1.5 rounded-lg border border-stone-200 bg-white px-3 py-1.5 text-xs font-medium text-stone-700 shadow-xs hover:bg-stone-50 transition-colors"
           >
             <ArrowRightLeft className="h-3.5 w-3.5 text-stone-500" />
-            Swap Sides
+            <span>Swap Sides</span>
           </button>
           <button
             type="button"
             onClick={handleLoadSample}
-            className="inline-flex items-center gap-1.5 rounded-lg border border-stone-200 bg-white px-3 py-1.5 text-xs font-medium text-stone-700 shadow-xs hover:bg-stone-50 transition-colors"
+            className="inline-flex items-center justify-center gap-1.5 rounded-lg border border-stone-200 bg-white px-3 py-1.5 text-xs font-medium text-stone-700 shadow-xs hover:bg-stone-50 transition-colors"
           >
             <Sparkles className="h-3.5 w-3.5 text-stone-500" />
-            Sample
+            <span>Sample</span>
           </button>
           <button
             type="button"
             onClick={handleClear}
-            className="inline-flex items-center gap-1.5 rounded-lg border border-stone-200 bg-white px-3 py-1.5 text-xs font-medium text-stone-600 shadow-xs hover:bg-stone-50 transition-colors"
+            className="inline-flex items-center justify-center gap-1.5 rounded-lg border border-stone-200 bg-white px-3 py-1.5 text-xs font-medium text-stone-600 shadow-xs hover:bg-stone-50 transition-colors"
           >
             <RefreshCw className="h-3.5 w-3.5 text-stone-400" />
-            Clear
+            <span>Clear</span>
           </button>
         </div>
       </div>
@@ -159,8 +159,8 @@ export function DiffToolView() {
       </div>
 
       {/* Controls Bar & Diff Metrics */}
-      <div className="flex flex-wrap items-center justify-between gap-4 rounded-xl border border-stone-200/80 bg-stone-50/70 p-3.5 shrink-0">
-        <div className="flex flex-wrap items-center gap-4">
+      <div className="flex flex-wrap items-center justify-between gap-3 sm:gap-4 rounded-xl border border-stone-200/80 bg-stone-50/70 p-3 sm:p-3.5 shrink-0">
+        <div className="flex flex-wrap items-center gap-3 sm:gap-4 w-full sm:w-auto">
           <label className="flex items-center gap-2 cursor-pointer select-none text-xs font-medium text-stone-700">
             <input
               type="checkbox"
@@ -168,11 +168,11 @@ export function DiffToolView() {
               onChange={e => setIgnoreWhitespace(e.target.checked)}
               className="h-4 w-4 rounded border-stone-300 text-stone-900 focus:ring-stone-900"
             />
-            Ignore Leading & Trailing Whitespace
+            <span>Ignore Whitespace</span>
           </label>
 
           {diffResult && (
-            <div className="flex items-center gap-2 pl-2 border-l border-stone-200 text-xs">
+            <div className="flex flex-wrap items-center gap-1.5 sm:gap-2 pl-0 sm:pl-2 border-l-0 sm:border-l border-stone-200 text-xs">
               <span className="inline-flex items-center gap-1 rounded-md bg-emerald-50 px-2 py-0.5 font-medium text-emerald-700 border border-emerald-200/60 font-mono">
                 +{diffResult.additions} added
               </span>
@@ -190,17 +190,17 @@ export function DiffToolView() {
           type="button"
           onClick={handleCopyUnifiedDiff}
           disabled={!diffResult}
-          className="inline-flex items-center gap-1.5 rounded-lg border border-stone-200 bg-white px-3 py-1.5 text-xs font-medium text-stone-700 shadow-xs hover:bg-stone-50 disabled:opacity-50 transition-colors"
+          className="w-full sm:w-auto inline-flex items-center justify-center gap-1.5 rounded-lg border border-stone-200 bg-white px-3 py-1.5 text-xs font-medium text-stone-700 shadow-xs hover:bg-stone-50 disabled:opacity-50 transition-colors"
         >
           {copied ? (
             <>
               <Check className="h-3.5 w-3.5 text-emerald-600" />
-              Copied Diff
+              <span>Copied Diff</span>
             </>
           ) : (
             <>
               <Copy className="h-3.5 w-3.5 text-stone-500" />
-              Copy Unified Diff
+              <span>Copy Unified Diff</span>
             </>
           )}
         </button>
@@ -239,12 +239,12 @@ export function DiffToolView() {
                       }`}
                     >
                       {/* Original Line Number */}
-                      <span className="w-10 sm:w-12 shrink-0 select-none px-2 py-1 text-right text-stone-400 font-mono text-[11px] border-r border-stone-100">
+                      <span className="w-7 sm:w-12 shrink-0 select-none px-1 sm:px-2 py-1 text-right text-stone-400 font-mono text-[10px] sm:text-[11px] border-r border-stone-100">
                         {line.lineNumberOriginal ?? ''}
                       </span>
 
                       {/* Modified Line Number */}
-                      <span className="w-10 sm:w-12 shrink-0 select-none px-2 py-1 text-right text-stone-400 font-mono text-[11px] border-r border-stone-100">
+                      <span className="w-7 sm:w-12 shrink-0 select-none px-1 sm:px-2 py-1 text-right text-stone-400 font-mono text-[10px] sm:text-[11px] border-r border-stone-100">
                         {line.lineNumberModified ?? ''}
                       </span>
 

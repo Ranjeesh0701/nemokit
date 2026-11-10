@@ -44,30 +44,30 @@ export function CronToolView() {
   return (
     <div className="flex flex-col gap-6 w-full">
       {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 border-b border-stone-200/80 pb-6">
-        <div>
-          <div className="flex items-center gap-2.5">
-            <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-stone-900 text-white shadow-xs">
-              <CalendarClock className="h-4 w-4" />
-            </span>
-            <h1 className="text-xl font-semibold tracking-tight text-stone-900">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 border-b border-stone-200/80 pb-5 sm:pb-6">
+        <div className="flex items-start sm:items-center gap-3 min-w-0">
+          <span className="flex h-8 w-8 shrink-0 aspect-square items-center justify-center rounded-lg bg-stone-900 text-white shadow-xs mt-0.5 sm:mt-0">
+            <CalendarClock className="h-4 w-4" />
+          </span>
+          <div className="min-w-0 flex-1">
+            <h1 className="text-lg sm:text-xl font-semibold tracking-tight text-stone-900 leading-snug">
               Cron Expression Parser & Humanizer
             </h1>
+            <p className="mt-1 text-xs text-stone-500 leading-relaxed max-w-2xl">
+              Parse 5-part cron syntax into plain English explanations, inspect field intervals, and
+              preview upcoming run times.
+            </p>
           </div>
-          <p className="mt-1 text-sm text-stone-500">
-            Parse 5-part cron syntax into plain English explanations, inspect field intervals, and
-            preview upcoming run times.
-          </p>
         </div>
 
         {/* Quick Presets */}
-        <div className="flex flex-wrap items-center gap-1.5">
+        <div className="flex items-center gap-1.5 overflow-x-auto max-w-full no-scrollbar pb-1 sm:pb-0">
           {CRON_PRESETS.map(p => (
             <button
               key={p.label}
               type="button"
               onClick={() => setExpression(p.expr)}
-              className="rounded-lg border border-stone-200 bg-white px-2.5 py-1 text-xs font-medium text-stone-700 shadow-xs hover:bg-stone-50 transition-colors"
+              className="rounded-lg border border-stone-200 bg-white px-2.5 py-1 text-xs font-medium text-stone-700 shadow-xs hover:bg-stone-50 transition-colors whitespace-nowrap shrink-0"
             >
               {p.label}
             </button>
@@ -76,7 +76,7 @@ export function CronToolView() {
       </div>
 
       {/* Cron Input Bar */}
-      <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-4 rounded-2xl border border-stone-200/90 bg-white p-5 shadow-xs">
+      <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 sm:gap-4 rounded-2xl border border-stone-200/90 bg-white p-4 sm:p-5 shadow-xs">
         <div className="flex-1 min-w-0">
           <label className="text-xs font-medium text-stone-500 block mb-1">
             5-Field Cron Expression
@@ -93,7 +93,7 @@ export function CronToolView() {
         <button
           type="button"
           onClick={() => handleCopy(expression)}
-          className="inline-flex items-center justify-center gap-1.5 rounded-xl border border-stone-200 bg-white px-4 py-2.5 text-xs font-medium text-stone-700 shadow-xs hover:bg-stone-50 self-end sm:self-auto transition-colors"
+          className="w-full sm:w-auto inline-flex items-center justify-center gap-1.5 rounded-xl border border-stone-200 bg-white px-4 py-2.5 text-xs font-medium text-stone-700 shadow-xs hover:bg-stone-50 self-stretch sm:self-auto transition-colors shrink-0"
         >
           {copied ? (
             <>
@@ -175,7 +175,7 @@ export function CronToolView() {
                 result.data.nextOccurrences.map((occurrence, idx) => (
                   <div
                     key={idx}
-                    className="flex items-center justify-between py-3 text-xs font-medium text-stone-700"
+                    className="flex flex-col sm:flex-row sm:items-center justify-between py-2.5 sm:py-3 text-xs font-medium text-stone-700 gap-1 sm:gap-3"
                   >
                     <div className="flex items-center gap-3">
                       <span className="flex h-6 w-6 items-center justify-center rounded-md bg-stone-100 text-stone-500 font-mono text-[11px]">

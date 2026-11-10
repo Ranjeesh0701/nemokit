@@ -72,20 +72,20 @@ export function FileHashView() {
   return (
     <div className="flex flex-col gap-6 w-full">
       {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 border-b border-stone-200/80 pb-6">
-        <div>
-          <div className="flex items-center gap-2.5">
-            <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-stone-900 text-white shadow-xs">
-              <ShieldCheck className="h-4 w-4" />
-            </span>
-            <h1 className="text-xl font-semibold tracking-tight text-stone-900">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 border-b border-stone-200/80 pb-5 sm:pb-6">
+        <div className="flex items-start sm:items-center gap-3 min-w-0">
+          <span className="flex h-8 w-8 shrink-0 aspect-square items-center justify-center rounded-lg bg-stone-900 text-white shadow-xs mt-0.5 sm:mt-0">
+            <ShieldCheck className="h-4 w-4" />
+          </span>
+          <div className="min-w-0 flex-1">
+            <h1 className="text-lg sm:text-xl font-semibold tracking-tight text-stone-900 leading-snug">
               File Checksum & Hash Verifier
             </h1>
+            <p className="mt-1 text-xs text-stone-500 leading-relaxed max-w-2xl">
+              Calculate SHA-256, SHA-512, and SHA-1 checksums locally in your browser and verify
+              against release hashes.
+            </p>
           </div>
-          <p className="mt-1 text-sm text-stone-500">
-            Calculate SHA-256, SHA-512, and SHA-1 checksums locally in your browser and verify
-            against release hashes.
-          </p>
         </div>
       </div>
 
@@ -98,12 +98,12 @@ export function FileHashView() {
       )}
 
       {/* File Dropzone */}
-      <label className="flex flex-col items-center justify-center gap-3 rounded-2xl border-2 border-dashed border-stone-200 bg-white p-10 text-center cursor-pointer hover:border-stone-400 transition-colors">
+      <label className="flex flex-col items-center justify-center gap-3 rounded-2xl border-2 border-dashed border-stone-200 bg-white p-6 sm:p-10 text-center cursor-pointer hover:border-stone-400 transition-colors">
         <span className="flex h-12 w-12 items-center justify-center rounded-2xl bg-stone-100 text-stone-600">
           <FileCheck className="h-6 w-6" />
         </span>
-        <div className="flex flex-col gap-1">
-          <p className="text-sm font-semibold text-stone-900">
+        <div className="flex flex-col gap-1 px-2">
+          <p className="text-sm font-semibold text-stone-900 break-all">
             {selectedFile ? selectedFile.name : 'Choose or drop a file to verify checksum'}
           </p>
           <p className="text-xs text-stone-400">
@@ -119,7 +119,7 @@ export function FileHashView() {
       </label>
 
       {/* Verification Input Bar */}
-      <div className="flex flex-col gap-2 rounded-2xl border border-stone-200/90 bg-white p-5 shadow-xs">
+      <div className="flex flex-col gap-2 rounded-2xl border border-stone-200/90 bg-white p-4 sm:p-5 shadow-xs">
         <label className="text-xs font-semibold uppercase tracking-wider text-stone-500">
           Expected Checksum (Optional Match Verifier)
         </label>

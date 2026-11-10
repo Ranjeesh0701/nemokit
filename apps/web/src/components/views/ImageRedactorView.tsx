@@ -142,6 +142,49 @@ export function ImageRedactorView() {
     setStartPos(null);
   };
 
+  const handleTouchStart = (e: React.TouchEvent<HTMLCanvasElement>) => {
+    if (e.touches.length !== 1) return;
+    const touch = e.touches[0];
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+
+    const rect = canvas.getBoundingClientRect();
+    const scaleX = canvas.width / rect.width;
+    const scaleY = canvas.height / rect.height;
+
+    const x = (touch.clientX - rect.left) * scaleX;
+    const y = (touch.clientY - rect.top) * scaleY;
+
+    setIsDrawing(true);
+    setStartPos({ x, y });
+    setCurrentBox({ x, y, w: 0, h: 0 });
+  };
+
+  const handleTouchMove = (e: React.TouchEvent<HTMLCanvasElement>) => {
+    if (!isDrawing || !startPos || e.touches.length !== 1) return;
+    const touch = e.touches[0];
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+
+    const rect = canvas.getBoundingClientRect();
+    const scaleX = canvas.width / rect.width;
+    const scaleY = canvas.height / rect.height;
+
+    const curX = (touch.clientX - rect.left) * scaleX;
+    const curY = (touch.clientY - rect.top) * scaleY;
+
+    const x = Math.min(startPos.x, curX);
+    const y = Math.min(startPos.y, curY);
+    const w = Math.abs(curX - startPos.x);
+    const h = Math.abs(curY - startPos.y);
+
+    setCurrentBox({ x, y, w, h });
+  };
+
+  const handleTouchEnd = () => {
+    handleMouseUp();
+  };
+
   const handleUndo = () => {
     setRegions(prev => prev.slice(0, -1));
   };
@@ -170,33 +213,33 @@ export function ImageRedactorView() {
   return (
     <div className="flex flex-col gap-6 w-full flex-1">
       {/* Header Bar */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between border-b border-stone-200/80 gap-3 pb-6">
-        <div className="flex items-center gap-3">
-          <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-rose-500/10 text-rose-700">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between border-b border-stone-200/80 gap-3.5 sm:gap-4 pb-5 sm:pb-6">
+        <div className="flex items-start sm:items-center gap-3 min-w-0">
+          <span className="flex h-10 w-10 shrink-0 aspect-square items-center justify-center rounded-xl bg-rose-500/10 text-rose-700 mt-0.5 sm:mt-0 shadow-2xs">
             <EyeOff className="h-5 w-5" />
           </span>
-          <div>
-            <div className="flex items-center gap-2">
-              <h1 className="text-xl font-bold tracking-tight text-stone-900">
+          <div className="min-w-0 flex-1">
+            <div className="flex flex-wrap items-center gap-x-2.5 gap-y-1">
+              <h1 className="text-lg sm:text-xl font-bold tracking-tight text-stone-900 leading-snug">
                 Image Privacy Redactor
               </h1>
-              <span className="rounded-md bg-stone-100 px-2 py-0.5 text-[10px] font-bold text-stone-600 uppercase">
+              <span className="rounded-md bg-stone-100 px-2 py-0.5 text-[10px] font-bold text-stone-600 uppercase tracking-wider shrink-0 whitespace-nowrap">
                 Zero Cloud Upload
               </span>
             </div>
-            <p className="text-xs text-stone-500">
+            <p className="mt-1 text-xs text-stone-500 leading-relaxed max-w-2xl">
               Draw redaction boxes over sensitive keys, tokens, emails, or faces before sharing
               screenshots.
             </p>
           </div>
         </div>
 
-        <div className="flex items-center gap-2">
+        <div className="flex flex-wrap items-center gap-2 w-full sm:w-auto shrink-0">
           <button
             type="button"
             onClick={handleUndo}
             disabled={regions.length === 0}
-            className="inline-flex items-center gap-1.5 rounded-lg border border-stone-200 bg-white px-3 py-1.5 text-xs font-medium text-stone-700 hover:bg-stone-50 transition-colors shadow-2xs disabled:opacity-40"
+            className="flex-1 sm:flex-initial inline-flex items-center justify-center gap-1.5 rounded-lg border border-stone-200 bg-white px-3 py-1.5 text-xs font-medium text-stone-700 hover:bg-stone-50 transition-colors shadow-2xs disabled:opacity-40"
             title="Undo last redaction"
           >
             <Undo2 className="h-3.5 w-3.5 text-stone-500" />
@@ -207,7 +250,7 @@ export function ImageRedactorView() {
             type="button"
             onClick={handleClearAll}
             disabled={regions.length === 0}
-            className="inline-flex items-center gap-1.5 rounded-lg border border-stone-200 bg-white px-3 py-1.5 text-xs font-medium text-stone-700 hover:bg-stone-50 transition-colors shadow-2xs disabled:opacity-40"
+            className="flex-1 sm:flex-initial inline-flex items-center justify-center gap-1.5 rounded-lg border border-stone-200 bg-white px-3 py-1.5 text-xs font-medium text-stone-700 hover:bg-stone-50 transition-colors shadow-2xs disabled:opacity-40"
             title="Clear all redactions"
           >
             <Trash2 className="h-3.5 w-3.5 text-stone-400" />
@@ -217,7 +260,7 @@ export function ImageRedactorView() {
           <button
             type="button"
             onClick={handleDownload}
-            className="inline-flex items-center gap-1.5 rounded-lg bg-stone-900 px-3.5 py-1.5 text-xs font-semibold text-white hover:bg-stone-800 transition-colors shadow-xs"
+            className="w-full sm:w-auto inline-flex items-center justify-center gap-1.5 rounded-lg bg-stone-900 px-3.5 py-1.5 text-xs font-semibold text-white hover:bg-stone-800 transition-colors shadow-xs"
           >
             {downloadSuccess ? (
               <>
@@ -322,23 +365,26 @@ export function ImageRedactorView() {
         </div>
 
         {/* Right Column: Canvas Display */}
-        <div className="lg:col-span-8 flex flex-col rounded-2xl border border-stone-200/80 bg-white shadow-xs overflow-hidden flex-1 min-h-75">
-          <div className="px-4 py-3 border-b border-stone-200/80 bg-stone-50/70 flex items-center justify-between">
+        <div className="lg:col-span-8 flex flex-col rounded-2xl border border-stone-200/80 bg-white shadow-xs overflow-hidden flex-1 min-h-60 sm:min-h-75">
+          <div className="px-3 sm:px-4 py-2.5 sm:py-3 border-b border-stone-200/80 bg-stone-50/70 flex flex-wrap items-center justify-between gap-1.5">
             <span className="text-xs font-semibold text-stone-800 uppercase tracking-wider">
               Canvas Editor
             </span>
-            <span className="text-xs text-stone-500 font-medium">
-              Click & drag anywhere on the image to draw a redaction box
+            <span className="text-[11px] sm:text-xs text-stone-500 font-medium">
+              Drag on image to draw redaction box
             </span>
           </div>
 
-          <div className="p-6 flex-1 flex items-center justify-center min-h-65 bg-stone-100/50 overflow-auto">
+          <div className="p-3 sm:p-6 flex-1 flex items-center justify-center min-h-50 sm:min-h-65 bg-stone-100/50 overflow-auto">
             <canvas
               ref={canvasRef}
               onMouseDown={handleMouseDown}
               onMouseMove={handleMouseMove}
               onMouseUp={handleMouseUp}
-              className="max-w-full max-h-[calc(100vh-20rem)] object-contain rounded-lg shadow-sm cursor-crosshair border border-stone-200 select-none"
+              onTouchStart={handleTouchStart}
+              onTouchMove={handleTouchMove}
+              onTouchEnd={handleTouchEnd}
+              className="max-w-full max-h-[calc(100vh-20rem)] object-contain rounded-lg shadow-sm cursor-crosshair border border-stone-200 select-none touch-none"
             />
           </div>
         </div>

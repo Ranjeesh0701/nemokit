@@ -89,31 +89,31 @@ export function ImageToSvgView() {
   return (
     <div className="flex flex-col gap-6 w-full flex-1">
       {/* Header Bar */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between border-b border-stone-200/80 gap-3 pb-6">
-        <div className="flex items-center gap-3">
-          <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-amber-500/10 text-amber-700">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between border-b border-stone-200/80 gap-3.5 sm:gap-4 pb-5 sm:pb-6">
+        <div className="flex items-start sm:items-center gap-3 min-w-0">
+          <span className="flex h-10 w-10 shrink-0 aspect-square items-center justify-center rounded-xl bg-amber-500/10 text-amber-700 mt-0.5 sm:mt-0 shadow-2xs">
             <Sparkles className="h-5 w-5" />
           </span>
-          <div>
-            <div className="flex items-center gap-2">
-              <h1 className="text-xl font-bold tracking-tight text-stone-900">
+          <div className="min-w-0 flex-1">
+            <div className="flex flex-wrap items-center gap-x-2.5 gap-y-1">
+              <h1 className="text-lg sm:text-xl font-bold tracking-tight text-stone-900 leading-snug">
                 Image to SVG Vectorizer
               </h1>
-              <span className="rounded-md bg-stone-100 px-2 py-0.5 text-[10px] font-bold text-stone-600 uppercase">
+              <span className="rounded-md bg-stone-100 px-2 py-0.5 text-[10px] font-bold text-stone-600 uppercase tracking-wider shrink-0 whitespace-nowrap">
                 Vector Trace
               </span>
             </div>
-            <p className="text-xs text-stone-500">
+            <p className="mt-1 text-xs text-stone-500 leading-relaxed max-w-2xl">
               Transform bitmap photos, logos, and signatures into pure scalable vector SVG paths.
             </p>
           </div>
         </div>
 
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-2 w-full sm:w-auto shrink-0">
           <button
             type="button"
             onClick={handleCopyCode}
-            className="inline-flex items-center gap-1.5 rounded-lg border border-stone-200 bg-white px-3 py-1.5 text-xs font-medium text-stone-700 hover:bg-stone-50 transition-colors shadow-2xs"
+            className="flex-1 sm:flex-initial inline-flex items-center justify-center gap-1.5 rounded-lg border border-stone-200 bg-white px-3 py-1.5 text-xs font-medium text-stone-700 hover:bg-stone-50 transition-colors shadow-2xs"
           >
             {copied ? (
               <>
@@ -131,7 +131,7 @@ export function ImageToSvgView() {
           <button
             type="button"
             onClick={handleDownload}
-            className="inline-flex items-center gap-1.5 rounded-lg bg-stone-900 px-3.5 py-1.5 text-xs font-semibold text-white hover:bg-stone-800 transition-colors shadow-xs"
+            className="flex-1 sm:flex-initial inline-flex items-center justify-center gap-1.5 rounded-lg bg-stone-900 px-3.5 py-1.5 text-xs font-semibold text-white hover:bg-stone-800 transition-colors shadow-xs"
           >
             {downloadSuccess ? (
               <>
@@ -190,7 +190,7 @@ export function ImageToSvgView() {
             </span>
 
             {/* Mode selection buttons */}
-            <div className="grid grid-cols-3 gap-2 text-xs">
+            <div className="grid grid-cols-3 gap-2 text-[11px] sm:text-xs">
               {[
                 { id: 'monochrome' as const, label: 'Silhouette' },
                 { id: 'posterize' as const, label: 'Posterized' },
@@ -200,7 +200,7 @@ export function ImageToSvgView() {
                   key={m.id}
                   type="button"
                   onClick={() => setMode(m.id)}
-                  className={`py-1.5 rounded-lg border font-medium text-center transition-all ${
+                  className={`py-1.5 px-1 rounded-lg border font-medium text-center transition-all truncate ${
                     mode === m.id
                       ? 'border-stone-900 bg-stone-900 text-white shadow-2xs font-semibold'
                       : 'border-stone-200 bg-white text-stone-700 hover:bg-stone-50'
@@ -287,9 +287,9 @@ export function ImageToSvgView() {
         </div>
 
         {/* Right Column: Live Vector Preview & Code Viewer */}
-        <div className="lg:col-span-8 flex flex-col rounded-2xl border border-stone-200/80 bg-white shadow-xs overflow-hidden flex-1 min-h-75">
+        <div className="lg:col-span-8 flex flex-col rounded-2xl border border-stone-200/80 bg-white shadow-xs overflow-hidden flex-1 min-h-60 sm:min-h-75">
           {/* Header tabs */}
-          <div className="px-4 py-2 border-b border-stone-200/80 bg-stone-50/70 flex items-center justify-between">
+          <div className="px-3 sm:px-4 py-2 border-b border-stone-200/80 bg-stone-50/70 flex items-center justify-between">
             <div className="flex items-center gap-1">
               <button
                 type="button"
@@ -320,11 +320,11 @@ export function ImageToSvgView() {
           </div>
 
           {/* View Tab Content */}
-          <div className="flex-1 overflow-hidden relative">
+          <div className="flex-1 overflow-hidden relative min-h-55 sm:min-h-70">
             {activeTab === 'preview' ? (
-              <div className="w-full h-full p-8 flex items-center justify-center bg-[radial-gradient(#e5e7eb_1px,transparent_1px)] bg-size-[16px_16px] bg-[#faf9f6]">
+              <div className="w-full h-full p-4 sm:p-8 flex items-center justify-center bg-[radial-gradient(#e5e7eb_1px,transparent_1px)] bg-size-[16px_16px] bg-[#faf9f6]">
                 <div
-                  className="max-w-full max-h-full flex items-center justify-center shadow-xs bg-white rounded-xl p-4 border border-stone-200/60"
+                  className="max-w-full max-h-full flex items-center justify-center shadow-xs bg-white rounded-xl p-3 sm:p-4 border border-stone-200/60 overflow-auto"
                   dangerouslySetInnerHTML={{ __html: svgOutput }}
                 />
               </div>
@@ -332,7 +332,7 @@ export function ImageToSvgView() {
               <textarea
                 readOnly
                 value={svgOutput}
-                className="w-full h-full p-4 font-mono text-xs text-stone-800 bg-stone-50/40 resize-none focus:outline-hidden leading-relaxed"
+                className="w-full h-full p-3 sm:p-4 font-mono text-xs text-stone-800 bg-stone-50/40 resize-none focus:outline-hidden leading-relaxed min-h-55"
               />
             )}
           </div>

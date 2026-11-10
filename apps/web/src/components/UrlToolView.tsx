@@ -55,31 +55,31 @@ export function UrlToolView() {
   return (
     <div className="flex flex-col gap-6">
       {/* Tool Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 border-b border-stone-200/80 pb-6">
-        <div>
-          <div className="flex items-center gap-2.5">
-            <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-stone-900 text-white shadow-xs">
-              <Globe className="h-4 w-4" />
-            </span>
-            <h1 className="text-xl font-semibold tracking-tight text-stone-900">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 border-b border-stone-200/80 pb-5 sm:pb-6">
+        <div className="flex items-start sm:items-center gap-3 min-w-0">
+          <span className="flex h-8 w-8 shrink-0 aspect-square items-center justify-center rounded-lg bg-stone-900 text-white shadow-xs mt-0.5 sm:mt-0">
+            <Globe className="h-4 w-4" />
+          </span>
+          <div className="min-w-0 flex-1">
+            <h1 className="text-lg sm:text-xl font-semibold tracking-tight text-stone-900 leading-snug">
               URL Parser & Encoder
             </h1>
+            <p className="mt-1 text-xs text-stone-500 leading-relaxed max-w-2xl">
+              Deconstruct URLs into components, inspect query parameters, and encode/decode URI
+              strings.
+            </p>
           </div>
-          <p className="mt-1 text-sm text-stone-500">
-            Deconstruct URLs into components, inspect query parameters, and encode/decode URI
-            strings.
-          </p>
         </div>
 
         {/* Global actions */}
-        <div className="flex items-center gap-2">
+        <div className="flex flex-wrap items-center gap-2 w-full sm:w-auto">
           <button
             type="button"
             onClick={() => {
               setInputUrl(SAMPLE_URL);
               void processUrl(SAMPLE_URL, action);
             }}
-            className="inline-flex items-center gap-1.5 rounded-lg border border-stone-200 bg-white px-3 py-1.5 text-xs font-medium text-stone-700 shadow-xs hover:bg-stone-50 transition-colors"
+            className="flex-1 sm:flex-initial inline-flex items-center justify-center gap-1.5 rounded-lg border border-stone-200 bg-white px-3 py-1.5 text-xs font-medium text-stone-700 shadow-xs hover:bg-stone-50 transition-colors"
           >
             Sample
           </button>
@@ -90,7 +90,7 @@ export function UrlToolView() {
               setOutput(null);
               setErrorMessage(null);
             }}
-            className="inline-flex items-center gap-1.5 rounded-lg border border-stone-200 bg-white px-3 py-1.5 text-xs font-medium text-stone-700 shadow-xs hover:bg-stone-50 transition-colors"
+            className="inline-flex items-center justify-center gap-1.5 rounded-lg border border-stone-200 bg-white px-3 py-1.5 text-xs font-medium text-stone-700 shadow-xs hover:bg-stone-50 transition-colors"
           >
             <Trash2 className="h-3.5 w-3.5 text-stone-400" />
             Clear
@@ -111,8 +111,8 @@ export function UrlToolView() {
 
       {/* Input & Mode Row */}
       <div className="rounded-2xl border border-stone-200/80 bg-white p-4 shadow-xs flex flex-col gap-3">
-        <div className="flex flex-wrap items-center justify-between gap-3">
-          <div className="inline-flex rounded-lg border border-stone-200 bg-stone-50/80 p-0.5">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+          <div className="inline-flex rounded-lg border border-stone-200 bg-stone-50/80 p-0.5 overflow-x-auto max-w-full no-scrollbar">
             {[
               { id: 'parse', label: 'Parse URL' },
               { id: 'encode-component', label: 'Encode URI' },
@@ -126,7 +126,7 @@ export function UrlToolView() {
                   setAction(act);
                   handleExecute(act);
                 }}
-                className={`rounded-md px-3 py-1 text-xs font-medium transition-all ${
+                className={`rounded-md px-3 py-1 text-xs font-medium whitespace-nowrap shrink-0 transition-all ${
                   action === tab.id
                     ? 'bg-white text-stone-900 shadow-xs'
                     : 'text-stone-500 hover:text-stone-800'
@@ -137,14 +137,14 @@ export function UrlToolView() {
             ))}
           </div>
 
-          <div className="flex items-center gap-2">
+          <div className="flex items-center justify-between sm:justify-end gap-2 w-full sm:w-auto">
             {duration !== null && (
               <span className="text-xs font-mono text-emerald-700">{duration.toFixed(2)} ms</span>
             )}
             <button
               type="button"
               onClick={() => handleExecute()}
-              className="rounded-lg bg-stone-900 px-3.5 py-1.5 text-xs font-medium text-white shadow-xs hover:bg-stone-800 transition-colors"
+              className="flex-1 sm:flex-initial inline-flex items-center justify-center rounded-lg bg-stone-900 px-3.5 py-1.5 text-xs font-medium text-white shadow-xs hover:bg-stone-800 transition-colors"
             >
               Execute <span className="opacity-60 text-[10px] ml-1">⌘↵</span>
             </button>

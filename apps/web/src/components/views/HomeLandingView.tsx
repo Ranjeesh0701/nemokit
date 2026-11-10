@@ -184,19 +184,19 @@ export function HomeLandingView({
           <span>Nemokit 0.1 • Browser-First Utility Platform</span>
         </div>
 
-        <h1 className="text-3xl sm:text-5xl font-bold tracking-tight text-stone-900 leading-tight">
+        <h1 className="text-2xl sm:text-4xl md:text-5xl font-bold tracking-tight text-stone-900 leading-tight">
           Your tools. One place. <br />
           <span className="text-stone-400">No clutter.</span>
         </h1>
 
-        <p className="max-w-2xl text-base text-stone-600 leading-relaxed">
+        <p className="max-w-2xl text-sm sm:text-base text-stone-600 leading-relaxed">
           A modern, focused utility platform with dedicated workspaces for your everyday workflows.
           Engineered to run 100% in your browser with zero network lag and strict privacy.
         </p>
 
         {/* Feature Highlights */}
-        <div className="mt-4 grid grid-cols-1 sm:grid-cols-3 gap-4 w-full">
-          <div className="flex items-start gap-3 rounded-2xl border border-stone-200/80 bg-white p-4 shadow-xs">
+        <div className="mt-2 sm:mt-4 grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4 w-full">
+          <div className="flex items-start gap-3 rounded-2xl border border-stone-200/80 bg-white p-3.5 sm:p-4 shadow-xs">
             <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-stone-100 text-stone-800">
               <Zap className="h-4 w-4" />
             </span>
@@ -208,7 +208,7 @@ export function HomeLandingView({
             </div>
           </div>
 
-          <div className="flex items-start gap-3 rounded-2xl border border-stone-200/80 bg-white p-4 shadow-xs">
+          <div className="flex items-start gap-3 rounded-2xl border border-stone-200/80 bg-white p-3.5 sm:p-4 shadow-xs">
             <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-stone-100 text-stone-800">
               <ShieldCheck className="h-4 w-4" />
             </span>
@@ -220,7 +220,7 @@ export function HomeLandingView({
             </div>
           </div>
 
-          <div className="flex items-start gap-3 rounded-2xl border border-stone-200/80 bg-white p-4 shadow-xs">
+          <div className="flex items-start gap-3 rounded-2xl border border-stone-200/80 bg-white p-3.5 sm:p-4 shadow-xs">
             <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-stone-100 text-stone-800">
               <Cpu className="h-4 w-4" />
             </span>
@@ -240,7 +240,7 @@ export function HomeLandingView({
               <Bot className="h-5 w-5" />
             </span>
             <div>
-              <div className="flex items-center gap-2">
+              <div className="flex flex-wrap items-center gap-1.5 sm:gap-2">
                 <span className="text-[10px] font-bold uppercase tracking-wider text-indigo-700 bg-indigo-100 px-2 py-0.5 rounded">
                   NEW • Protocol v1.0
                 </span>
@@ -257,7 +257,7 @@ export function HomeLandingView({
           <button
             type="button"
             onClick={() => onSelectTool('mcp-server')}
-            className="flex items-center justify-center gap-2 rounded-xl bg-indigo-600 px-4 py-2 text-xs font-semibold text-white shadow-xs hover:bg-indigo-700 transition-colors shrink-0"
+            className="flex items-center justify-center gap-2 rounded-xl bg-indigo-600 px-4 py-2 text-xs font-semibold text-white shadow-xs hover:bg-indigo-700 transition-colors w-full sm:w-auto shrink-0"
           >
             <span>Explore MCP Studio</span>
             <ArrowRight className="h-3.5 w-3.5" />

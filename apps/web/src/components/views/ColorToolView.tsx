@@ -136,30 +136,30 @@ export function ColorToolView() {
   return (
     <div className="flex flex-col gap-6 w-full flex-1">
       {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 border-b border-stone-200/80 pb-6 shrink-0">
-        <div>
-          <div className="flex items-center gap-2.5">
-            <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-stone-900 text-white shadow-xs">
-              <Palette className="h-4.5 w-4.5" />
-            </span>
-            <div className="flex items-center gap-2">
-              <h1 className="text-xl font-bold tracking-tight text-stone-900">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 border-b border-stone-200/80 pb-5 sm:pb-6 shrink-0">
+        <div className="flex items-start sm:items-center gap-3 min-w-0">
+          <span className="flex h-9 w-9 shrink-0 aspect-square items-center justify-center rounded-xl bg-stone-900 text-white shadow-xs mt-0.5 sm:mt-0">
+            <Palette className="h-4.5 w-4.5" />
+          </span>
+          <div className="min-w-0 flex-1">
+            <div className="flex flex-wrap items-center gap-x-2.5 gap-y-1">
+              <h1 className="text-lg sm:text-xl font-bold tracking-tight text-stone-900 leading-snug">
                 Color Studio & Contrast
               </h1>
-              <span className="rounded-md bg-stone-100 px-2 py-0.5 text-[10px] font-semibold text-stone-600 uppercase tracking-wider hidden sm:inline">
+              <span className="rounded-md bg-stone-100 px-2 py-0.5 text-[10px] font-semibold text-stone-600 uppercase tracking-wider shrink-0 whitespace-nowrap">
                 Converters
               </span>
             </div>
+            <p className="mt-1 text-xs text-stone-500 leading-relaxed max-w-2xl">
+              Convert color values across formats, generate harmonious palettes, inspect WCAG 2.1
+              accessibility, and build CSS gradients.
+            </p>
           </div>
-          <p className="mt-1 text-sm text-stone-500 max-w-2xl">
-            Convert color values across formats, generate harmonious palettes, inspect WCAG 2.1
-            accessibility, and build CSS gradients.
-          </p>
         </div>
 
         {/* Clean Single-Row Preset selector */}
-        <div className="flex items-center gap-2.5 shrink-0">
-          <div className="relative">
+        <div className="flex items-center gap-2.5 w-full sm:w-auto shrink-0">
+          <div className="relative w-full sm:w-auto">
             <select
               aria-label="Preset color swatch"
               value=""
@@ -170,7 +170,7 @@ export function ColorToolView() {
                   setContrastBg(p.hex);
                 }
               }}
-              className="appearance-none flex items-center rounded-lg border border-stone-200 bg-white pl-3 pr-8 py-2 text-xs font-medium text-stone-700 shadow-2xs hover:bg-stone-50 hover:border-stone-300 transition-colors cursor-pointer focus:outline-hidden focus:ring-2 focus:ring-stone-400"
+              className="w-full sm:w-auto appearance-none flex items-center rounded-lg border border-stone-200 bg-white pl-3 pr-8 py-2 text-xs font-medium text-stone-700 shadow-2xs hover:bg-stone-50 hover:border-stone-300 transition-colors cursor-pointer focus:outline-hidden focus:ring-2 focus:ring-stone-400"
             >
               <option value="" disabled>
                 Preset Swatches...
@@ -187,42 +187,42 @@ export function ColorToolView() {
       </div>
 
       {/* Navigation Tabs */}
-      <div className="flex items-center gap-1 bg-stone-100 p-1 rounded-xl border border-stone-200 shrink-0 w-fit">
+      <div className="flex items-center gap-1 bg-stone-100 p-1 rounded-xl border border-stone-200 shrink-0 max-w-full overflow-x-auto no-scrollbar">
         <button
           type="button"
           onClick={() => setActiveTab('converter')}
-          className={`flex items-center gap-2 px-3.5 py-1.5 text-xs font-semibold rounded-lg transition-all ${
+          className={`flex items-center gap-2 px-3.5 py-1.5 text-xs font-semibold rounded-lg whitespace-nowrap shrink-0 transition-all ${
             activeTab === 'converter'
               ? 'bg-white text-stone-900 shadow-xs'
               : 'text-stone-600 hover:text-stone-900'
           }`}
         >
           <Palette className="h-3.5 w-3.5 text-indigo-600" />
-          Converter & Harmonies
+          <span>Converter & Harmonies</span>
         </button>
         <button
           type="button"
           onClick={() => setActiveTab('contrast')}
-          className={`flex items-center gap-2 px-3.5 py-1.5 text-xs font-semibold rounded-lg transition-all ${
+          className={`flex items-center gap-2 px-3.5 py-1.5 text-xs font-semibold rounded-lg whitespace-nowrap shrink-0 transition-all ${
             activeTab === 'contrast'
               ? 'bg-white text-stone-900 shadow-xs'
               : 'text-stone-600 hover:text-stone-900'
           }`}
         >
           <CheckCircle2 className="h-3.5 w-3.5 text-emerald-600" />
-          WCAG Contrast Studio
+          <span>WCAG Contrast Studio</span>
         </button>
         <button
           type="button"
           onClick={() => setActiveTab('gradient')}
-          className={`flex items-center gap-2 px-3.5 py-1.5 text-xs font-semibold rounded-lg transition-all ${
+          className={`flex items-center gap-2 px-3.5 py-1.5 text-xs font-semibold rounded-lg whitespace-nowrap shrink-0 transition-all ${
             activeTab === 'gradient'
               ? 'bg-white text-stone-900 shadow-xs'
               : 'text-stone-600 hover:text-stone-900'
           }`}
         >
           <Sparkles className="h-3.5 w-3.5 text-purple-600" />
-          CSS Gradient Studio
+          <span>CSS Gradient Studio</span>
         </button>
       </div>
 
@@ -706,10 +706,10 @@ export function ColorToolView() {
                   style={{ backgroundColor: contrastBg, color: contrastFg }}
                 >
                   <div>
-                    <h2 className="text-2xl font-bold tracking-tight">
+                    <h2 className="text-xl sm:text-2xl font-bold tracking-tight">
                       Large Headline Typography (24px)
                     </h2>
-                    <h3 className="text-lg font-semibold opacity-90 mt-1">
+                    <h3 className="text-base sm:text-lg font-semibold opacity-90 mt-1">
                       Medium Subheading (18px Bold)
                     </h3>
                   </div>
@@ -845,7 +845,7 @@ export function ColorToolView() {
                 {gradientStops.map((stop, index) => (
                   <div
                     key={index}
-                    className="flex items-center gap-3 p-3 rounded-lg border border-stone-100 bg-stone-50/50"
+                    className="flex flex-wrap sm:flex-nowrap items-center gap-2 sm:gap-3 p-2.5 sm:p-3 rounded-lg border border-stone-100 bg-stone-50/50"
                   >
                     <input
                       type="color"
@@ -857,7 +857,7 @@ export function ColorToolView() {
                           setGradientStops(newStops);
                         }
                       }}
-                      className="h-8 w-12 rounded cursor-pointer border border-stone-200 p-0.5"
+                      className="h-8 w-10 sm:w-12 rounded cursor-pointer border border-stone-200 p-0.5 shrink-0"
                     />
                     <input
                       type="text"
@@ -869,10 +869,10 @@ export function ColorToolView() {
                           setGradientStops(newStops);
                         }
                       }}
-                      className="w-20 rounded-md border border-stone-200 bg-white px-2 py-1 font-mono text-xs text-stone-900"
+                      className="w-20 rounded-md border border-stone-200 bg-white px-2 py-1 font-mono text-xs text-stone-900 shrink-0"
                     />
 
-                    <div className="flex-1 flex items-center gap-2">
+                    <div className="flex-1 min-w-32 flex items-center gap-2">
                       <input
                         type="range"
                         min="0"
@@ -890,7 +890,7 @@ export function ColorToolView() {
                         }}
                         className="flex-1 accent-indigo-600"
                       />
-                      <span className="font-mono text-xs text-stone-500 w-8 text-right">
+                      <span className="font-mono text-xs text-stone-500 w-8 text-right shrink-0">
                         {stop.position}%
                       </span>
                     </div>
@@ -899,7 +899,7 @@ export function ColorToolView() {
                       <button
                         type="button"
                         onClick={() => setGradientStops(prev => prev.filter((_, i) => i !== index))}
-                        className="text-stone-400 hover:text-rose-500 text-xs px-1"
+                        className="text-stone-400 hover:text-rose-500 text-xs px-1 shrink-0 ml-auto sm:ml-0"
                       >
                         ✕
                       </button>
@@ -913,12 +913,12 @@ export function ColorToolView() {
           {/* Right Live Preview & CSS Export (6 cols) */}
           <div className="lg:col-span-6 flex flex-col gap-5">
             {/* Visual Canvas */}
-            <div className="rounded-2xl border border-stone-200 bg-white p-6 shadow-xs flex flex-col items-center">
+            <div className="rounded-2xl border border-stone-200 bg-white p-4 sm:p-6 shadow-xs flex flex-col items-center">
               <span className="text-xs font-semibold text-stone-500 uppercase tracking-wider w-full mb-3">
                 Live Gradient Canvas
               </span>
               <div
-                className="w-full h-64 rounded-2xl shadow-inner transition-all border border-stone-200/60"
+                className="w-full h-48 sm:h-64 rounded-2xl shadow-inner transition-all border border-stone-200/60"
                 style={{ background: gradientResult.backgroundStyle }}
               />
             </div>

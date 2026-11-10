@@ -116,26 +116,26 @@ export function ChmodToolView() {
   return (
     <div className="flex flex-col gap-6 w-full">
       {/* Header Bar */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between border-b border-stone-200/80 gap-4 pb-6">
-        <div className="flex items-center gap-3">
-          <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-amber-500/10 text-amber-700">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between border-b border-stone-200/80 gap-3.5 sm:gap-4 pb-5 sm:pb-6">
+        <div className="flex items-start sm:items-center gap-3 min-w-0">
+          <span className="flex h-10 w-10 shrink-0 aspect-square items-center justify-center rounded-xl bg-amber-500/10 text-amber-700 mt-0.5 sm:mt-0 shadow-2xs">
             <Lock className="h-5 w-5" />
           </span>
-          <div>
-            <h1 className="text-xl font-bold tracking-tight text-stone-900">
+          <div className="min-w-0 flex-1">
+            <h1 className="text-lg sm:text-xl font-bold tracking-tight text-stone-900 leading-snug">
               Chmod Permissions Calculator
             </h1>
-            <p className="text-xs text-stone-500">
+            <p className="mt-1 text-xs text-stone-500 leading-relaxed max-w-2xl">
               Interactive Unix file permissions converter between Octal, Symbolic, and Checkboxes.
             </p>
           </div>
         </div>
 
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-2 w-full sm:w-auto shrink-0">
           <button
             type="button"
             onClick={handleShareLink}
-            className="inline-flex items-center gap-1.5 rounded-lg border border-stone-200 bg-white px-3 py-1.5 text-xs font-medium text-stone-700 hover:bg-stone-50 transition-colors shadow-2xs"
+            className="flex-1 sm:flex-initial inline-flex items-center justify-center gap-1.5 rounded-lg border border-stone-200 bg-white px-3 py-1.5 text-xs font-medium text-stone-700 hover:bg-stone-50 transition-colors shadow-2xs"
           >
             {shareSuccess ? (
               <>
@@ -157,17 +157,19 @@ export function ChmodToolView() {
         {/* Left Column: Checkbox Matrix & Filename */}
         <div className="lg:col-span-7 flex flex-col gap-5">
           {/* Filename Input */}
-          <div className="flex items-center gap-3 rounded-xl border border-stone-200/80 bg-white p-3 shadow-2xs">
-            <FileText className="h-4 w-4 text-stone-400 shrink-0" />
-            <span className="text-xs font-medium text-stone-500 shrink-0">
-              Target File / Directory:
-            </span>
+          <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-3 rounded-xl border border-stone-200/80 bg-white p-3 shadow-2xs">
+            <div className="flex items-center gap-2">
+              <FileText className="h-4 w-4 text-stone-400 shrink-0" />
+              <span className="text-xs font-medium text-stone-500 shrink-0">
+                Target File / Directory:
+              </span>
+            </div>
             <input
               type="text"
               value={filename}
               onChange={e => setFilename(e.target.value)}
               placeholder="e.g. script.sh or deploy.sh"
-              className="flex-1 text-xs font-mono bg-stone-50 border border-stone-200 rounded-md px-2.5 py-1.5 text-stone-800 focus:outline-hidden focus:ring-1 focus:ring-stone-400"
+              className="w-full sm:flex-1 text-xs font-mono bg-stone-50 border border-stone-200 rounded-md px-2.5 py-1.5 text-stone-800 focus:outline-hidden focus:ring-1 focus:ring-stone-400"
             />
           </div>
 
@@ -294,7 +296,7 @@ export function ChmodToolView() {
                 <span className="text-[11px] font-semibold text-stone-500 uppercase tracking-wider block mb-2">
                   Special Flags (Advanced)
                 </span>
-                <div className="grid grid-cols-3 gap-3 text-xs">
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 sm:gap-3 text-xs">
                   <label className="flex items-center gap-2 cursor-pointer text-stone-700">
                     <input
                       type="checkbox"
@@ -355,8 +357,8 @@ export function ChmodToolView() {
         {/* Right Column: Values & Generated Commands */}
         <div className="lg:col-span-5 flex flex-col gap-5">
           {/* Main Octal & Symbolic Readouts */}
-          <div className="rounded-2xl border border-stone-200/80 bg-white p-5 shadow-xs flex flex-col gap-4">
-            <div className="grid grid-cols-2 gap-4">
+          <div className="rounded-2xl border border-stone-200/80 bg-white p-4 sm:p-5 shadow-xs flex flex-col gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               {/* Octal */}
               <div className="flex flex-col">
                 <span className="text-xs font-medium text-stone-500 mb-1">Octal Notation</span>

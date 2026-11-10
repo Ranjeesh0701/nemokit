@@ -546,34 +546,36 @@ export function McpServerView() {
   return (
     <div className="flex flex-col gap-6 w-full flex-1">
       {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 border-b border-stone-200/80 pb-6 shrink-0">
-        <div>
-          <div className="flex items-center gap-2.5">
-            <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-indigo-600 text-white shadow-xs">
-              <Bot className="h-4 w-4" />
-            </span>
-            <h1 className="text-xl font-semibold tracking-tight text-stone-900">
-              Model Context Protocol (MCP) Server
-            </h1>
-            <span className="inline-flex items-center gap-1 rounded-full bg-emerald-50 px-2.5 py-0.5 text-[11px] font-semibold text-emerald-700 border border-emerald-200">
-              <CheckCircle2 className="h-3 w-3" />
-              26 Tools Available
-            </span>
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 border-b border-stone-200/80 pb-5 sm:pb-6 shrink-0">
+        <div className="flex items-start sm:items-center gap-3 min-w-0">
+          <span className="flex h-8 w-8 shrink-0 aspect-square items-center justify-center rounded-lg bg-indigo-600 text-white shadow-xs mt-0.5 sm:mt-0">
+            <Bot className="h-4 w-4" />
+          </span>
+          <div className="min-w-0 flex-1">
+            <div className="flex flex-wrap items-center gap-x-2.5 gap-y-1">
+              <h1 className="text-lg sm:text-xl font-semibold tracking-tight text-stone-900 leading-snug">
+                Model Context Protocol (MCP) Server
+              </h1>
+              <span className="inline-flex items-center gap-1 rounded-full bg-emerald-50 px-2.5 py-0.5 text-[11px] font-semibold text-emerald-700 border border-emerald-200 shrink-0 whitespace-nowrap">
+                <CheckCircle2 className="h-3 w-3" />
+                26 Tools Available
+              </span>
+            </div>
+            <p className="mt-1 text-xs text-stone-500 leading-relaxed max-w-2xl">
+              Connect all 26 Nemokit developer tools directly to your AI assistants (Claude Desktop,
+              Cursor, Zed, Cline, Antigravity) via local stdio.
+            </p>
           </div>
-          <p className="mt-1 text-sm text-stone-500">
-            Connect all 26 Nemokit developer tools directly to your AI assistants (Claude Desktop,
-            Cursor, Zed, Cline, Antigravity) via local stdio.
-          </p>
         </div>
 
         {/* Action badges */}
-        <div className="flex items-center gap-2">
+        <div className="flex flex-wrap items-center gap-2">
           <div className="inline-flex items-center gap-1.5 rounded-lg border border-stone-200 bg-white px-3 py-1.5 text-xs font-medium text-stone-600 shadow-xs">
-            <ShieldCheck className="h-3.5 w-3.5 text-emerald-600" />
+            <ShieldCheck className="h-3.5 w-3.5 text-emerald-600 shrink-0" />
             <span>100% Local Stdio</span>
           </div>
           <div className="inline-flex items-center gap-1.5 rounded-lg border border-stone-200 bg-white px-3 py-1.5 text-xs font-medium text-stone-600 shadow-xs">
-            <Cpu className="h-3.5 w-3.5 text-indigo-600" />
+            <Cpu className="h-3.5 w-3.5 text-indigo-600 shrink-0" />
             <span>Zero API Keys Needed</span>
           </div>
         </div>
@@ -584,8 +586,8 @@ export function McpServerView() {
         <div className="p-4 sm:p-5 border-b border-stone-200/60 bg-stone-50/50 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
           <div>
             <h2 className="text-sm font-semibold text-stone-900 flex items-center gap-2">
-              <Terminal className="h-4 w-4 text-indigo-600" />
-              One-Click Integration Configuration
+              <Terminal className="h-4 w-4 text-indigo-600 shrink-0" />
+              <span>One-Click Integration Configuration</span>
             </h2>
             <p className="text-xs text-stone-500 mt-0.5">
               Copy and paste into your AI assistant settings file to instantly register the Nemokit
@@ -594,11 +596,11 @@ export function McpServerView() {
           </div>
 
           {/* Client Selector Pills */}
-          <div className="inline-flex rounded-lg border border-stone-200 bg-stone-100 p-0.5 text-xs font-medium">
+          <div className="inline-flex rounded-lg border border-stone-200 bg-stone-100 p-0.5 text-xs font-medium overflow-x-auto max-w-full no-scrollbar">
             <button
               type="button"
               onClick={() => setSelectedClient('claude')}
-              className={`rounded-md px-3 py-1 transition-all ${
+              className={`rounded-md px-3 py-1 whitespace-nowrap shrink-0 transition-all ${
                 selectedClient === 'claude'
                   ? 'bg-white text-stone-900 font-semibold shadow-xs'
                   : 'text-stone-600 hover:text-stone-900'
@@ -609,7 +611,7 @@ export function McpServerView() {
             <button
               type="button"
               onClick={() => setSelectedClient('cursor')}
-              className={`rounded-md px-3 py-1 transition-all ${
+              className={`rounded-md px-3 py-1 whitespace-nowrap shrink-0 transition-all ${
                 selectedClient === 'cursor'
                   ? 'bg-white text-stone-900 font-semibold shadow-xs'
                   : 'text-stone-600 hover:text-stone-900'
@@ -620,7 +622,7 @@ export function McpServerView() {
             <button
               type="button"
               onClick={() => setSelectedClient('zed')}
-              className={`rounded-md px-3 py-1 transition-all ${
+              className={`rounded-md px-3 py-1 whitespace-nowrap shrink-0 transition-all ${
                 selectedClient === 'zed'
                   ? 'bg-white text-stone-900 font-semibold shadow-xs'
                   : 'text-stone-600 hover:text-stone-900'
@@ -631,7 +633,7 @@ export function McpServerView() {
             <button
               type="button"
               onClick={() => setSelectedClient('cli')}
-              className={`rounded-md px-3 py-1 transition-all ${
+              className={`rounded-md px-3 py-1 whitespace-nowrap shrink-0 transition-all ${
                 selectedClient === 'cli'
                   ? 'bg-white text-stone-900 font-semibold shadow-xs'
                   : 'text-stone-600 hover:text-stone-900'
@@ -802,22 +804,22 @@ export function McpServerView() {
         </div>
 
         {/* Search & Category filter */}
-        <div className="flex flex-wrap items-center gap-2">
-          <div className="relative">
+        <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2 w-full sm:w-auto">
+          <div className="relative flex-1 sm:w-60">
             <Search className="h-3.5 w-3.5 absolute left-3 top-1/2 -translate-y-1/2 text-stone-400" />
             <input
               type="text"
               value={searchQuery}
               onChange={e => setSearchQuery(e.target.value)}
               placeholder="Search tools or prompts..."
-              className="rounded-lg border border-stone-200 bg-white pl-8 pr-3 py-1.5 text-xs text-stone-800 placeholder-stone-400 shadow-xs focus:border-indigo-500 focus:outline-hidden"
+              className="w-full rounded-lg border border-stone-200 bg-white pl-8 pr-3 py-1.5 text-xs text-stone-800 placeholder-stone-400 shadow-xs focus:border-indigo-500 focus:outline-hidden"
             />
           </div>
 
           <select
             value={selectedCategory}
             onChange={e => setSelectedCategory(e.target.value)}
-            className="rounded-lg border border-stone-200 bg-white px-2.5 py-1.5 text-xs text-stone-700 shadow-xs focus:border-indigo-500 focus:outline-hidden"
+            className="rounded-lg border border-stone-200 bg-white px-2.5 py-1.5 text-xs text-stone-700 shadow-xs focus:border-indigo-500 focus:outline-hidden shrink-0"
           >
             <option value="all">All Categories</option>
             <option value="formatters">Formatters & Diff</option>

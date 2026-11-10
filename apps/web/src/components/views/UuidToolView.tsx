@@ -52,34 +52,34 @@ export function UuidToolView() {
   return (
     <div className="flex flex-col gap-6 w-full">
       {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 border-b border-stone-200/80 pb-6">
-        <div>
-          <div className="flex items-center gap-2.5">
-            <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-stone-900 text-white shadow-xs">
-              <Fingerprint className="h-4 w-4" />
-            </span>
-            <h1 className="text-xl font-semibold tracking-tight text-stone-900">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 border-b border-stone-200/80 pb-5 sm:pb-6">
+        <div className="flex items-start sm:items-center gap-3 min-w-0">
+          <span className="flex h-8 w-8 shrink-0 aspect-square items-center justify-center rounded-lg bg-stone-900 text-white shadow-xs mt-0.5 sm:mt-0">
+            <Fingerprint className="h-4 w-4" />
+          </span>
+          <div className="min-w-0 flex-1">
+            <h1 className="text-lg sm:text-xl font-semibold tracking-tight text-stone-900 leading-snug">
               UUID / GUID Generator
             </h1>
+            <p className="mt-1 text-xs text-stone-500 leading-relaxed max-w-2xl">
+              Generate RFC 4122 compliant version 4 UUIDs locally in bulk with instant format options.
+            </p>
           </div>
-          <p className="mt-1 text-sm text-stone-500">
-            Generate RFC 4122 compliant version 4 UUIDs locally in bulk with instant format options.
-          </p>
         </div>
 
         <button
           type="button"
           onClick={() => generateUuids(count, uppercase, removeHyphens)}
-          className="inline-flex items-center gap-1.5 rounded-lg bg-stone-900 px-3.5 py-2 text-xs font-medium text-white shadow-xs hover:bg-stone-800 transition-colors"
+          className="w-full sm:w-auto inline-flex items-center justify-center gap-1.5 rounded-lg bg-stone-900 px-3.5 py-2 text-xs font-medium text-white shadow-xs hover:bg-stone-800 transition-colors shrink-0"
         >
           <RefreshCw className="h-3.5 w-3.5" />
-          Regenerate
+          <span>Regenerate</span>
         </button>
       </div>
 
       {/* Configuration Bar */}
-      <div className="rounded-2xl border border-stone-200/80 bg-white p-4 shadow-xs flex flex-wrap items-center justify-between gap-4">
-        <div className="flex flex-wrap items-center gap-4 text-xs text-stone-700">
+      <div className="rounded-2xl border border-stone-200/80 bg-white p-3.5 sm:p-4 shadow-xs flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-4">
+        <div className="flex flex-wrap items-center gap-3 sm:gap-4 text-xs text-stone-700">
           <div className="flex items-center gap-2">
             <span className="font-medium text-stone-500">Quantity:</span>
             <div className="inline-flex rounded-lg border border-stone-200 bg-stone-50/80 p-0.5">
@@ -135,17 +135,17 @@ export function UuidToolView() {
         <button
           type="button"
           onClick={handleCopyAll}
-          className="inline-flex items-center gap-1.5 rounded-lg border border-stone-200 bg-white px-3 py-1.5 text-xs font-medium text-stone-700 shadow-xs hover:bg-stone-50 transition-colors"
+          className="w-full sm:w-auto inline-flex items-center justify-center gap-1.5 rounded-lg border border-stone-200 bg-white px-3 py-1.5 text-xs font-medium text-stone-700 shadow-xs hover:bg-stone-50 transition-colors"
         >
           {copiedIndex === 'all' ? (
             <>
               <Check className="h-3.5 w-3.5 text-emerald-500" />
-              Copied All!
+              <span>Copied All!</span>
             </>
           ) : (
             <>
               <Copy className="h-3.5 w-3.5 text-stone-400" />
-              Copy All ({output?.count ?? 0})
+              <span>Copy All ({output?.count ?? 0})</span>
             </>
           )}
         </button>
@@ -178,7 +178,7 @@ export function UuidToolView() {
               <button
                 type="button"
                 onClick={() => handleCopyOne(uuid, idx)}
-                className="opacity-0 group-hover:opacity-100 focus:opacity-100 inline-flex items-center gap-1 rounded-md border border-stone-200 bg-white px-2 py-1 text-xs text-stone-600 hover:bg-stone-50 transition-all"
+                className="opacity-100 sm:opacity-0 sm:group-hover:opacity-100 focus:opacity-100 inline-flex items-center gap-1 rounded-md border border-stone-200 bg-white px-2 py-1 text-xs text-stone-600 hover:bg-stone-50 transition-all shrink-0"
               >
                 {copiedIndex === idx ? (
                   <Check className="h-3 w-3 text-emerald-500" />

@@ -65,37 +65,37 @@ export function MarkdownView() {
   return (
     <div className="flex flex-col gap-6 w-full flex-1">
       {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 border-b border-stone-200/80 pb-6">
-        <div>
-          <div className="flex items-center gap-2.5">
-            <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-stone-900 text-white shadow-xs">
-              <FileEdit className="h-4 w-4" />
-            </span>
-            <h1 className="text-xl font-semibold tracking-tight text-stone-900">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 border-b border-stone-200/80 pb-5 sm:pb-6">
+        <div className="flex items-start sm:items-center gap-3 min-w-0">
+          <span className="flex h-8 w-8 shrink-0 aspect-square items-center justify-center rounded-lg bg-stone-900 text-white shadow-xs mt-0.5 sm:mt-0">
+            <FileEdit className="h-4 w-4" />
+          </span>
+          <div className="min-w-0 flex-1">
+            <h1 className="text-lg sm:text-xl font-semibold tracking-tight text-stone-900 leading-snug">
               Markdown Live Editor & Stats
             </h1>
+            <p className="mt-1 text-xs text-stone-500 leading-relaxed max-w-2xl">
+              Write GitHub-flavored markdown with split-pane live HTML rendering and real-time reading
+              metrics.
+            </p>
           </div>
-          <p className="mt-1 text-sm text-stone-500">
-            Write GitHub-flavored markdown with split-pane live HTML rendering and real-time reading
-            metrics.
-          </p>
         </div>
 
-        <div className="flex items-center gap-2">
+        <div className="flex flex-wrap items-center gap-2 w-full sm:w-auto">
           <button
             type="button"
             onClick={() => handleCopy(output?.html ?? '', 'html')}
-            className="inline-flex items-center gap-1.5 rounded-lg border border-stone-200 bg-white px-3 py-1.5 text-xs font-medium text-stone-700 shadow-xs hover:bg-stone-50 transition-colors"
+            className="flex-1 sm:flex-initial inline-flex items-center justify-center gap-1.5 rounded-lg border border-stone-200 bg-white px-3 py-1.5 text-xs font-medium text-stone-700 shadow-xs hover:bg-stone-50 transition-colors"
           >
             {copiedKey === 'html' ? (
               <>
                 <Check className="h-3.5 w-3.5 text-emerald-600" />
-                Copied HTML
+                <span>Copied HTML</span>
               </>
             ) : (
               <>
                 <Copy className="h-3.5 w-3.5 text-stone-500" />
-                Copy HTML
+                <span>Copy HTML</span>
               </>
             )}
           </button>
@@ -103,64 +103,64 @@ export function MarkdownView() {
           <button
             type="button"
             onClick={handleDownloadMd}
-            className="inline-flex items-center gap-1.5 rounded-lg bg-stone-900 px-3.5 py-1.5 text-xs font-medium text-white shadow-xs hover:bg-stone-800 transition-colors"
+            className="flex-1 sm:flex-initial inline-flex items-center justify-center gap-1.5 rounded-lg bg-stone-900 px-3.5 py-1.5 text-xs font-medium text-white shadow-xs hover:bg-stone-800 transition-colors"
           >
             <Download className="h-3.5 w-3.5" />
-            Download .md
+            <span>Download .md</span>
           </button>
         </div>
       </div>
 
       {/* Formatting Quick Toolbar & Metrics Bar */}
-      <div className="flex flex-wrap items-center justify-between gap-4 rounded-xl border border-stone-200/90 bg-stone-50/70 p-3">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 rounded-xl border border-stone-200/90 bg-stone-50/70 p-2.5 sm:p-3">
         {/* Quick format buttons */}
-        <div className="flex items-center gap-1">
+        <div className="flex items-center gap-1 overflow-x-auto max-w-full no-scrollbar pb-1 sm:pb-0">
           <button
             type="button"
             onClick={() => handleInsert('# Heading 1')}
-            className="rounded px-2 py-1 text-xs font-bold text-stone-700 hover:bg-stone-200/60"
+            className="rounded px-2 py-1 text-xs font-bold text-stone-700 hover:bg-stone-200/60 whitespace-nowrap shrink-0"
           >
             H1
           </button>
           <button
             type="button"
             onClick={() => handleInsert('## Heading 2')}
-            className="rounded px-2 py-1 text-xs font-bold text-stone-700 hover:bg-stone-200/60"
+            className="rounded px-2 py-1 text-xs font-bold text-stone-700 hover:bg-stone-200/60 whitespace-nowrap shrink-0"
           >
             H2
           </button>
           <button
             type="button"
             onClick={() => handleInsert('**bold text**')}
-            className="rounded px-2 py-1 text-xs font-bold text-stone-700 hover:bg-stone-200/60"
+            className="rounded px-2 py-1 text-xs font-bold text-stone-700 hover:bg-stone-200/60 whitespace-nowrap shrink-0"
           >
             B
           </button>
           <button
             type="button"
             onClick={() => handleInsert('*italic text*')}
-            className="rounded px-2 py-1 text-xs italic text-stone-700 hover:bg-stone-200/60"
+            className="rounded px-2 py-1 text-xs italic text-stone-700 hover:bg-stone-200/60 whitespace-nowrap shrink-0"
           >
             I
           </button>
           <button
             type="button"
             onClick={() => handleInsert('- List item')}
-            className="rounded px-2 py-1 text-xs text-stone-700 hover:bg-stone-200/60"
+            className="rounded px-2 py-1 text-xs text-stone-700 hover:bg-stone-200/60 whitespace-nowrap shrink-0"
           >
             • List
           </button>
           <button
             type="button"
             onClick={() => handleInsert('```\n// code\n```')}
-            className="rounded px-2 py-1 text-xs font-mono text-stone-700 hover:bg-stone-200/60"
+            className="rounded px-2 py-1 text-xs font-mono text-stone-700 hover:bg-stone-200/60 whitespace-nowrap shrink-0"
           >
             &lt;/&gt;
           </button>
           <button
             type="button"
             onClick={() => handleInsert('> Quote')}
-            className="rounded px-2 py-1 text-xs text-stone-700 hover:bg-stone-200/60"
+            className="rounded px-2 py-1 text-xs text-stone-700 hover:bg-stone-200/60 whitespace-nowrap shrink-0"
           >
             Quote
           </button>
@@ -168,7 +168,7 @@ export function MarkdownView() {
 
         {/* Live Metrics */}
         {output && (
-          <div className="flex items-center gap-3 text-xs font-mono text-stone-600">
+          <div className="flex flex-wrap items-center gap-2 sm:gap-3 text-xs font-mono text-stone-600">
             <span>{output.wordCount} words</span>
             <span>•</span>
             <span>{output.characterCount} chars</span>

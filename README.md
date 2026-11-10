@@ -215,7 +215,7 @@ Compile all packages and build the optimized production web assets:
 npm run build
 ```
 
-Deploy directly to Cloudflare Pages on the default `*.pages.dev` domain:
+Deploy directly to Cloudflare on the default domain:
 
 ```bash
 # Authenticate with Cloudflare (first time only)
@@ -225,10 +225,16 @@ npx wrangler login
 npm run deploy
 ```
 
-Alternatively, connect your repository in Cloudflare Pages dashboard:
+#### Cloudflare Dashboard Git Integration
 
-- **Build command**: `npm run build`
-- **Build output directory**: `apps/web/dist`
+In Cloudflare Dashboard:
+
+- If using **Workers (Workers Builds)**:
+  - **Build command**: `npm run build`
+  - **Deploy command**: `npx wrangler deploy`
+- If using **Pages**:
+  - **Build command**: `npm run build`
+  - **Build output directory**: `apps/web/dist`
 
 ### Google Search Console & SEO on `*.pages.dev`
 
